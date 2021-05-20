@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,23 +27,49 @@
                 android:paddingEnd="80dp"
                 android:src="@drawable/instagram_logo_black" />
 
-            <EditText
-                android:id="@+id/login_edit_text_email"
-                style="@style/InstaFormEditText"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:textColorHint="@color/grayText" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_edit_text_email_input"
+                style="@style/InstaFormEditTextInput"
+                android:clickable="false"
+                app:errorTextColor="@color/red"
+                app:hintEnabled="false">
 
-            <EditText
-                android:id="@+id/login_edit_text_password"
-                style="@style/InstaFormEditText"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:textColorHint="@color/grayText" />
+                <EditText
+                    android:id="@+id/login_edit_text_email"
+                    style="@style/InstaFormEditText"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/black"
+                    android:textColorHint="@color/grayText"
+                    android:textCursorDrawable="@null"
+
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_edit_text_password_input"
+                style="@style/InstaFormEditTextInput"
+                app:errorTextColor="@color/red"
+                app:hintEnabled="false">
+
+                <EditText
+
+                    android:id="@+id/login_edit_text_password"
+                    style="@style/InstaFormEditText"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grayText"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/login_button_enter"
                 style="@style/InstaFormButton"
+                android:enabled="false"
                 android:text="@string/enter" />
 
             <FrameLayout
