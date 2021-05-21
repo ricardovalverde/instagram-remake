@@ -1,17 +1,18 @@
 package com.example.instagram.loginpresentation;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
+    private TestButton button_enter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +25,28 @@ public class LoginActivity extends AppCompatActivity {
         EditText editTextPassword = findViewById(R.id.login_edit_text_password);
         editTextPassword.addTextChangedListener(watcher);
 
+        button_enter = findViewById(R.id.login_button_enter);
+        button_enter.setOnClickListener(v -> {
+
+            button_enter.showProgressBar(true);
+
+            new Handler().postDelayed(() -> {
+                button_enter.showProgressBar(false);
+                TextInputLayout textInputLayoutEmail = findViewById(R.id.login_edit_text_email_input);
+                textInputLayoutEmail.setError("Email inválido !");
+
+                TextInputLayout textInputLayoutPassword = findViewById(R.id.login_edit_text_password_input);
+                textInputLayoutPassword.setError("Senha Inválida");
+
+            }, 4000);
 
 
-        findViewById(R.id.login_button_enter).setOnClickListener(v -> {
-            TextInputLayout textInputLayoutEmail = findViewById(R.id.login_edit_text_email_input);
-            textInputLayoutEmail.setError("Email inválido !");
-
-            TextInputLayout textInputLayoutPassword = findViewById(R.id.login_edit_text_password_input);
-            textInputLayoutPassword.setError("Senha Inválida");
         });
 
+
     }
-    private TextWatcher watcher = new TextWatcher() {
+
+    private final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -43,10 +54,9 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(!s.toString().isEmpty()){
+            if (!s.toString().isEmpty()) {
                 findViewById(R.id.login_button_enter).setEnabled(true);
-            }
-            else {
+            } else {
                 findViewById(R.id.login_button_enter).setEnabled(false);
             }
         }
