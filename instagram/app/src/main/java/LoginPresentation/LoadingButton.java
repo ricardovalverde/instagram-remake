@@ -1,4 +1,4 @@
-package com.example.instagram.loginpresentation;
+package LoginPresentation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,25 +16,25 @@ import androidx.core.content.ContextCompat;
 
 import com.example.instagram.R;
 
-public class TestButton extends FrameLayout {
+public class LoadingButton extends FrameLayout {
 
     private AppCompatButton button_enter;
     private ProgressBar progressBar;
     private String text;
 
-    public TestButton(@NonNull Context context) {
+    public LoadingButton(@NonNull Context context) {
         super(context);
         setup(context, null);
 
     }
 
-    public TestButton(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public LoadingButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setup(context, attrs);
 
     }
 
-    public TestButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LoadingButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setup(context, attrs);
     }

@@ -1,4 +1,4 @@
-package com.example.instagram.loginpresentation;
+package LoginPresentation;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +12,7 @@ import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
-    private TestButton button_enter;
+    private LoadingButton button_enter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.toString().isEmpty()) {
-                findViewById(R.id.login_button_enter).setEnabled(true);
-            } else {
-                findViewById(R.id.login_button_enter).setEnabled(false);
-            }
+            button_enter.setEnabled(!s.toString().isEmpty());
         }
 
         @Override

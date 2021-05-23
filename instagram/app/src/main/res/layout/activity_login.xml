@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".loginpresentation.LoginActivity">
+    tools:context="LoginPresentation.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -66,7 +66,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.example.instagram.loginpresentation.TestButton
+            <LoginPresentation.LoadingButton
                 android:id="@+id/login_button_enter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
