@@ -1,4 +1,4 @@
-package LoginPresentation;
+package Common.View;
 
 import android.content.Context;
 import android.content.res.TypedArray;

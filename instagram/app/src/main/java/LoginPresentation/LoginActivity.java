@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
+import Common.View.LoadingButton;
+
 public class LoginActivity extends AppCompatActivity {
     private LoadingButton button_enter;
 
