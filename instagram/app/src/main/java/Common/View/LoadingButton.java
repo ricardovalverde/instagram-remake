@@ -68,7 +68,7 @@ public class LoadingButton extends FrameLayout {
         button_enter.setEnabled(enabled);
     }
 
-    public void showProgressBar(boolean enabled){
+    public void showProgressBar(boolean enabled) {
         progressBar.setVisibility(enabled ? VISIBLE : GONE);
         button_enter.setText(enabled ? "" : text);
     }

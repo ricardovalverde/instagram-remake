@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="FormContainer">
         <item name="android:layout_marginStart">36dp</item>
@@ -12,6 +12,15 @@
         <item name="android:layout_marginBottom">20dp</item>
     </style>
 
+    <style name="InstaTextView">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+
+
+    </style>
+
     <style name="InstaTextViewBaseForm" parent="FormContainer">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -19,6 +28,7 @@
         <item name="android:textAlignment">center</item>
         <item name="android:layout_marginBottom">24dp</item>
     </style>
+
     <style name="InstaTextViewBaseDialog">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_width">match_parent</item>
@@ -28,7 +38,6 @@
         <item name="android:layout_marginStart">12dp</item>
         <item name="android:textAlignment">textStart</item>
     </style>
-
 
     <style name="InstaFormEditText">
         <item name="android:layout_width">match_parent</item>
@@ -54,12 +63,23 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
+    <style name="InstaButton">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="InstaButton.White">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/button_background_white</item>
+    </style>
+
     <style name="InstaTextViewBase">
         <item name="android:textColor">@color/grayText</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
 
 
 </resources>

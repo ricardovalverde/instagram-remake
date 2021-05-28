@@ -29,8 +29,8 @@
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
-            android:textCursorDrawable="@null"
-            android:textColorHint="@color/grayText" />
+            android:textColorHint="@color/grayText"
+            android:textCursorDrawable="@null" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -42,8 +42,8 @@
         app:text="@string/next" />
 
     <View
-        style="@style/FormContainer"
         android:id="@+id/register_divider"
+        style="@style/FormContainer"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="80dp"
