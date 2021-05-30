@@ -19,10 +19,11 @@ import com.example.instagram.R;
 
 public class ProfileFragment extends Fragment {
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -38,6 +39,12 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_profile, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
 
     private class adapter extends RecyclerView.Adapter<viewHolder> {
 
@@ -111,9 +118,5 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_profile, menu);
-    }
 
 }
