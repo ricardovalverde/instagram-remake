@@ -45,10 +45,10 @@
 
             <fragment
                 android:id="@+id/main_fragment"
-                android:name="Main.ProfilePresentation.ProfileFragment"
+                android:name="Main.Camera.Presentation"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout="@layout/fragment_main_profile" />
+                tools:layout="@layout/fragment_main_gallery"/>
         </LinearLayout>
 
 
