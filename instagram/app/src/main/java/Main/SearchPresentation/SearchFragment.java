@@ -52,7 +52,7 @@ public class SearchFragment extends Fragment {
         @NonNull
         @Override
         public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new viewHolder(getLayoutInflater().inflate(R.layout.item_search_user_list,parent,false));
+            return new viewHolder(getLayoutInflater().inflate(R.layout.item_search_user_list, parent, false));
         }
 
         @Override
@@ -68,6 +68,7 @@ public class SearchFragment extends Fragment {
 
     private class viewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
+
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.main_search_imageview_user);

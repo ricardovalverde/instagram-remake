@@ -39,12 +39,26 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_profile, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    private static class viewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageView;
+
+        public viewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.profile_image_grid);
+        }
+
+        public void bind(int image) {
+            this.imageView.setImageResource(image);
+
+        }
+    }
 
     private class adapter extends RecyclerView.Adapter<viewHolder> {
 
@@ -102,21 +116,6 @@ public class ProfileFragment extends Fragment {
             return imagens.length;
         }
     }
-
-    private static class viewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
-
-        public viewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.profile_image_grid);
-        }
-
-        public void bind(int image) {
-            this.imageView.setImageResource(image);
-
-        }
-    }
-
 
 
 }

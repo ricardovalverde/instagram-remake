@@ -18,7 +18,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorAccent));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
     }
 
 }

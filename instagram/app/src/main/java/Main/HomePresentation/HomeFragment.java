@@ -56,12 +56,12 @@ public class HomeFragment extends Fragment {
         @NonNull
         @Override
         public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new viewHolder(getLayoutInflater().inflate(R.layout.item_post_list,parent,false));
+            return new viewHolder(getLayoutInflater().inflate(R.layout.item_post_list, parent, false));
         }
 
         @Override
         public void onBindViewHolder(@NonNull HomeFragment.viewHolder holder, int position) {
-        holder.bind(imagens[position]);
+            holder.bind(imagens[position]);
         }
 
         @Override
@@ -73,11 +73,13 @@ public class HomeFragment extends Fragment {
     private class viewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView imageView;
+
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.post_image_grid);
         }
-        public void bind(int image){
+
+        public void bind(int image) {
             this.imageView.setImageResource(image);
 
         }

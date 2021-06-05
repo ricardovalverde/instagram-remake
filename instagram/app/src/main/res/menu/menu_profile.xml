@@ -5,8 +5,8 @@
     <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_insta_bullet"
-        app:showAsAction="always"
-        android:title="@string/app_name"/>
+        android:title="@string/app_name"
+        app:showAsAction="always" />
 
 
 </menu>

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {

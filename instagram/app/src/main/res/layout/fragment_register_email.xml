@@ -35,7 +35,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Common.View.LoadingButton
+    <Common.view.LoadingButton
         android:id="@+id/register_button_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
