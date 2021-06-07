@@ -15,7 +15,7 @@
 
         <activity android:name="RegisterPresentation.RegisterActivity" />
 
-        <activity android:name="LoginPresentation.LoginActivity">
+        <activity android:name="Login.Presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

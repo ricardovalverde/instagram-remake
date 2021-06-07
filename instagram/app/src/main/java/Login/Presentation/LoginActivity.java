@@ -1,9 +1,6 @@
-package LoginPresentation;
+package Login.Presentation;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -15,10 +12,13 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import Common.view.AbstractActivity;
 import Common.view.LoadingButton;
+import Login.DataSource.LoginDataSource;
+import Login.DataSource.LoginLocalDataSource;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
-public class LoginActivity extends AbstractActivity implements LoginView, TextWatcher {
+public class LoginActivity extends AbstractActivity implements LoginView {
 
     @BindView(R.id.login_edit_text_email)
     EditText editTextEmail;
@@ -33,17 +33,17 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
     @BindView(R.id.login_button_enter)
     LoadingButton button_enter;
 
+    public LoginPresenter presenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
-
-        editTextEmail.addTextChangedListener(this);
-        editTextPassword.addTextChangedListener(this);
 
 
     }
@@ -58,31 +58,41 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
         button_enter.showProgressBar(false);
     }
 
+    @Override
+    protected void onInject() {
+
+        LoginDataSource dataSource = new LoginLocalDataSource();
+        presenter = new LoginPresenter(this, dataSource);
+
+
+    }
+
     @OnClick(R.id.login_button_enter)
     public void onButtonEnterClick() {
+        presenter.login(editTextEmail.getText().toString(), editTextPassword.getText().toString());
 
-        button_enter.showProgressBar(true);
-
-        new Handler().postDelayed(() -> {
-            button_enter.showProgressBar(false);
-        }, 4000);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        button_enter.setEnabled(!s.toString().isEmpty());
+    @OnTextChanged({R.id.login_edit_text_email, R.id.login_edit_text_password})
+    public void onTextChanged(CharSequence s){
+        button_enter.setEnabled(!editTextEmail.getText().toString().isEmpty() && !editTextPassword.getText().toString().isEmpty());
+
+        if(s.hashCode() == editTextEmail.getText().hashCode()){
+            inputLayoutEmail.setBackground(findDrawable(R.drawable.edit_text_background));
+            inputLayoutEmail.setError(null);
+            inputLayoutEmail.setErrorEnabled(false);
+
+        }
+        else if(s.hashCode() == editTextPassword.getText().hashCode()){
+            inputLayoutPassword.setBackground(findDrawable(R.drawable.edit_text_background));
+            inputLayoutPassword.setError(null);
+            inputLayoutPassword.setErrorEnabled(false);
+
+        }
+
+
     }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
-
 
     @Override
     protected int getLayout() {
