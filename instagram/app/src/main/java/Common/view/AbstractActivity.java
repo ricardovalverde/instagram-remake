@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import Common.util.Drawables;
 import butterknife.ButterKnife;
 
-public abstract class AbstractActivity extends AppCompatActivity implements View{
+public abstract class AbstractActivity extends AppCompatActivity implements View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

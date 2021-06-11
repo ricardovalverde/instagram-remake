@@ -1,5 +1,7 @@
 package Main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,12 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.instagram.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Tirar LoginActivity da pilha
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +42,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(icon_camera);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         }
-
 
     }
 }
