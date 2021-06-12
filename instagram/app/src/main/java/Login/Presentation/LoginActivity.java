@@ -1,11 +1,7 @@
 package Login.Presentation;
 
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
-
-import androidx.core.content.ContextCompat;
 
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
@@ -15,6 +11,7 @@ import Common.view.LoadingButton;
 import Login.DataSource.LoginDataSource;
 import Login.DataSource.LoginLocalDataSource;
 import Main.MainActivity;
+import RegisterPresentation.RegisterActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -36,12 +33,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
-
+        setStatusBarDark();
 
     }
 
@@ -65,6 +57,11 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     @OnClick(R.id.login_button_enter)
     public void onButtonEnterClick() {
         presenter.login(editTextEmail.getText().toString(), editTextPassword.getText().toString());
+    }
+
+    @OnClick({R.id.login_text_view_register})
+    public void onTextViewRegisterClick(){
+        RegisterActivity.launch(this);
     }
 
     @OnTextChanged({R.id.login_edit_text_email, R.id.login_edit_text_password})

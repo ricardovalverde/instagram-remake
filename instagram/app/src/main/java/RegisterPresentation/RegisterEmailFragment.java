@@ -10,7 +10,9 @@ import androidx.annotation.Nullable;
 
 import com.example.instagram.R;
 
-public class RegisterEmailFragment extends Fragment {
+import Common.view.AbstractFragment;
+
+public class RegisterEmailFragment extends AbstractFragment {
 
 
     @Nullable
@@ -19,5 +21,10 @@ public class RegisterEmailFragment extends Fragment {
 
 
         return inflater.inflate(R.layout.fragment_register_email, container, false);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_register_email;
     }
 }

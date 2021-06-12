@@ -9,4 +9,6 @@ public interface View {
 
     void hideProgress();
 
+    void setStatusBarDark();
+
 }
