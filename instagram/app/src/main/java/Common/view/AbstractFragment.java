@@ -1,10 +1,10 @@
 package Common.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.ColorRes;
@@ -17,16 +17,14 @@ import Common.util.Colors;
 import Common.util.Drawables;
 import butterknife.ButterKnife;
 
-public abstract class AbstractFragment extends Fragment implements View {
+public abstract class AbstractFragment extends Fragment implements Common.view.View {
 
     @Nullable
     @Override
     public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = (View) inflater.inflate(getLayout(), container,false);
-        ButterKnife.bind(this, (android.view.View) view);
-        
-        return (android.view.View) view;
-        
+        View viewInterface = inflater.inflate(getLayout(), container, false);
+        ButterKnife.bind(this, viewInterface);
+        return viewInterface;
     }
 
     @Override
@@ -50,7 +48,6 @@ public abstract class AbstractFragment extends Fragment implements View {
     }
 
     public Drawable findDrawble(@DrawableRes int drawbleId) {
-
         return Drawables.getDrawable(getContext(), drawbleId);
     }
 

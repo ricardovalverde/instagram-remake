@@ -8,6 +8,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.instagram.R;
 
@@ -20,12 +22,17 @@ public class RegisterActivity extends AbstractActivity implements RegisterView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setStatusBarDark();
-
-
     }
 
     @Override
     protected void onInject() {
+        RegisterEmailFragment fragment = new RegisterEmailFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.register_fragment,fragment,"fragment1");
+
+        transaction.commit();
+
 
     }
 

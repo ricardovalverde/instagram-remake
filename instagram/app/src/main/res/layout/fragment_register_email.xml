@@ -48,6 +48,7 @@
         android:background="@color/colorPrimaryDark" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/register_text_view_login"
         style="@style/InstaTextViewBase"
         android:layout_width="match_parent"
         android:gravity="center"
