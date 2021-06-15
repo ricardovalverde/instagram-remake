@@ -17,7 +17,9 @@ import Common.util.Colors;
 import Common.util.Drawables;
 import butterknife.ButterKnife;
 
-public abstract class AbstractFragment extends Fragment implements Common.view.View {
+public abstract class AbstractFragment<P> extends Fragment implements Common.view.View {
+
+    protected P presenter;
 
     @Nullable
     @Override
@@ -25,6 +27,10 @@ public abstract class AbstractFragment extends Fragment implements Common.view.V
         View viewInterface = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, viewInterface);
         return viewInterface;
+    }
+
+    public void setPresenter(P presenter) {
+        this.presenter = presenter;
     }
 
     @Override
