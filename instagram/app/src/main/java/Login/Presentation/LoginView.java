@@ -1,8 +1,8 @@
 package Login.Presentation;
 
-import Common.view.View;
+import common.view.MainView;
 
-public interface LoginView extends View {
+public interface LoginView extends MainView {
 
     void onFailureForm(String emailError, String passwordError);
 

@@ -1,8 +1,8 @@
-package Common.view;
+package common.view;
 
 import android.content.Context;
 
-public interface View {
+public interface MainView {
     Context getContext();
 
     void showProgress();

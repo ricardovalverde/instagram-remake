@@ -1,27 +1,24 @@
-package Common.view;
+package common.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.instagram.R;
 
-import Common.util.Colors;
-import Common.util.Drawables;
+import common.util.Colors;
+import common.util.Drawables;
 import butterknife.ButterKnife;
 
-public abstract class AbstractActivity extends AppCompatActivity implements View {
+public abstract class AbstractActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +37,8 @@ public abstract class AbstractActivity extends AppCompatActivity implements View
         return Drawables.getDrawable(this, drawableId);
     }
 
-    public int findColor(@ColorRes int colorId){
-        return Colors.getColor(this,colorId);
+    public int findColor(@ColorRes int colorId) {
+        return Colors.getColor(this, colorId);
     }
 
     @Override

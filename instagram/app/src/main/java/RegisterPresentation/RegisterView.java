@@ -3,9 +3,19 @@ package RegisterPresentation;
 import android.content.Context;
 
 public interface RegisterView {
-    interface EmailView{
+    void showNextView(RegisterSteps step);
+
+    interface EmailView {
         Context getContext();
+
         void onFailureForm(String email);
-        void showNextView();
+
+    }
+
+    interface NamePasswordView {
+        Context getContext();
+
+        void onFailureForm(String nameError, String passwordError);
+
     }
 }

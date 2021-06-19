@@ -6,8 +6,8 @@ import android.widget.EditText;
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-import Common.view.AbstractActivity;
-import Common.view.LoadingButton;
+import common.view.AbstractActivity;
+import common.view.LoadingButton;
 import Login.DataSource.LoginDataSource;
 import Login.DataSource.LoginLocalDataSource;
 import Main.MainActivity;
@@ -60,7 +60,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     }
 
     @OnClick({R.id.login_text_view_register})
-    public void onTextViewRegisterClick(){
+    public void onTextViewRegisterClick() {
         RegisterActivity.launch(this);
     }
 

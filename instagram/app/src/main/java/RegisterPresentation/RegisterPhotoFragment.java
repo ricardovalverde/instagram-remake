@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.instagram.R;
 
-import Common.view.CustomDialog;
+import common.view.CustomDialog;
 
 public class RegisterPhotoFragment extends Fragment {
 

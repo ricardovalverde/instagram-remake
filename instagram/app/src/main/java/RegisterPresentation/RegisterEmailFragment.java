@@ -5,14 +5,14 @@ import android.widget.EditText;
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-import Common.util.Strings;
-import Common.view.AbstractFragment;
-import Common.view.LoadingButton;
+import common.view.AbstractFragment;
+import common.view.LoadingButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.EmailView {
+
 
     @BindView(R.id.register_edit_text_email_input)
     TextInputLayout textInputLayoutEmail;
@@ -20,9 +20,17 @@ public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> i
     @BindView(R.id.register_edit_text_email)
     EditText editTextEmail;
 
-    @BindView(R.id.register_button_next)
+    @BindView(R.id.register_email_button_next)
     LoadingButton buttonNext;
 
+    public static RegisterEmailFragment newInstance(RegisterPresenter registerPresenter) {
+        RegisterEmailFragment fragment = new RegisterEmailFragment();
+        fragment.setPresenter(registerPresenter);
+        registerPresenter.setEmailView(fragment);
+
+
+        return fragment;
+    }
 
     @Override
     public void showProgress() {
@@ -45,13 +53,9 @@ public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> i
         editTextEmail.setBackground(findDrawble(R.drawable.edit_text_background_error));
     }
 
-    @Override
-    public void showNextView() {
-
-    }
-
-    @OnClick(R.id.register_button_next)
+    @OnClick(R.id.register_email_button_next)
     public void onButtonNextClick() {
+        presenter.setEmail(editTextEmail.getText().toString());
 
 
     }
@@ -69,15 +73,6 @@ public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> i
         editTextEmail.setBackground(findDrawble(R.drawable.edit_text_background));
         textInputLayoutEmail.setError(null);
         textInputLayoutEmail.setErrorEnabled(false);
-    }
-
-    public static RegisterEmailFragment newInstance (RegisterPresenter registerPresenter){
-        RegisterEmailFragment fragment = new RegisterEmailFragment();
-        fragment.setPresenter(registerPresenter);
-        registerPresenter.setEmailView(fragment);
-
-
-        return fragment;
     }
 
 }

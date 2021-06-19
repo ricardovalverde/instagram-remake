@@ -1,4 +1,4 @@
-package Common.view;
+package common.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -10,23 +10,24 @@ import android.view.ViewGroup;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import Common.util.Colors;
-import Common.util.Drawables;
 import butterknife.ButterKnife;
+import common.util.Colors;
+import common.util.Drawables;
 
-public abstract class AbstractFragment<P> extends Fragment implements Common.view.View {
+public abstract class AbstractFragment<P> extends Fragment implements MainView {
 
     protected P presenter;
 
     @Nullable
     @Override
-    public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View viewInterface = inflater.inflate(getLayout(), container, false);
-        ButterKnife.bind(this, viewInterface);
-        return viewInterface;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable  ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(getLayout(),container,false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public void setPresenter(P presenter) {

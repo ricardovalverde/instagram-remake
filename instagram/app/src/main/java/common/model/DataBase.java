@@ -1,4 +1,4 @@
-package Common.model;
+package common.model;
 
 import android.os.Handler;
 

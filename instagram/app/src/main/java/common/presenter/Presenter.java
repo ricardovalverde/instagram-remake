@@ -1,6 +1,6 @@
-package Common.presenter;
+package common.presenter;
 
-import Common.model.UserAuth;
+import common.model.UserAuth;
 
 public interface Presenter {
     void onSuccess(UserAuth response);

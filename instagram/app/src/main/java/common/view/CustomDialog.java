@@ -1,4 +1,4 @@
-package Common.view;
+package common.view;
 
 import android.app.Dialog;
 import android.content.Context;

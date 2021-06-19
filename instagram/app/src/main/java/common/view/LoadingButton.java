@@ -1,4 +1,4 @@
-package Common.view;
+package common.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

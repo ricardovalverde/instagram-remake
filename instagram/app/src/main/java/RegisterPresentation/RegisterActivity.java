@@ -2,39 +2,31 @@ package RegisterPresentation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.instagram.R;
 
-import Common.view.AbstractActivity;
+import common.view.AbstractActivity;
 
-public class RegisterActivity extends AbstractActivity implements RegisterView{
+public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     private RegisterPresenter registerPresenter;
 
-    public static void launch(Context context){
-        Intent intent = new Intent(context,RegisterActivity.class);
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, RegisterActivity.class);
         context.startActivity(intent);
     }
 
     @Override
     protected void onInject() {
         registerPresenter = new RegisterPresenter();
-        RegisterEmailFragment fragment = new RegisterEmailFragment().newInstance(registerPresenter);
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.register_fragment,fragment,"fragment1");
+        registerPresenter.setRegisterView(this);
 
-        transaction.commit();
-
-
+        showNextView(RegisterSteps.EMAIL);
+        setStatusBarDark();
     }
 
     @Override
@@ -43,5 +35,28 @@ public class RegisterActivity extends AbstractActivity implements RegisterView{
     }
 
 
+    @Override
+    public void showNextView(RegisterSteps step) {
+        Fragment fragment = new RegisterEmailFragment().newInstance(registerPresenter);
 
+        switch (step) {
+            case EMAIL:
+                break;
+            case NAME_PASSWORD:
+                fragment = new RegisterNamePasswordFragment().newInstance(registerPresenter);
+        }
+
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+        if (manager.findFragmentById(R.id.register_fragment) == null) {
+            transaction.add(R.id.register_fragment, fragment, step.name());
+        } else {
+            transaction.replace(R.id.register_fragment, fragment, step.name());
+            transaction.addToBackStack(step.name());
+        }
+
+        transaction.commit();
+
+    }
 }

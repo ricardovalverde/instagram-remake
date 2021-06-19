@@ -1,4 +1,4 @@
-package Common.util;
+package common.util;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
