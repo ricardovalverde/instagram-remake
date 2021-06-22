@@ -12,6 +12,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.NamePasswordView {
+
     @BindView(R.id.register_edit_text_name_input)
     TextInputLayout nameTextInputLayout;
 
@@ -30,18 +31,25 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
     @BindView(R.id.register_edit_text_pasword_confirm)
     EditText confirmPassword;
 
-    @BindView(R.id.register_button_next)
+    @BindView(R.id.register_button_continue)
     LoadingButton buttonNext;
 
     public static RegisterNamePasswordFragment newInstance(RegisterPresenter registerPresenter) {
+
         RegisterNamePasswordFragment fragment = new RegisterNamePasswordFragment();
+
         fragment.setPresenter(registerPresenter);
         registerPresenter.setNamePasswordView(fragment);
 
         return fragment;
     }
 
-    @OnClick(R.id.register_button_next)
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_register_name_password;
+    }
+
+    @OnClick(R.id.register_button_continue)
     public void setButtonNextClick() {
         presenter.setNameAndPassword(name.getText().toString(), password.getText().toString(), confirmPassword.getText().toString());
     }
@@ -56,6 +64,7 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
 
     @OnTextChanged({R.id.register_edit_text_name, R.id.register_edit_text_pasword, R.id.register_edit_text_pasword_confirm})
     public void onTextChanged(CharSequence s) {
+
         buttonNext.setEnabled(!name.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && !confirmPassword.getText().toString().isEmpty());
         name.setBackground(findDrawble(R.drawable.edit_text_background));
         nameTextInputLayout.setError(null);
@@ -71,10 +80,7 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
 
     }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_register_name_password;
-    }
+
 
     @Override
     public void onFailureForm(String nameError, String passwordError) {
@@ -83,7 +89,7 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
             nameTextInputLayout.setBackground(findDrawble(R.drawable.edit_text_background_error));
         }
         passwordTextInputLayout.setError(passwordError);
-        passwordTextInputLayout.setBackground(findDrawble(R.drawable.edit_text_background_error));
+        password.setBackground(findDrawble(R.drawable.edit_text_background_error));
     }
 
     @Override

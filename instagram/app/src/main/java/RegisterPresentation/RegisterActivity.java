@@ -2,7 +2,9 @@ package RegisterPresentation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,6 +17,14 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     private RegisterPresenter registerPresenter;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStatusBarDark();
+
+
+    }
+
     public static void launch(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
         context.startActivity(intent);
@@ -26,7 +36,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
         registerPresenter.setRegisterView(this);
 
         showNextView(RegisterSteps.EMAIL);
-        setStatusBarDark();
+
     }
 
     @Override
@@ -37,13 +47,14 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     @Override
     public void showNextView(RegisterSteps step) {
-        Fragment fragment = new RegisterEmailFragment().newInstance(registerPresenter);
+        Fragment fragment = RegisterEmailFragment.newInstance(registerPresenter);
 
         switch (step) {
             case EMAIL:
                 break;
             case NAME_PASSWORD:
-                fragment = new RegisterNamePasswordFragment().newInstance(registerPresenter);
+                fragment = RegisterNamePasswordFragment.newInstance(registerPresenter);
+                break;
         }
 
         FragmentManager manager = getSupportFragmentManager();

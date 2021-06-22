@@ -24,6 +24,7 @@ public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> i
     LoadingButton buttonNext;
 
     public static RegisterEmailFragment newInstance(RegisterPresenter registerPresenter) {
+
         RegisterEmailFragment fragment = new RegisterEmailFragment();
         fragment.setPresenter(registerPresenter);
         registerPresenter.setEmailView(fragment);

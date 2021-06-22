@@ -19,14 +19,19 @@ import butterknife.OnTextChanged;
 public class LoginActivity extends AbstractActivity implements LoginView {
 
     public LoginPresenter presenter;
+
     @BindView(R.id.login_edit_text_email)
     EditText editTextEmail;
+
     @BindView(R.id.login_edit_text_email_input)
     TextInputLayout inputLayoutEmail;
+
     @BindView(R.id.login_edit_text_password)
     EditText editTextPassword;
+
     @BindView(R.id.login_edit_text_password_input)
     TextInputLayout inputLayoutPassword;
+
     @BindView(R.id.login_button_enter)
     LoadingButton button_enter;
 

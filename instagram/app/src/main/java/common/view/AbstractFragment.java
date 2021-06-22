@@ -24,7 +24,7 @@ public abstract class AbstractFragment<P> extends Fragment implements MainView {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable  ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable  ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayout(),container,false);
         ButterKnife.bind(this, view);
         return view;

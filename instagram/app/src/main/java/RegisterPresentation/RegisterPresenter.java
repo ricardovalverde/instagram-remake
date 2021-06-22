@@ -9,6 +9,7 @@ public class RegisterPresenter {
     private RegisterView.EmailView emailView;
     private RegisterView.NamePasswordView namePasswordView;
     private RegisterView registerView;
+
     private String email;
     private String name;
     private String password;
