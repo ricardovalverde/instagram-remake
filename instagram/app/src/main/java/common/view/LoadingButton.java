@@ -25,13 +25,11 @@ public class LoadingButton extends FrameLayout {
     public LoadingButton(@NonNull Context context) {
         super(context);
         setup(context, null);
-
     }
 
     public LoadingButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setup(context, attrs);
-
     }
 
     public LoadingButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -54,7 +52,6 @@ public class LoadingButton extends FrameLayout {
         progressBar = (ProgressBar) getChildAt(1);
         PorterDuffColorFilter colorFilter = new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
         progressBar.getIndeterminateDrawable().setColorFilter(colorFilter);
-
     }
 
     @Override

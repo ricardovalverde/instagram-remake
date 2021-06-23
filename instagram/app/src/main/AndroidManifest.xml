@@ -13,7 +13,7 @@
             android:name="Main.MainActivity"
             android:theme="@style/Theme.Instagram" />
 
-        <activity android:name="RegisterPresentation.RegisterActivity" />
+        <activity android:name="Register.presentation.RegisterActivity" />
 
         <activity android:name="Login.Presentation.LoginActivity">
             <intent-filter>

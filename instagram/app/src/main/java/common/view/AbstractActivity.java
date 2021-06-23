@@ -19,6 +19,9 @@ import common.util.Drawables;
 import butterknife.ButterKnife;
 
 public abstract class AbstractActivity extends AppCompatActivity implements MainView {
+
+    protected abstract void onInject();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,19 +29,6 @@ public abstract class AbstractActivity extends AppCompatActivity implements Main
         ButterKnife.bind(this);
 
         onInject();
-    }
-
-    protected abstract void onInject();
-
-    protected abstract @LayoutRes
-    int getLayout();
-
-    public Drawable findDrawable(@DrawableRes int drawableId) {
-        return Drawables.getDrawable(this, drawableId);
-    }
-
-    public int findColor(@ColorRes int colorId) {
-        return Colors.getColor(this, colorId);
     }
 
     @Override
@@ -49,17 +39,28 @@ public abstract class AbstractActivity extends AppCompatActivity implements Main
     }
 
     @Override
-    public void showProgress() {
+    public void showProgressBar() {
 
     }
 
     @Override
-    public void hideProgress() {
+    public void hideProgressBar() {
 
     }
 
     @Override
     public Context getContext() {
         return getBaseContext();
+    }
+
+    protected abstract @LayoutRes
+    int getLayout();
+
+    public Drawable findDrawable(@DrawableRes int drawableId) {
+        return Drawables.getDrawable(this, drawableId);
+    }
+
+    public int findColor(@ColorRes int colorId) {
+        return Colors.getColor(this, colorId);
     }
 }

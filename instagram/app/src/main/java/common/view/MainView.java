@@ -5,10 +5,9 @@ import android.content.Context;
 public interface MainView {
     Context getContext();
 
-    void showProgress();
+    void showProgressBar();
 
-    void hideProgress();
+    void hideProgressBar();
 
     void setStatusBarDark();
-
 }

@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
             Drawable icon_camera = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_insta_camera, null);
             getSupportActionBar().setHomeAsUpIndicator(icon_camera);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         }
-
     }
 }

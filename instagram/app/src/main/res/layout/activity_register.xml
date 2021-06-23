@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="RegisterPresentation.RegisterActivity">
+    tools:context="Register.presentation.RegisterActivity">
 
     <ScrollView
         android:id="@+id/register_scrollView"
@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <FrameLayout
                 android:id="@+id/register_fragment"
                 android:layout_width="match_parent"
@@ -26,6 +25,5 @@
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

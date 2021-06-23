@@ -1,16 +1,17 @@
-package RegisterPresentation;
+package Register.presentation;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.instagram.R;
 
+import Register.datasource.RegisterDataSource;
+import Register.datasource.RegisterLocalDataSource;
 import common.view.AbstractActivity;
 
 public class RegisterActivity extends AbstractActivity implements RegisterView {
@@ -21,8 +22,6 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarDark();
-
-
     }
 
     public static void launch(Context context) {
@@ -32,18 +31,17 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     @Override
     protected void onInject() {
-        registerPresenter = new RegisterPresenter();
+        RegisterDataSource dataSource = new RegisterLocalDataSource();
+        registerPresenter = new RegisterPresenter(dataSource);
         registerPresenter.setRegisterView(this);
 
         showNextView(RegisterSteps.EMAIL);
-
     }
 
     @Override
     protected int getLayout() {
         return R.layout.activity_register;
     }
-
 
     @Override
     public void showNextView(RegisterSteps step) {
@@ -54,6 +52,9 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
                 break;
             case NAME_PASSWORD:
                 fragment = RegisterNamePasswordFragment.newInstance(registerPresenter);
+                break;
+            case WELCOME:
+                fragment = RegisterWelcomeFragment.newInstance(registerPresenter);
                 break;
         }
 
@@ -66,8 +67,6 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
             transaction.replace(R.id.register_fragment, fragment, step.name());
             transaction.addToBackStack(step.name());
         }
-
         transaction.commit();
-
     }
 }

@@ -7,7 +7,7 @@ import common.presenter.Presenter;
 import common.util.Strings;
 import Login.DataSource.LoginDataSource;
 
-class LoginPresenter implements Presenter {
+class LoginPresenter implements Presenter<UserAuth> {
 
     private final LoginView view;
     private final LoginDataSource dataSource;
@@ -22,8 +22,7 @@ class LoginPresenter implements Presenter {
             view.onFailureForm(view.getContext().getString(R.string.invalid_email), null);
             return;
         }
-
-        view.showProgress();
+        view.showProgressBar();
         dataSource.login(email, password, this);
     }
 
@@ -39,6 +38,6 @@ class LoginPresenter implements Presenter {
 
     @Override
     public void onComplete() {
-        view.hideProgress();
+        view.hideProgressBar();
     }
 }

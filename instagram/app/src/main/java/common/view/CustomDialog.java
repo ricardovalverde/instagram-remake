@@ -15,6 +15,7 @@ import androidx.annotation.StringRes;
 import com.example.instagram.R;
 
 public class CustomDialog extends Dialog {
+
     private TextView titleView;
     private TextView[] textViews;
     private LinearLayout dialog_container;
@@ -39,7 +40,6 @@ public class CustomDialog extends Dialog {
         dialog_container = findViewById(R.id.dialog_container);
         titleView = findViewById(R.id.dialog_title);
         layoutParams.setMargins(30, 30, 30, 30);
-
     }
 
     @Override
@@ -92,7 +92,6 @@ public class CustomDialog extends Dialog {
         public Builder addButton(View.OnClickListener listener, @StringRes int... texts) {
             this.listener = listener;
             this.texts = texts;
-
             return this;
         }
 
@@ -101,9 +100,6 @@ public class CustomDialog extends Dialog {
             customDialog.setTitle(titleId);
             customDialog.addButton(listener, texts);
             return customDialog;
-
         }
-
-
     }
 }

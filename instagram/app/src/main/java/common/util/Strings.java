@@ -11,7 +11,6 @@ public class Strings {
     public static boolean emailValid(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         return matcher.find();
-
     }
 
 

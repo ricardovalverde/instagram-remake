@@ -9,9 +9,11 @@ public class DataBase {
 
     private static DataBase INSTANCE;
     private static Set<UserAuth> usersAuth;
+    private static Set<User> users;
 
     static {
         usersAuth = new HashSet<>();
+        users = new HashSet<>();
 
         usersAuth.add(new UserAuth("user1@gmail.com", "1234"));
         usersAuth.add(new UserAuth("user2@gmail.com", "4132"));
@@ -22,7 +24,7 @@ public class DataBase {
     private OnSuccessListener onSuccessListener;
     private OnFailureListener onFailureListener;
     private OnCompleteListener onCompleteListener;
-    private UserAuth user;
+    private UserAuth userAuth;
 
     public static DataBase getINSTANCE() {
         if (INSTANCE == null) {
@@ -46,6 +48,31 @@ public class DataBase {
         return this;
     }
 
+    public DataBase createUser(String name, String email, String password) {
+        timeOut(() -> {
+            UserAuth userAuth = new UserAuth();
+            userAuth.setEmail(email);
+            userAuth.setPassword(password);
+
+            usersAuth.add(userAuth);
+
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+
+            boolean added = users.add(user);
+            if (added) {
+                this.userAuth = userAuth;
+                onSuccessListener.onSuccess(userAuth);
+            } else {
+                this.userAuth = null;
+                onFailureListener.onFailure(new IllegalAccessException("Usuário já existe"));
+            }
+            onCompleteListener.onComplete();
+        });
+        return this;
+    }
+
     public DataBase login(String email, String password) {
         timeOut(() -> {
             UserAuth user = new UserAuth();
@@ -53,10 +80,10 @@ public class DataBase {
             user.setPassword(password);
 
             if (usersAuth.contains(user)) {
-                this.user = user;
+                this.userAuth = user;
                 onSuccessListener.onSuccess(user);
             } else {
-                this.user = null;
+                this.userAuth = null;
                 onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
             }
             onCompleteListener.onComplete();

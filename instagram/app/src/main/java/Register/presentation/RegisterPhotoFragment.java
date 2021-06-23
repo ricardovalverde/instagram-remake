@@ -1,4 +1,4 @@
-package RegisterPresentation;
+package Register.presentation;
 
 import android.app.Fragment;
 import android.os.Build;

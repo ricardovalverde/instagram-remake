@@ -49,11 +49,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_main_gallery" />
+
         </LinearLayout>
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_bottom_nav"

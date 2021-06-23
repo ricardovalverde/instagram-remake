@@ -1,6 +1,8 @@
-package RegisterPresentation;
+package Register.presentation;
 
 import android.content.Context;
+
+import common.view.MainView;
 
 public interface RegisterView {
 
@@ -10,13 +12,16 @@ public interface RegisterView {
         Context getContext();
 
         void onFailureForm(String email);
-
     }
 
-    interface NamePasswordView {
+    interface NamePasswordView extends MainView {
         Context getContext();
 
         void onFailureForm(String nameError, String passwordError);
 
+        void onFailureCreateUser(String messageError);
+    }
+
+    interface WelcomeView {
     }
 }

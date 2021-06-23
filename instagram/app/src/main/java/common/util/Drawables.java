@@ -10,6 +10,5 @@ public final class Drawables {
 
     public static Drawable getDrawable(Context context, @DrawableRes int drawableId) {
         return ContextCompat.getDrawable(context, drawableId);
-
     }
 }

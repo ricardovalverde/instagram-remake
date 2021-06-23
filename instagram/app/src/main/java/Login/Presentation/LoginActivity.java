@@ -11,7 +11,7 @@ import common.view.LoadingButton;
 import Login.DataSource.LoginDataSource;
 import Login.DataSource.LoginLocalDataSource;
 import Main.MainActivity;
-import RegisterPresentation.RegisterActivity;
+import Register.presentation.RegisterActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -39,22 +39,20 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarDark();
-
     }
 
     @Override
-    public void showProgress() {
+    public void showProgressBar() {
         button_enter.showProgressBar(true);
     }
 
     @Override
-    public void hideProgress() {
+    public void hideProgressBar() {
         button_enter.showProgressBar(false);
     }
 
     @Override
     protected void onInject() {
-
         LoginDataSource dataSource = new LoginLocalDataSource();
         presenter = new LoginPresenter(this, dataSource);
     }
@@ -71,6 +69,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 
     @OnTextChanged({R.id.login_edit_text_email, R.id.login_edit_text_password})
     public void onTextChanged(CharSequence s) {
+
         button_enter.setEnabled(!editTextEmail.getText().toString().isEmpty() && !editTextPassword.getText().toString().isEmpty());
 
         if (s.hashCode() == editTextEmail.getText().hashCode()) {
@@ -82,10 +81,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
             inputLayoutPassword.setBackground(findDrawable(R.drawable.edit_text_background));
             inputLayoutPassword.setError(null);
             inputLayoutPassword.setErrorEnabled(false);
-
         }
-
-
     }
 
     @Override
@@ -98,13 +94,12 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     public void onFailureForm(String emailError, String passwordError) {
         if (emailError != null) {
             inputLayoutEmail.setError(emailError);
-            //editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background_error));
+            editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background_error));
         }
         if (passwordError != null) {
             inputLayoutPassword.setError(passwordError);
-            //editTextPassword.setBackground(findDrawable(R.drawable.edit_text_background_error));
+            editTextPassword.setBackground(findDrawable(R.drawable.edit_text_background_error));
         }
-
     }
 
     @Override

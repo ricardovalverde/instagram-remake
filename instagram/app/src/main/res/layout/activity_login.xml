@@ -42,9 +42,7 @@
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/black"
                     android:textColorHint="@color/grayText"
-                    android:textCursorDrawable="@null"
-
-                    />
+                    android:textCursorDrawable="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,7 +53,6 @@
                 app:hintEnabled="false">
 
                 <EditText
-
                     android:id="@+id/login_edit_text_password"
                     style="@style/InstaFormEditText"
                     android:hint="@string/password"
