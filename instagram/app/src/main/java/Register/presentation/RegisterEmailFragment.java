@@ -5,11 +5,11 @@ import android.widget.EditText;
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-import common.view.AbstractFragment;
-import common.view.LoadingButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import common.view.AbstractFragment;
+import common.view.LoadingButton;
 
 public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.EmailView {
 

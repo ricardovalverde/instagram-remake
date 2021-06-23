@@ -2,10 +2,10 @@ package Login.Presentation;
 
 import com.example.instagram.R;
 
+import Login.DataSource.LoginDataSource;
 import common.model.UserAuth;
 import common.presenter.Presenter;
 import common.util.Strings;
-import Login.DataSource.LoginDataSource;
 
 class LoginPresenter implements Presenter<UserAuth> {
 

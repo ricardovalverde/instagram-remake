@@ -6,8 +6,6 @@ import android.widget.EditText;
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-import common.view.AbstractActivity;
-import common.view.LoadingButton;
 import Login.DataSource.LoginDataSource;
 import Login.DataSource.LoginLocalDataSource;
 import Main.MainActivity;
@@ -15,6 +13,8 @@ import Register.presentation.RegisterActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import common.view.AbstractActivity;
+import common.view.LoadingButton;
 
 public class LoginActivity extends AbstractActivity implements LoginView {
 

@@ -1,18 +1,16 @@
 package Register.presentation;
 
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-import common.util.Keyboards;
-import common.view.AbstractFragment;
-import common.view.LoadingButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import common.view.AbstractFragment;
+import common.view.LoadingButton;
 
 public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.NamePasswordView {
 

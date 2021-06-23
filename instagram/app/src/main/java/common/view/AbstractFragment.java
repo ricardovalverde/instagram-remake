@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.ColorRes;
@@ -33,10 +32,29 @@ public abstract class AbstractFragment<P> extends Fragment implements MainView {
         return view;
     }
 
+    public void setPresenter(P presenter) {
+        this.presenter = presenter;
+    }
+
     @Override
     public Context getContext() {
         return super.getContext();
     }
+
+    public Drawable findDrawable(@DrawableRes int drawableId) {
+        return Drawables.getDrawable(getContext(), drawableId);
+    }
+
+    public void hideInput(Context context, EditText editText) {
+        Keyboards.hideInput(context, editText);
+    }
+
+    public int findColor(@ColorRes int colorId) {
+        return Colors.getColor(getContext(), colorId);
+    }
+
+    protected abstract @LayoutRes
+    int getLayout();
 
     @Override
     public void showProgressBar() {
@@ -52,24 +70,4 @@ public abstract class AbstractFragment<P> extends Fragment implements MainView {
     public void setStatusBarDark() {
 
     }
-
-    public void setPresenter(P presenter) {
-        this.presenter = presenter;
-    }
-
-    public Drawable findDrawable(@DrawableRes int drawableId) {
-        return Drawables.getDrawable(getContext(), drawableId);
-    }
-
-    public InputMethodManager hideInput(Context context, EditText editText) {
-        return Keyboards.hideInput(context, editText);
-    }
-
-
-    public int findColor(@ColorRes int colorId) {
-        return Colors.getColor(getContext(), colorId);
-    }
-
-    protected abstract @LayoutRes
-    int getLayout();
 }

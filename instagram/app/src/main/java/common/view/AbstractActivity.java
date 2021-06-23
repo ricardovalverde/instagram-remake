@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.instagram.R;
 
+import butterknife.ButterKnife;
 import common.util.Colors;
 import common.util.Drawables;
-import butterknife.ButterKnife;
 
 public abstract class AbstractActivity extends AppCompatActivity implements MainView {
 
