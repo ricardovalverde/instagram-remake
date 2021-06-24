@@ -57,10 +57,10 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
 
 
     @OnClick(R.id.register_button_continue)
-    public void setButtonNextClick() {
+    public void onButtonNextClick() {
+        hideInput(getContext(),confirmPassword);
         presenter.setNameAndPassword(name.getText().toString(), password.getText().toString(), confirmPassword.getText().toString());
     }
-
 
     @OnClick(R.id.register_text_view_login)
     public void loginButtonClick() {

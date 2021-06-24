@@ -14,6 +14,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
     private RegisterView.EmailView emailView;
     private RegisterView.NamePasswordView namePasswordView;
     private RegisterView.WelcomeView welcomeView;
+    private RegisterView.PhotoView photoView;
 
     private String email;
     private String name;
@@ -43,6 +44,10 @@ public class RegisterPresenter implements Presenter<UserAuth> {
         this.welcomeView = welcomeView;
     }
 
+    public void showPhotoView(){
+        registerView.showNextView(RegisterSteps.PHOTO);
+    }
+
     public void setEmail(String email) {
         if (!Strings.emailValid(email)) {
             emailView.onFailureForm(emailView.getContext().getString(R.string.invalid_email));
@@ -64,6 +69,10 @@ public class RegisterPresenter implements Presenter<UserAuth> {
         namePasswordView.showProgressBar();
         dataSource.createUser(this.name, this.email, this.password, this);
 
+    }
+
+    public void jumpRegistration(){
+        registerView.onUserCreated();
     }
 
     @Override

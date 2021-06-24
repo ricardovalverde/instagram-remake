@@ -13,17 +13,21 @@ import androidx.annotation.RequiresApi;
 
 import com.example.instagram.R;
 
+import Main.MainActivity;
+import butterknife.BindView;
+import butterknife.OnClick;
+import common.view.AbstractFragment;
 import common.view.CustomDialog;
+import common.view.LoadingButton;
 
-public class RegisterPhotoFragment extends Fragment {
+public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.PhotoView {
+    @BindView(R.id.register_button_next)
+    LoadingButton buttonNext;
 
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
-
-        return inflater.inflate(R.layout.fragment_register_photo, container, false);
+    public static RegisterPhotoFragment newInstance(RegisterPresenter registerPresenter) {
+        RegisterPhotoFragment fragment = new RegisterPhotoFragment();
+        fragment.setPresenter(registerPresenter);
+        return fragment;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -31,7 +35,7 @@ public class RegisterPhotoFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        CustomDialog customDialog = new CustomDialog.Builder(getContext())
+        /*CustomDialog customDialog = new CustomDialog.Builder(getContext())
                 .setTitle(R.string.define_photo_profile)
                 .addButton((v) -> {
                     switch (v.getId()) {
@@ -46,8 +50,21 @@ public class RegisterPhotoFragment extends Fragment {
 
                 }, R.string.take_picture, R.string.search_gallery)
                 .build();
-        customDialog.show();
+        customDialog.show();*/
+        buttonNext.setEnabled(true);
+    }
+    @OnClick(R.id.register_button_next)
+    public void onButtonNextClick(){
+        // TODO: 23/06/2021
+    }
 
+    @OnClick(R.id.register_button_jump)
+    public void onButtonJumpClick(){
+        presenter.jumpRegistration();
+    }
 
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_register_photo;
     }
 }

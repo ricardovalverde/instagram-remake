@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.example.instagram.R;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import common.view.AbstractFragment;
 import common.view.LoadingButton;
 
@@ -20,6 +21,7 @@ public class RegisterWelcomeFragment extends AbstractFragment<RegisterPresenter>
 
     @BindView(R.id.text_view_welcome)
     TextView textWelcome;
+
 
 
     public static RegisterWelcomeFragment newInstance(RegisterPresenter registerPresenter) {
@@ -35,6 +37,11 @@ public class RegisterWelcomeFragment extends AbstractFragment<RegisterPresenter>
         super.onViewCreated(view, savedInstanceState);
         buttonNext.setEnabled(true);
         textWelcome.setText(getString(R.string.welcome_to_instagram, presenter.getName()));
+    }
+
+    @OnClick(R.id.register_button_next)
+    public void onButtonNextClick(){
+        presenter.showPhotoView();
     }
 
     @Override
