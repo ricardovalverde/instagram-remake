@@ -1,5 +1,7 @@
 package Register.presentation;
 
+import android.net.Uri;
+
 import com.example.instagram.R;
 
 import Register.datasource.RegisterDataSource;
@@ -18,7 +20,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 
     private String email;
     private String name;
-    private String password;
+    private Uri uri;
 
     public String getName() {
         return name;
@@ -44,8 +46,17 @@ public class RegisterPresenter implements Presenter<UserAuth> {
         this.welcomeView = welcomeView;
     }
 
+    public void setPhotoView(RegisterView.PhotoView photoView){
+        this.photoView = photoView;
+    }
+
     public void showPhotoView(){
         registerView.showNextView(RegisterSteps.PHOTO);
+    }
+
+    public void setUri(Uri uri){
+        this.uri = uri;
+        photoView.onImageCropped(uri);
     }
 
     public void setEmail(String email) {
@@ -64,15 +75,21 @@ public class RegisterPresenter implements Presenter<UserAuth> {
             return;
         }
         this.name = name;
-        this.password = password;
 
         namePasswordView.showProgressBar();
-        dataSource.createUser(this.name, this.email, this.password, this);
+        dataSource.createUser(name, email, password, this);
 
     }
 
     public void jumpRegistration(){
         registerView.onUserCreated();
+    }
+
+    public void showCamera(){
+        registerView.showCamera();
+    }
+    public void showGallery(){
+        registerView.showGallery();
     }
 
     @Override

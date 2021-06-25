@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -11,20 +13,34 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.canhub.cropper.CropImageView;
 import com.example.instagram.R;
 
 import Main.MainActivity;
 import Register.datasource.RegisterDataSource;
 import Register.datasource.RegisterLocalDataSource;
 import butterknife.BindView;
+import butterknife.OnClick;
 import common.view.AbstractActivity;
 
 public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     private RegisterPresenter registerPresenter;
 
+    @BindView(R.id.register_root_container)
+    FrameLayout rootContainer;
+
+    @BindView(R.id.register_crop_image_view)
+    CropImageView cropImageView;
+
+    @BindView(R.id.register_button_crop)
+    Button buttonCrop;
+
+
     @BindView(R.id.register_scrollView)
     ScrollView scrollView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,26 +70,23 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
     @Override
     public void showNextView(RegisterSteps step) {
         Fragment fragment = null;
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) scrollView.getLayoutParams();
 
         switch (step) {
             case EMAIL:
-                layoutParams.gravity = Gravity.BOTTOM;
                 fragment = RegisterEmailFragment.newInstance(registerPresenter);
                 break;
             case NAME_PASSWORD:
-                layoutParams.gravity = Gravity.BOTTOM;
                 fragment = RegisterNamePasswordFragment.newInstance(registerPresenter);
                 break;
             case WELCOME:
-                layoutParams.gravity = Gravity.BOTTOM;
                 fragment = RegisterWelcomeFragment.newInstance(registerPresenter);
                 break;
             case PHOTO:
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) scrollView.getLayoutParams();
                 layoutParams.gravity = Gravity.TOP;
+                scrollView.setLayoutParams(layoutParams);
                 fragment = RegisterPhotoFragment.newInstance(registerPresenter);
         }
-        scrollView.setLayoutParams(layoutParams);
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -90,5 +103,20 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
     @Override
     public void onUserCreated() {
         MainActivity.launch(this);
+    }
+
+
+    @Override
+    public void showCamera() {
+
+    }
+
+    @Override
+    public void showGallery() {
+
+    }
+    @OnClick(R.id.register_button_crop)
+    public void onButtonCropClick(){
+
     }
 }

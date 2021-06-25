@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import common.view.AbstractActivity;
-import common.view.LoadingButton;
+import common.component.LoadingButton;
 
 public class LoginActivity extends AbstractActivity implements LoginView {
 

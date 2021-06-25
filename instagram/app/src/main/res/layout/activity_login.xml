@@ -63,7 +63,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <common.view.LoadingButton
+            <common.component.LoadingButton
                 android:id="@+id/login_button_enter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

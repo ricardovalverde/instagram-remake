@@ -1,6 +1,8 @@
 package Register.presentation;
 
 import android.content.Context;
+import android.net.Uri;
+
 
 import common.view.MainView;
 
@@ -8,6 +10,8 @@ public interface RegisterView {
 
     void showNextView(RegisterSteps step);
     void onUserCreated();
+    void showCamera();
+    void showGallery();
 
     interface EmailView {
         Context getContext();
@@ -26,6 +30,6 @@ public interface RegisterView {
     interface WelcomeView {
     }
     interface PhotoView{
-
+        void onImageCropped(Uri uri);
     }
 }

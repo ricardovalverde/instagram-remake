@@ -1,32 +1,40 @@
 package Register.presentation;
 
-import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.instagram.R;
 
-import Main.MainActivity;
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import common.component.CustomDialog;
 import common.view.AbstractFragment;
-import common.view.CustomDialog;
-import common.view.LoadingButton;
+import common.component.LoadingButton;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.PhotoView {
     @BindView(R.id.register_button_next)
     LoadingButton buttonNext;
 
+    @BindView(R.id.register_image_icon)
+    ImageView imageViewCropped;
+
     public static RegisterPhotoFragment newInstance(RegisterPresenter registerPresenter) {
         RegisterPhotoFragment fragment = new RegisterPhotoFragment();
         fragment.setPresenter(registerPresenter);
+        registerPresenter.setPhotoView(fragment);
         return fragment;
     }
 
@@ -34,32 +42,45 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        buttonNext.setEnabled(true);
 
-        /*CustomDialog customDialog = new CustomDialog.Builder(getContext())
+
+    }
+
+    @OnClick(R.id.register_button_next)
+    public void onButtonNextClick() {
+        CustomDialog customDialog = new CustomDialog.Builder(getContext())
                 .setTitle(R.string.define_photo_profile)
                 .addButton((v) -> {
                     switch (v.getId()) {
                         case R.string.take_picture:
-                            Log.i("Teste", "take pic");
+                            presenter.showCamera();
                             break;
                         case R.string.search_gallery:
-                            Log.i("Teste", "search gal");
+                            presenter.showGallery();
                             break;
                     }
-
-
                 }, R.string.take_picture, R.string.search_gallery)
                 .build();
-        customDialog.show();*/
-        buttonNext.setEnabled(true);
+        customDialog.show();
+
     }
-    @OnClick(R.id.register_button_next)
-    public void onButtonNextClick(){
-        // TODO: 23/06/2021
+
+    @Override
+    public void onImageCropped(Uri uri) {
+        try {
+            if (getContext() != null && getContext().getContentResolver() != null) {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                imageViewCropped.setImageBitmap(bitmap);
+            }
+        } catch (IOException e) {
+            Log.e("Teste", e.getMessage());
+        }
+
     }
 
     @OnClick(R.id.register_button_jump)
-    public void onButtonJumpClick(){
+    public void onButtonJumpClick() {
         presenter.jumpRegistration();
     }
 
@@ -67,4 +88,6 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
     protected int getLayout() {
         return R.layout.fragment_register_photo;
     }
+
+
 }

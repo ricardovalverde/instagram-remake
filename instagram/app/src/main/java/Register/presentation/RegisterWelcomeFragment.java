@@ -12,7 +12,7 @@ import com.example.instagram.R;
 import butterknife.BindView;
 import butterknife.OnClick;
 import common.view.AbstractFragment;
-import common.view.LoadingButton;
+import common.component.LoadingButton;
 
 public class RegisterWelcomeFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.WelcomeView {
 

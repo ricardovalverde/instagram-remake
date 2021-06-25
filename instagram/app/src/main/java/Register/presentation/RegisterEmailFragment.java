@@ -9,7 +9,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import common.view.AbstractFragment;
-import common.view.LoadingButton;
+import common.component.LoadingButton;
 
 public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.EmailView {
 
