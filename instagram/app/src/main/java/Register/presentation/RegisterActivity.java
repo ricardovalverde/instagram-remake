@@ -2,13 +2,17 @@ package Register.presentation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,9 +25,10 @@ import Register.datasource.RegisterDataSource;
 import Register.datasource.RegisterLocalDataSource;
 import butterknife.BindView;
 import butterknife.OnClick;
+import common.component.MediaHelper;
 import common.view.AbstractActivity;
 
-public class RegisterActivity extends AbstractActivity implements RegisterView {
+public class RegisterActivity extends AbstractActivity implements RegisterView, MediaHelper.OnImageCropped {
 
     private RegisterPresenter registerPresenter;
 
@@ -39,7 +44,6 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     @BindView(R.id.register_scrollView)
     ScrollView scrollView;
-
 
 
     @Override
@@ -101,6 +105,14 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        cropViewEnabled(true);
+        MediaHelper mediaHelper = MediaHelper.getINSTANCE(this);
+        mediaHelper.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
     public void onUserCreated() {
         MainActivity.launch(this);
     }
@@ -113,10 +125,27 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     @Override
     public void showGallery() {
-
+        MediaHelper.getINSTANCE(this)
+                .setCropImageView(cropImageView)
+                .setListener(this)
+                .chooserGallery();
     }
-    @OnClick(R.id.register_button_crop)
-    public void onButtonCropClick(){
 
+    private void cropViewEnabled(boolean enabled) {
+        scrollView.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        buttonCrop.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        rootContainer.setBackgroundColor(enabled ? findColor(android.R.color.black) : findColor(android.R.color.white));
+    }
+
+    @OnClick(R.id.register_button_crop)
+    public void onButtonCropClick() {
+        cropViewEnabled(false);
+        MediaHelper.getINSTANCE(this)
+                .cropImage();
+    }
+
+    @Override
+    public void onImageCropped(Uri uri) {
+        registerPresenter.setUri(uri);
     }
 }

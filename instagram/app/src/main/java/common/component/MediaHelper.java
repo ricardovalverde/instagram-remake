@@ -1,14 +1,60 @@
 package common.component;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
+
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageView;
+
+import java.io.File;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class MediaHelper {
     private static MediaHelper INSTANCE;
+
+    private static final int CAMERA_CODE = 1;
+    private static final int GALLERY_CODE = 2;
+
     private Activity activity;
     private Fragment fragment;
+    private Uri mCropImageUri;
+    private CropImageView cropImageView;
+    private OnImageCropped listener;
+
+    public MediaHelper setCropImageView(CropImageView cropImageView) {
+        this.cropImageView = cropImageView;
+        cropImageView.setAspectRatio(1,1);
+        cropImageView.setFixedAspectRatio(true);
+        cropImageView.setOnCropImageCompleteListener((view, cropResult) ->{
+            Uri uri = cropResult.getUriContent();
+            if (uri != null && listener != null){
+                listener.onImageCropped(uri);
+                cropImageView.setVisibility(View.GONE);
+            }
+        } );
+
+        return this;
+    }
+
+    public MediaHelper setListener(OnImageCropped listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    private Context getContext(){
+        if (fragment != null && fragment.getActivity() != null){
+            return fragment.getActivity();
+        }
+        return activity;
+    }
 
     public static MediaHelper getINSTANCE(Activity activity) {
         if (INSTANCE == null) {
@@ -19,10 +65,6 @@ public class MediaHelper {
         return INSTANCE;
     }
 
-    private void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
     public static MediaHelper getINSTANCE(Fragment fragment) {
         if (INSTANCE == null) {
             INSTANCE = new MediaHelper();
@@ -31,8 +73,39 @@ public class MediaHelper {
         return INSTANCE;
     }
 
+    public void chooserGallery() {
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        activity.startActivityForResult(i, GALLERY_CODE);
+    }
+
+    public void cropImage(){
+        File getImage = getContext().getExternalCacheDir();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CAMERA_CODE && resultCode == RESULT_OK){
+            // TODO: 28/06/2021
+        }else if(requestCode == GALLERY_CODE && resultCode == RESULT_OK){
+            mCropImageUri = CropImage.getPickImageResultUriContent(getContext(), data);
+            startCropImageActivity();
+        }
+    }
+
+    private void startCropImageActivity() {
+        cropImageView.setImageUriAsync(mCropImageUri);
+    }
+
+    private void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
     private void setFragment(Fragment fragment) {
         this.fragment = fragment;
     }
+
+    public interface OnImageCropped{
+        void onImageCropped(Uri uri);
+    }
+
 
 }
