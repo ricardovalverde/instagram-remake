@@ -3,16 +3,23 @@ package common.component;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.canhub.cropper.CropImage;
 import com.canhub.cropper.CropImageView;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -28,6 +35,7 @@ public class MediaHelper {
     private Uri mCropImageUri;
     private CropImageView cropImageView;
     private OnImageCropped listener;
+    private Uri mSavedImageUri;
 
     public MediaHelper setCropImageView(CropImageView cropImageView) {
         this.cropImageView = cropImageView;
@@ -80,6 +88,10 @@ public class MediaHelper {
 
     public void cropImage(){
         File getImage = getContext().getExternalCacheDir();
+        if (getImage != null){
+           mSavedImageUri =  Uri.fromFile(new File(getImage.getPath(), System.currentTimeMillis()+".jpeg"));
+        }
+        cropImageView.saveCroppedImageAsync(mSavedImageUri, Bitmap.CompressFormat.JPEG,90,0,0, CropImageView.RequestSizeOptions.NONE);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -102,6 +114,31 @@ public class MediaHelper {
     private void setFragment(Fragment fragment) {
         this.fragment = fragment;
     }
+
+    public void chooserCamera() {
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(i.resolveActivity(getContext().getPackageManager()) != null){
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (photoFile != null){
+                mCropImageUri = FileProvider.getUriForFile(getContext(),"com.example.instagram.fileprovider",photoFile);
+                i.putExtra(MediaStore.EXTRA_OUTPUT,mCropImageUri);
+                activity.startActivityForResult(i,CAMERA_CODE);
+            }
+        }
+
+    }
+    private File createImageFile() throws IOException {
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_"+timestamp+"_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpeg",storageDir);
+    }
+
 
     public interface OnImageCropped{
         void onImageCropped(Uri uri);

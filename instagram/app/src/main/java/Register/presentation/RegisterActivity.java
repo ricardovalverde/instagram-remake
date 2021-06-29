@@ -106,6 +106,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         cropViewEnabled(true);
         MediaHelper mediaHelper = MediaHelper.getINSTANCE(this);
         mediaHelper.onActivityResult(requestCode, resultCode, data);
@@ -120,7 +121,10 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
     @Override
     public void showCamera() {
-
+        MediaHelper.getINSTANCE(this)
+                .setCropImageView(cropImageView)
+                .setListener(this)
+                .chooserCamera();
     }
 
     @Override
