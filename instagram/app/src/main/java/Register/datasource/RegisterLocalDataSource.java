@@ -1,5 +1,9 @@
 package Register.datasource;
 
+import android.net.Uri;
+
+import java.sql.DatabaseMetaData;
+
 import common.model.DataBase;
 import common.model.UserAuth;
 import common.presenter.Presenter;
@@ -11,5 +15,12 @@ public class RegisterLocalDataSource implements RegisterDataSource {
                 .addOnSuccessListener((DataBase.OnSuccessListener<UserAuth>) presenter::onSuccess)
                 .addOnFailure(e -> presenter.onError(e.getMessage()))
                 .addOnComplete(presenter::onComplete);
+    }
+
+    @Override
+    public void addPhoto(Uri uri, Presenter presenter) {
+        DataBase db = DataBase.getINSTANCE();
+        db.addPhoto(db.getUser().getUserId(), uri)
+                .addOnSuccessListener((DataBase.OnSuccessListener<Boolean>) presenter::onSuccess);
     }
 }

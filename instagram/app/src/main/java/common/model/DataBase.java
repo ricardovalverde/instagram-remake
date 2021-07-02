@@ -1,5 +1,6 @@
 package common.model;
 
+import android.net.Uri;
 import android.os.Handler;
 
 import java.util.HashSet;
@@ -10,10 +11,12 @@ public class DataBase {
     private static DataBase INSTANCE;
     private static Set<UserAuth> usersAuth;
     private static Set<User> users;
+    private static Set<Uri> storages;
 
     static {
         usersAuth = new HashSet<>();
         users = new HashSet<>();
+        storages = new HashSet<>();
 
         usersAuth.add(new UserAuth("user1@gmail.com", "1234"));
         usersAuth.add(new UserAuth("user2@gmail.com", "4132"));
@@ -48,6 +51,20 @@ public class DataBase {
         return this;
     }
 
+    public DataBase addPhoto(String uuid, Uri uri){
+        timeOut(()->{
+            Set<User> users = DataBase.users;
+            for(User user: users){
+                if(user.getUuid().equals(uuid)){
+                    user.setUri(uri);
+                }
+            }
+            storages.add(uri);
+            onSuccessListener.onSuccess(true);
+        });
+    return this;
+    }
+
     public DataBase createUser(String name, String email, String password) {
         timeOut(() -> {
             UserAuth userAuth = new UserAuth();
@@ -59,6 +76,7 @@ public class DataBase {
             User user = new User();
             user.setName(name);
             user.setEmail(email);
+            user.setUuid(userAuth.getUserId());
 
             boolean added = users.add(user);
             if (added) {
@@ -89,6 +107,10 @@ public class DataBase {
             onCompleteListener.onComplete();
         });
         return this;
+    }
+
+    public UserAuth getUser(){
+        return userAuth;
     }
 
     private void timeOut(Runnable r) {

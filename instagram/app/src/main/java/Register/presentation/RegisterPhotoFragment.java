@@ -47,6 +47,11 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
 
     }
 
+    @Override
+    public void showProgressBar() {
+        buttonNext.showProgressBar(true);
+    }
+
     @OnClick(R.id.register_button_next)
     public void onButtonNextClick() {
         CustomDialog customDialog = new CustomDialog.Builder(getContext())

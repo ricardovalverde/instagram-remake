@@ -1,10 +1,30 @@
 package common.model;
 
+import android.net.Uri;
+
 import java.util.Objects;
 
 public class User {
     private String name;
     private String email;
+    private String uuid;
+    private Uri uri;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
+    }
 
     @Override
     public boolean equals(Object o) {

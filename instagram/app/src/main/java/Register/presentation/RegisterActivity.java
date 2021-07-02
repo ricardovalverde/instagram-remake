@@ -31,6 +31,7 @@ import common.view.AbstractActivity;
 public class RegisterActivity extends AbstractActivity implements RegisterView, MediaHelper.OnImageCropped {
 
     private RegisterPresenter registerPresenter;
+    private MediaHelper mediaHelper;
 
     @BindView(R.id.register_root_container)
     FrameLayout rootContainer;
@@ -50,6 +51,10 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarDark();
+
+        mediaHelper = MediaHelper.getINSTANCE(this)
+                .setCropImageView(cropImageView)
+                .setListener(this);
     }
 
     public static void launch(Context context) {
@@ -64,11 +69,6 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
         registerPresenter.setRegisterView(this);
 
         showNextView(RegisterSteps.EMAIL);
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_register;
     }
 
     @Override
@@ -112,44 +112,47 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
         mediaHelper.onActivityResult(requestCode, resultCode, data);
     }
 
-
     @Override
     public void onUserCreated() {
         MainActivity.launch(this);
     }
 
+    private void cropViewEnabled(boolean enabled) {
+        cropImageView.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        scrollView.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        buttonCrop.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        rootContainer.setBackgroundColor(enabled ? findColor(android.R.color.black) : findColor(android.R.color.white));
+    }
 
     @Override
     public void showCamera() {
-        MediaHelper.getINSTANCE(this)
-                .setCropImageView(cropImageView)
-                .setListener(this)
-                .chooserCamera();
+        mediaHelper.chooserCamera();
     }
 
     @Override
     public void showGallery() {
-        MediaHelper.getINSTANCE(this)
-                .setCropImageView(cropImageView)
-                .setListener(this)
-                .chooserGallery();
+        mediaHelper.chooserGallery();
     }
 
-    private void cropViewEnabled(boolean enabled) {
-        scrollView.setVisibility(enabled ? View.GONE : View.VISIBLE);
-        buttonCrop.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        rootContainer.setBackgroundColor(enabled ? findColor(android.R.color.black) : findColor(android.R.color.white));
+    @Override
+    public void onImageCropped(Uri uri) {
+        registerPresenter.setUri(uri);
+    }
+
+    @Override
+    public void onImagePicked(Uri uri) {
+        cropImageView.setImageUriAsync(uri);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_register;
     }
 
     @OnClick(R.id.register_button_crop)
     public void onButtonCropClick() {
         cropViewEnabled(false);
         MediaHelper.getINSTANCE(this)
-                .cropImage();
-    }
-
-    @Override
-    public void onImageCropped(Uri uri) {
-        registerPresenter.setUri(uri);
+                .cropImage(cropImageView);
     }
 }
