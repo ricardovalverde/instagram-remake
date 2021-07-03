@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="Main.MainActivity">
+    tools:context="Main.Presentation.MainActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -13,6 +13,7 @@
         android:layout_above="@id/main_bottom_nav">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/main_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -41,11 +42,10 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="Main.MainActivity">
+            tools:context="Main.Presentation.MainActivity">
 
-            <fragment
+            <FrameLayout
                 android:id="@+id/main_fragment"
-                android:name="Main.Camera.Presentation"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_main_gallery" />

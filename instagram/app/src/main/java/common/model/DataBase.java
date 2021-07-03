@@ -32,8 +32,29 @@ public class DataBase {
     public static DataBase getINSTANCE() {
         if (INSTANCE == null) {
             INSTANCE = new DataBase();
+            INSTANCE.init();
         }
         return INSTANCE;
+    }
+
+    public void init() {
+        String email = "user1@gmail.com";
+        String password = "123";
+        String name = "user1";
+
+        UserAuth userAuth = new UserAuth();
+        userAuth.setPassword(password);
+        userAuth.setEmail(email);
+
+        usersAuth.add(userAuth);
+
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setUuid(userAuth.getUserId());
+
+        users.add(user);
+        this.userAuth = userAuth;
     }
 
     public <T> DataBase addOnSuccessListener(OnSuccessListener<T> successListener) {
@@ -51,18 +72,18 @@ public class DataBase {
         return this;
     }
 
-    public DataBase addPhoto(String uuid, Uri uri){
-        timeOut(()->{
+    public DataBase addPhoto(String uuid, Uri uri) {
+        timeOut(() -> {
             Set<User> users = DataBase.users;
-            for(User user: users){
-                if(user.getUuid().equals(uuid)){
+            for (User user : users) {
+                if (user.getUuid().equals(uuid)) {
                     user.setUri(uri);
                 }
             }
             storages.add(uri);
             onSuccessListener.onSuccess(true);
         });
-    return this;
+        return this;
     }
 
     public DataBase createUser(String name, String email, String password) {
@@ -81,12 +102,15 @@ public class DataBase {
             boolean added = users.add(user);
             if (added) {
                 this.userAuth = userAuth;
-                onSuccessListener.onSuccess(userAuth);
+                if (onSuccessListener != null)
+                    onSuccessListener.onSuccess(userAuth);
             } else {
                 this.userAuth = null;
-                onFailureListener.onFailure(new IllegalAccessException("Usuário já existe"));
+                if (onFailureListener != null)
+                    onFailureListener.onFailure(new IllegalAccessException("Usuário já existe"));
             }
-            onCompleteListener.onComplete();
+            if (onCompleteListener != null)
+                onCompleteListener.onComplete();
         });
         return this;
     }
@@ -109,7 +133,7 @@ public class DataBase {
         return this;
     }
 
-    public UserAuth getUser(){
+    public UserAuth getUser() {
         return userAuth;
     }
 

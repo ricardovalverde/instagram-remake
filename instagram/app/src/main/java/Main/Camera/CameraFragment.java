@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.instagram.R;
 
-public class Presentation extends Fragment {
+public class CameraFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

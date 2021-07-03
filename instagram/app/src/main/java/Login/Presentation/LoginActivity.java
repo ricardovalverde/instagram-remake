@@ -8,11 +8,13 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import Login.DataSource.LoginDataSource;
 import Login.DataSource.LoginLocalDataSource;
-import Main.MainActivity;
+import Main.Presentation.MainActivity;
 import Register.presentation.RegisterActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import common.model.DataBase;
+import common.model.UserAuth;
 import common.view.AbstractActivity;
 import common.component.LoadingButton;
 
@@ -39,22 +41,23 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarDark();
-    }
 
-    @Override
-    public void showProgressBar() {
-        button_enter.showProgressBar(true);
-    }
-
-    @Override
-    public void hideProgressBar() {
-        button_enter.showProgressBar(false);
+        UserAuth userAuth = DataBase.getINSTANCE().getUser();
+        if (userAuth != null){
+            onUserLogged();
+        }
     }
 
     @Override
     protected void onInject() {
         LoginDataSource dataSource = new LoginLocalDataSource();
         presenter = new LoginPresenter(this, dataSource);
+    }
+
+    @Override
+    public void onUserLogged() {
+        MainActivity.launch(this, MainActivity.LOGIN_ACTIVITY);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @OnClick(R.id.login_button_enter)
@@ -85,12 +88,6 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.activity_login;
-    }
-
-
-    @Override
     public void onFailureForm(String emailError, String passwordError) {
         if (emailError != null) {
             inputLayoutEmail.setError(emailError);
@@ -103,7 +100,17 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     }
 
     @Override
-    public void onUserLogged() {
-        MainActivity.launch(this);
+    public void showProgressBar() {
+        button_enter.showProgressBar(true);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        button_enter.showProgressBar(false);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_login;
     }
 }
