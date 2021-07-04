@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -49,8 +51,8 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
-        homeFragment = new HomeFragment();
-        profileFragment = new ProfileFragment();
+        homeFragment =  HomeFragment.newInstance(this);
+        profileFragment = ProfileFragment.newInstance(this);
         searchFragment = new SearchFragment();
         cameraFragment = new CameraFragment();
 
@@ -62,14 +64,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         fragmentManager.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, homeFragment).hide(homeFragment).commit();
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            int source = extras.getInt(ACT_SOURCE);
-            if (source == REGISTER_ACTIVITY) {
-                fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
-                active = profileFragment;
-            }
-        }
+
     }
 
     @Override
@@ -94,11 +89,22 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int source = extras.getInt(ACT_SOURCE);
+            if (source == REGISTER_ACTIVITY) {
+                getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
+                active = profileFragment;
+            }
+        }
+        scrollToolbarEnabled(true);
+
     }
 
     @Override
@@ -109,11 +115,15 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         CoordinatorLayout.LayoutParams appBarLayoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
 
-        if(enabled){
+        if (enabled) {
             params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            appBarLayoutParams.setBehavior(new AppBarLayout.Behavior());
+            appBarLayout.setLayoutParams(appBarLayoutParams);
+        } else {
+            params.setScrollFlags(0);
+            appBarLayoutParams.setBehavior(null);
+            appBarLayout.setLayoutParams(appBarLayoutParams);
         }
-
-
     }
 
     @Override
@@ -123,6 +133,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_home:
                 fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
                 active = homeFragment;
+                scrollToolbarEnabled(false);
                 return true;
             case R.id.menu_bottom_search:
                 fragmentManager.beginTransaction().hide(active).show(searchFragment).commit();
@@ -135,6 +146,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_profile:
                 fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
+                scrollToolbarEnabled(true);
                 return true;
         }
         return false;

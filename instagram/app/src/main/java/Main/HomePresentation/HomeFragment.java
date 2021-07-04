@@ -14,8 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagram.R;
 
+import Main.Presentation.MainView;
+
 public class HomeFragment extends Fragment {
 
+    public static HomeFragment newInstance(MainView mainView){
+        HomeFragment homeFragment = new HomeFragment();
+
+
+        return homeFragment;
+    }
 
     @Nullable
 
