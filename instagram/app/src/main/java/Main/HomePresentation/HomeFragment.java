@@ -18,15 +18,22 @@ import Main.Presentation.MainView;
 
 public class HomeFragment extends Fragment {
 
+    private MainView mainView;
+
+
     public static HomeFragment newInstance(MainView mainView){
         HomeFragment homeFragment = new HomeFragment();
-
+        homeFragment.setMainview(mainView);
 
         return homeFragment;
     }
 
-    @Nullable
+    private void setMainview(MainView mainview){
+        this.mainView = mainview;
+    }
 
+
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 

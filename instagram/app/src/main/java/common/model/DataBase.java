@@ -2,21 +2,32 @@ package common.model;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.provider.ContactsContract;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 public class DataBase {
 
     private static DataBase INSTANCE;
+    private UserAuth userAuth;
+
+    private OnSuccessListener onSuccessListener;
+    private OnFailureListener onFailureListener;
+    private OnCompleteListener onCompleteListener;
+
     private static Set<UserAuth> usersAuth;
     private static Set<User> users;
     private static Set<Uri> storages;
+    private static HashMap<String, HashSet<Post>> posts;
 
     static {
         usersAuth = new HashSet<>();
         users = new HashSet<>();
         storages = new HashSet<>();
+        posts = new HashMap<>();
 
         usersAuth.add(new UserAuth("user1@gmail.com", "1234"));
         usersAuth.add(new UserAuth("user2@gmail.com", "4132"));
@@ -24,10 +35,6 @@ public class DataBase {
         usersAuth.add(new UserAuth("user4@gmail.com", "8567"));
     }
 
-    private OnSuccessListener onSuccessListener;
-    private OnFailureListener onFailureListener;
-    private OnCompleteListener onCompleteListener;
-    private UserAuth userAuth;
 
     public static DataBase getINSTANCE() {
         if (INSTANCE == null) {
@@ -71,6 +78,53 @@ public class DataBase {
         this.onCompleteListener = completeListener;
         return this;
     }
+
+    public DataBase findPosts(String uuid) {
+        timeOut(() -> {
+            HashMap<String, HashSet<Post>> posts = DataBase.posts;
+            HashSet<Post> response = posts.get(uuid);
+
+            if (response == null) {
+                response = new HashSet<>();
+            }
+            if (onSuccessListener != null) {
+                onSuccessListener.onSuccess(new ArrayList<>(response));
+            }
+            if (onCompleteListener != null) {
+                onCompleteListener.onComplete();
+            }
+        });
+
+        return this;
+    }
+
+    public DataBase findUser(String uuid) {
+        timeOut(() -> {
+
+            Set<User> users = DataBase.users;
+            User response = null;
+
+            for (User user : users) {
+                if (user.getUuid().equals(uuid)) {
+                    response = user;
+                    break;
+                }
+            }
+
+            if (onSuccessListener != null && response != null) {
+                onSuccessListener.onSuccess(response);
+            }
+            else if (onFailureListener != null) {
+                onFailureListener.onFailure(new IllegalAccessException("Usuário não encontrado"));
+            }
+
+            if (onCompleteListener != null) {
+                onCompleteListener.onComplete();
+            }
+        });
+        return this;
+    }
+
 
     public DataBase addPhoto(String uuid, Uri uri) {
         timeOut(() -> {
@@ -140,6 +194,7 @@ public class DataBase {
     private void timeOut(Runnable r) {
         new Handler().postDelayed(r, 2000);
     }
+
 
     public interface OnSuccessListener<T> {
         void onSuccess(T response);

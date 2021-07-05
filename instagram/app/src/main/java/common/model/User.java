@@ -9,6 +9,7 @@ public class User {
     private String email;
     private String uuid;
     private Uri uri;
+    private int following, followers, post;
 
     public String getUuid() {
         return uuid;
@@ -55,4 +56,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 }

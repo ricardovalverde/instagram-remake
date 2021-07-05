@@ -1,4 +1,4 @@
-package Main.ProfilePresentation;
+package Main.Profile.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,14 +10,32 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagram.R;
 
+import Main.Presentation.MainView;
+import butterknife.BindView;
+import common.view.AbstractFragment;
 
-public class ProfileFragment extends Fragment {
+
+public class ProfileFragment extends AbstractFragment<ProfilePresenter> {
+
+    private MainView mainView;
+
+    @BindView(R.id.profile_recycler_view)
+    RecyclerView recyclerView;
+
+    public static ProfileFragment newInstance(MainView mainView) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setMainView(mainView);
+        return profileFragment;
+    }
+
+    private void setMainView(MainView mainView) {
+        this.mainView = mainView;
+    }
 
 
     @Override
@@ -29,16 +47,14 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // TODO: 28/05/2021 app:layout_scrollFlags="scroll" at toolbar
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
-
-        View view = inflater.inflate(R.layout.fragment_main_profile, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.profile_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(new adapter());
 
         return view;
     }
+
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -115,6 +131,11 @@ public class ProfileFragment extends Fragment {
         public int getItemCount() {
             return imagens.length;
         }
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_main_profile;
     }
 
 

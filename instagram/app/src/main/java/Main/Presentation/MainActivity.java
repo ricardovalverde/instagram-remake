@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -25,7 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import Main.Camera.CameraFragment;
 import Main.HomePresentation.HomeFragment;
-import Main.ProfilePresentation.ProfileFragment;
+import Main.Profile.Presentation.ProfileFragment;
 import Main.SearchPresentation.SearchFragment;
 import common.view.AbstractActivity;
 
@@ -51,7 +50,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
-        homeFragment =  HomeFragment.newInstance(this);
+        homeFragment = HomeFragment.newInstance(this);
         profileFragment = ProfileFragment.newInstance(this);
         searchFragment = new SearchFragment();
         cameraFragment = new CameraFragment();
@@ -89,8 +88,8 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     }
 
     @Override
-    public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onPostCreate(savedInstanceState, persistentState);
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -104,8 +103,8 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             }
         }
         scrollToolbarEnabled(true);
-
     }
+
 
     @Override
     public void scrollToolbarEnabled(boolean enabled) {
