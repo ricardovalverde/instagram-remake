@@ -2,12 +2,15 @@ package Main.Presentation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,8 +26,14 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import Main.Camera.CameraFragment;
-import Main.HomePresentation.HomeFragment;
+import Main.Home.DataSource.HomeDataSource;
+import Main.Home.DataSource.HomeLocalDataSource;
+import Main.Home.Presentation.HomeFragment;
+import Main.Home.Presentation.HomePresenter;
+import Main.Profile.DataSource.ProfileDataSource;
+import Main.Profile.DataSource.ProfileLocalDataSource;
 import Main.Profile.Presentation.ProfileFragment;
+import Main.Profile.Presentation.ProfilePresenter;
 import Main.SearchPresentation.SearchFragment;
 import common.view.AbstractActivity;
 
@@ -33,6 +42,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     public static final String ACT_SOURCE = "act_source";
     public static final int LOGIN_ACTIVITY = 0;
     public static final int REGISTER_ACTIVITY = 1;
+
+    private ProfilePresenter profilePresenter;
+    private HomePresenter homePresenter;
 
     Fragment homeFragment;
     Fragment profileFragment;
@@ -50,8 +62,15 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
-        homeFragment = HomeFragment.newInstance(this);
-        profileFragment = ProfileFragment.newInstance(this);
+        ProfileDataSource profileDataSource = new ProfileLocalDataSource();
+        profilePresenter = new ProfilePresenter(profileDataSource);
+
+        HomeDataSource homeDataSource = new HomeLocalDataSource();
+        homePresenter = new HomePresenter(homeDataSource);
+
+        homeFragment = HomeFragment.newInstance(this, homePresenter);
+        profileFragment = ProfileFragment.newInstance(this, profilePresenter);
+
         searchFragment = new SearchFragment();
         cameraFragment = new CameraFragment();
 
@@ -91,6 +110,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        ProfileDataSource profileDataSource = new ProfileLocalDataSource();
+        profilePresenter = new ProfilePresenter(profileDataSource);
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
@@ -100,9 +122,11 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             if (source == REGISTER_ACTIVITY) {
                 getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
+                scrollToolbarEnabled(true);
+                profilePresenter.findUser();
             }
         }
-        scrollToolbarEnabled(true);
+
     }
 
 
@@ -132,6 +156,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_home:
                 fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
                 active = homeFragment;
+                homePresenter.findFeed();
                 scrollToolbarEnabled(false);
                 return true;
             case R.id.menu_bottom_search:
@@ -145,10 +170,24 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_profile:
                 fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
+                profilePresenter.findUser();
                 scrollToolbarEnabled(true);
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void showProgressBar() {
+        ProgressBar progressBar = findViewById(R.id.main_progress);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+        findViewById(R.id.main_progress).setVisibility(View.GONE);
     }
 
     @Override

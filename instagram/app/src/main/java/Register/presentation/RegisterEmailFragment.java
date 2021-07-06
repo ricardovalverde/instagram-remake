@@ -8,8 +8,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import common.view.AbstractFragment;
 import common.component.LoadingButton;
+import common.view.AbstractFragment;
 
 public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.EmailView {
 

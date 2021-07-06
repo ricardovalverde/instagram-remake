@@ -57,5 +57,27 @@ public class User {
         this.email = email;
     }
 
+    public int getFollowing() {
+        return following;
+    }
 
+    public void setFollowing(int following) {
+        this.following = following;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    public int getPost() {
+        return post;
+    }
+
+    public void setPost(int post) {
+        this.post = post;
+    }
 }

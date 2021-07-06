@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:showIn="@layout/activity_main">
+    android:layout_height="match_parent">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -115,7 +114,7 @@
         <TextView
             android:id="@+id/profile_text_view_username"
             style="@style/InstaTextView"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             android:text="@string/username"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/profile_image_icon"
@@ -135,7 +134,7 @@
             android:id="@+id/profile_navigation_tabs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/top_button_navigation"
             app:itemIconTint="@color/colorAccent"
             app:itemTextColor="@color/colorAccent"

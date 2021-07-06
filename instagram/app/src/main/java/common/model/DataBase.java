@@ -2,7 +2,6 @@ package common.model;
 
 import android.net.Uri;
 import android.os.Handler;
-import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Set;
 public class DataBase {
 
     private static DataBase INSTANCE;
-    private UserAuth userAuth;
+    private static UserAuth userAuth;
 
     private OnSuccessListener onSuccessListener;
     private OnFailureListener onFailureListener;
@@ -22,12 +21,16 @@ public class DataBase {
     private static Set<User> users;
     private static Set<Uri> storages;
     private static HashMap<String, HashSet<Post>> posts;
+    private static HashMap<String, HashSet<Feed>> feed;
 
     static {
         usersAuth = new HashSet<>();
         users = new HashSet<>();
         storages = new HashSet<>();
         posts = new HashMap<>();
+        feed = new HashMap<>();
+
+        init();
 
         usersAuth.add(new UserAuth("user1@gmail.com", "1234"));
         usersAuth.add(new UserAuth("user2@gmail.com", "4132"));
@@ -44,10 +47,10 @@ public class DataBase {
         return INSTANCE;
     }
 
-    public void init() {
+    public static void init() {
         String email = "user1@gmail.com";
         String password = "123";
-        String name = "user1";
+        String name = "Jessica";
 
         UserAuth userAuth = new UserAuth();
         userAuth.setPassword(password);
@@ -61,7 +64,7 @@ public class DataBase {
         user.setUuid(userAuth.getUserId());
 
         users.add(user);
-        this.userAuth = userAuth;
+        DataBase.userAuth = userAuth;
     }
 
     public <T> DataBase addOnSuccessListener(OnSuccessListener<T> successListener) {
@@ -98,6 +101,23 @@ public class DataBase {
         return this;
     }
 
+    public DataBase findFeed(String uuid) {
+        HashMap<String, HashSet<Feed>> feed = DataBase.feed;
+        HashSet<Feed> response = feed.get(uuid);
+
+        if (response == null) {
+            response = new HashSet<>();
+        }
+        if (onSuccessListener != null) {
+            onSuccessListener.onSuccess(new ArrayList<>(response));
+        }
+        if (onCompleteListener != null) {
+            onCompleteListener.onComplete();
+        }
+
+        return this;
+    }
+
     public DataBase findUser(String uuid) {
         timeOut(() -> {
 
@@ -113,8 +133,7 @@ public class DataBase {
 
             if (onSuccessListener != null && response != null) {
                 onSuccessListener.onSuccess(response);
-            }
-            else if (onFailureListener != null) {
+            } else if (onFailureListener != null) {
                 onFailureListener.onFailure(new IllegalAccessException("Usuário não encontrado"));
             }
 
@@ -155,11 +174,11 @@ public class DataBase {
 
             boolean added = users.add(user);
             if (added) {
-                this.userAuth = userAuth;
+                DataBase.userAuth = userAuth;
                 if (onSuccessListener != null)
                     onSuccessListener.onSuccess(userAuth);
             } else {
-                this.userAuth = null;
+                DataBase.userAuth = null;
                 if (onFailureListener != null)
                     onFailureListener.onFailure(new IllegalAccessException("Usuário já existe"));
             }
@@ -176,10 +195,10 @@ public class DataBase {
             user.setPassword(password);
 
             if (usersAuth.contains(user)) {
-                this.userAuth = user;
+                DataBase.userAuth = user;
                 onSuccessListener.onSuccess(user);
             } else {
-                this.userAuth = null;
+                DataBase.userAuth = null;
                 onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
             }
             onCompleteListener.onComplete();
@@ -192,7 +211,7 @@ public class DataBase {
     }
 
     private void timeOut(Runnable r) {
-        new Handler().postDelayed(r, 2000);
+        new Handler().postDelayed(r, 1000);
     }
 
 

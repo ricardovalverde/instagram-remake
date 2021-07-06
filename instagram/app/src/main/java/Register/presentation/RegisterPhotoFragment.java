@@ -1,7 +1,6 @@
 package Register.presentation;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,9 +19,8 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.OnClick;
 import common.component.CustomDialog;
-import common.view.AbstractFragment;
 import common.component.LoadingButton;
-import de.hdodenhof.circleimageview.CircleImageView;
+import common.view.AbstractFragment;
 
 public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.PhotoView {
     @BindView(R.id.register_button_next)

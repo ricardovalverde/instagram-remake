@@ -13,10 +13,10 @@ import Register.presentation.RegisterActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import common.component.LoadingButton;
 import common.model.DataBase;
 import common.model.UserAuth;
 import common.view.AbstractActivity;
-import common.component.LoadingButton;
 
 public class LoginActivity extends AbstractActivity implements LoginView {
 
@@ -43,7 +43,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
         setStatusBarDark();
 
         UserAuth userAuth = DataBase.getINSTANCE().getUser();
-        if (userAuth != null){
+        if (userAuth != null) {
             onUserLogged();
         }
     }
@@ -56,7 +56,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 
     @Override
     public void onUserLogged() {
-        MainActivity.launch(this, MainActivity.LOGIN_ACTIVITY);
+        MainActivity.launch(this, MainActivity.REGISTER_ACTIVITY);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 

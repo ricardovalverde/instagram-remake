@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
@@ -20,14 +19,14 @@ import common.util.Colors;
 import common.util.Drawables;
 import common.util.Keyboards;
 
-public abstract class AbstractFragment<P> extends Fragment implements MainView {
+public abstract class AbstractFragment<P> extends Fragment implements View {
 
     protected P presenter;
 
     @Nullable
     @Override
     public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayout(), container, false);
+        android.view.View view = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, view);
         return view;
     }

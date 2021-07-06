@@ -43,7 +43,6 @@ public class MediaHelper {
     private Uri mSavedImageUri;
 
 
-
     private Context getContext() {
         if (fragment != null && fragment.getActivity() != null) {
             return fragment.getActivity();

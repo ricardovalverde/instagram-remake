@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import common.util.Colors;
 import common.util.Drawables;
 
-public abstract class AbstractActivity extends AppCompatActivity implements MainView {
+public abstract class AbstractActivity extends AppCompatActivity implements View {
 
     protected abstract void onInject();
 

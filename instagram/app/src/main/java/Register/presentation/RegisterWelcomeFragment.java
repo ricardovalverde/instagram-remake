@@ -11,8 +11,8 @@ import com.example.instagram.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import common.view.AbstractFragment;
 import common.component.LoadingButton;
+import common.view.AbstractFragment;
 
 public class RegisterWelcomeFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.WelcomeView {
 
@@ -21,7 +21,6 @@ public class RegisterWelcomeFragment extends AbstractFragment<RegisterPresenter>
 
     @BindView(R.id.text_view_welcome)
     TextView textWelcome;
-
 
 
     public static RegisterWelcomeFragment newInstance(RegisterPresenter registerPresenter) {
@@ -40,7 +39,7 @@ public class RegisterWelcomeFragment extends AbstractFragment<RegisterPresenter>
     }
 
     @OnClick(R.id.register_button_next)
-    public void onButtonNextClick(){
+    public void onButtonNextClick() {
         presenter.showPhotoView();
     }
 

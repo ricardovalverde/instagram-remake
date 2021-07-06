@@ -3,14 +3,16 @@ package Register.presentation;
 import android.content.Context;
 import android.net.Uri;
 
-
-import common.view.MainView;
+import common.view.View;
 
 public interface RegisterView {
 
     void showNextView(RegisterSteps step);
+
     void onUserCreated();
+
     void showCamera();
+
     void showGallery();
 
     interface EmailView {
@@ -19,7 +21,7 @@ public interface RegisterView {
         void onFailureForm(String email);
     }
 
-    interface NamePasswordView extends MainView {
+    interface NamePasswordView extends View {
         Context getContext();
 
         void onFailureForm(String nameError, String passwordError);
@@ -29,7 +31,8 @@ public interface RegisterView {
 
     interface WelcomeView {
     }
-    interface PhotoView extends MainView{
+
+    interface PhotoView extends View {
         void onImageCropped(Uri uri);
     }
 }

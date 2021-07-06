@@ -2,7 +2,7 @@ package common.view;
 
 import android.content.Context;
 
-public interface MainView {
+public interface View {
     Context getContext();
 
     void showProgressBar();

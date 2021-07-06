@@ -2,8 +2,6 @@ package Register.datasource;
 
 import android.net.Uri;
 
-import java.sql.DatabaseMetaData;
-
 import common.model.DataBase;
 import common.model.UserAuth;
 import common.presenter.Presenter;

@@ -9,8 +9,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import common.view.AbstractFragment;
 import common.component.LoadingButton;
+import common.view.AbstractFragment;
 
 public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.NamePasswordView {
 
@@ -58,7 +58,7 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
 
     @OnClick(R.id.register_button_continue)
     public void onButtonNextClick() {
-        hideInput(getContext(),confirmPassword);
+        hideInput(getContext(), confirmPassword);
         presenter.setNameAndPassword(name.getText().toString(), password.getText().toString(), confirmPassword.getText().toString());
     }
 
