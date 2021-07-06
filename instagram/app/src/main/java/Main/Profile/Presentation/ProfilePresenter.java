@@ -24,9 +24,10 @@ public class ProfilePresenter implements Presenter<UserProfile> {
 
 
     public void findUser() {
-        // TODO: 06/07/2021 view null
-        view.showProgressBar();
-        profileDataSource.findUser(this);
+        if (view != null){
+            view.showProgressBar();
+            profileDataSource.findUser(this);
+        }
     }
 
 

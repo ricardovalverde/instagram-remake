@@ -40,12 +40,15 @@ public class DataBase {
 
 
     public static DataBase getINSTANCE() {
-        if (INSTANCE == null) {
-            INSTANCE = new DataBase();
-            INSTANCE.init();
-        }
-        return INSTANCE;
+        return new DataBase();
+        //if (INSTANCE == null) {
+
+        //          INSTANCE = new DataBase();
+        //        INSTANCE.init();
+        //       }
+        //  return INSTANCE;
     }
+
 
     public static void init() {
         String email = "user1@gmail.com";
@@ -215,15 +218,15 @@ public class DataBase {
     }
 
 
-    public interface OnSuccessListener<T> {
-        void onSuccess(T response);
-    }
-
-    public interface OnFailureListener<T> {
-        void onFailure(Exception e);
-    }
-
-    public interface OnCompleteListener<T> {
-        void onComplete();
-    }
+public interface OnSuccessListener<T> {
+    void onSuccess(T response);
 }
+
+public interface OnFailureListener<T> {
+    void onFailure(Exception e);
+}
+
+public interface OnCompleteListener<T> {
+    void onComplete();
+}
+    }

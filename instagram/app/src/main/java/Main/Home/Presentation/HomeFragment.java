@@ -32,8 +32,8 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 
     public static HomeFragment newInstance(MainView mainView, HomePresenter homePresenter) {
         HomeFragment homeFragment = new HomeFragment();
-        homeFragment.setMainView(mainView);
         homeFragment.setPresenter(homePresenter);
+        homeFragment.setMainView(mainView);
         homePresenter.setView(homeFragment);
 
         return homeFragment;
