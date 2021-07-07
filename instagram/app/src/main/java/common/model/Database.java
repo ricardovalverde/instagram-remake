@@ -2,15 +2,16 @@ package common.model;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DataBase {
+public class Database {
 
-    private static DataBase INSTANCE;
+    private static Database INSTANCE;
     private static UserAuth userAuth;
 
     private OnSuccessListener onSuccessListener;
@@ -20,6 +21,7 @@ public class DataBase {
     private static Set<UserAuth> usersAuth;
     private static Set<User> users;
     private static Set<Uri> storages;
+
     private static HashMap<String, HashSet<Post>> posts;
     private static HashMap<String, HashSet<Feed>> feed;
 
@@ -32,15 +34,12 @@ public class DataBase {
 
         init();
 
-        usersAuth.add(new UserAuth("user1@gmail.com", "1234"));
-        usersAuth.add(new UserAuth("user2@gmail.com", "4132"));
-        usersAuth.add(new UserAuth("user3@gmail.com", "5678"));
-        usersAuth.add(new UserAuth("user4@gmail.com", "8567"));
     }
 
 
-    public static DataBase getINSTANCE() {
-        return new DataBase();
+    public static Database getINSTANCE() {
+
+        return new Database();
         //if (INSTANCE == null) {
 
         //          INSTANCE = new DataBase();
@@ -53,10 +52,11 @@ public class DataBase {
     public static void init() {
         String email = "user1@gmail.com";
         String password = "123";
-        String name = "Jessica";
+        String name = "Patricia";
 
         UserAuth userAuth = new UserAuth();
         userAuth.setPassword(password);
+        Log.i("teste", "passous aqui");
         userAuth.setEmail(email);
 
         usersAuth.add(userAuth);
@@ -67,27 +67,12 @@ public class DataBase {
         user.setUuid(userAuth.getUserId());
 
         users.add(user);
-        DataBase.userAuth = userAuth;
+        Database.userAuth = userAuth;
     }
 
-    public <T> DataBase addOnSuccessListener(OnSuccessListener<T> successListener) {
-        this.onSuccessListener = successListener;
-        return this;
-    }
-
-    public DataBase addOnFailure(OnFailureListener failureListener) {
-        this.onFailureListener = failureListener;
-        return this;
-    }
-
-    public DataBase addOnComplete(OnCompleteListener completeListener) {
-        this.onCompleteListener = completeListener;
-        return this;
-    }
-
-    public DataBase findPosts(String uuid) {
+    public Database findPosts(String uuid) {
         timeOut(() -> {
-            HashMap<String, HashSet<Post>> posts = DataBase.posts;
+            HashMap<String, HashSet<Post>> posts = Database.posts;
             HashSet<Post> response = posts.get(uuid);
 
             if (response == null) {
@@ -104,27 +89,30 @@ public class DataBase {
         return this;
     }
 
-    public DataBase findFeed(String uuid) {
-        HashMap<String, HashSet<Feed>> feed = DataBase.feed;
-        HashSet<Feed> response = feed.get(uuid);
+    public Database findFeed(String uuid) {
+        timeOut(() -> {
+            HashMap<String, HashSet<Feed>> feed = Database.feed;
+            HashSet<Feed> response = feed.get(uuid);
 
-        if (response == null) {
-            response = new HashSet<>();
-        }
-        if (onSuccessListener != null) {
-            onSuccessListener.onSuccess(new ArrayList<>(response));
-        }
-        if (onCompleteListener != null) {
-            onCompleteListener.onComplete();
-        }
+            if (response == null) {
+                response = new HashSet<>();
+            }
+            if (onSuccessListener != null) {
+                onSuccessListener.onSuccess(new ArrayList<>(response));
+            }
+            if (onCompleteListener != null) {
+                onCompleteListener.onComplete();
+            }
+
+        });
 
         return this;
     }
 
-    public DataBase findUser(String uuid) {
+    public Database findUser(String uuid) {
         timeOut(() -> {
 
-            Set<User> users = DataBase.users;
+            Set<User> users = Database.users;
             User response = null;
 
             for (User user : users) {
@@ -148,9 +136,9 @@ public class DataBase {
     }
 
 
-    public DataBase addPhoto(String uuid, Uri uri) {
+    public Database addPhoto(String uuid, Uri uri) {
         timeOut(() -> {
-            Set<User> users = DataBase.users;
+            Set<User> users = Database.users;
             for (User user : users) {
                 if (user.getUuid().equals(uuid)) {
                     user.setUri(uri);
@@ -162,7 +150,7 @@ public class DataBase {
         return this;
     }
 
-    public DataBase createUser(String name, String email, String password) {
+    public Database createUser(String name, String email, String password) {
         timeOut(() -> {
             UserAuth userAuth = new UserAuth();
             userAuth.setEmail(email);
@@ -177,11 +165,11 @@ public class DataBase {
 
             boolean added = users.add(user);
             if (added) {
-                DataBase.userAuth = userAuth;
+                Database.userAuth = userAuth;
                 if (onSuccessListener != null)
                     onSuccessListener.onSuccess(userAuth);
             } else {
-                DataBase.userAuth = null;
+                Database.userAuth = null;
                 if (onFailureListener != null)
                     onFailureListener.onFailure(new IllegalAccessException("Usuário já existe"));
             }
@@ -191,17 +179,17 @@ public class DataBase {
         return this;
     }
 
-    public DataBase login(String email, String password) {
+    public Database login(String email, String password) {
         timeOut(() -> {
             UserAuth user = new UserAuth();
             user.setEmail(email);
             user.setPassword(password);
 
             if (usersAuth.contains(user)) {
-                DataBase.userAuth = user;
+                Database.userAuth = user;
                 onSuccessListener.onSuccess(user);
             } else {
-                DataBase.userAuth = null;
+                Database.userAuth = null;
                 onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
             }
             onCompleteListener.onComplete();
@@ -218,15 +206,31 @@ public class DataBase {
     }
 
 
-public interface OnSuccessListener<T> {
-    void onSuccess(T response);
-}
-
-public interface OnFailureListener<T> {
-    void onFailure(Exception e);
-}
-
-public interface OnCompleteListener<T> {
-    void onComplete();
-}
+    public <T> Database addOnSuccessListener(OnSuccessListener<T> successListener) {
+        this.onSuccessListener = successListener;
+        return this;
     }
+
+    public Database addOnFailure(OnFailureListener failureListener) {
+        this.onFailureListener = failureListener;
+        return this;
+    }
+
+    public Database addOnComplete(OnCompleteListener completeListener) {
+        this.onCompleteListener = completeListener;
+        return this;
+    }
+
+
+    public interface OnSuccessListener<T> {
+        void onSuccess(T response);
+    }
+
+    public interface OnFailureListener<T> {
+        void onFailure(Exception e);
+    }
+
+    public interface OnCompleteListener<T> {
+        void onComplete();
+    }
+}

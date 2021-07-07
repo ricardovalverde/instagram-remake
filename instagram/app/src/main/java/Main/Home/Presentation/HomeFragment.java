@@ -24,7 +24,7 @@ import common.view.AbstractFragment;
 public class HomeFragment extends AbstractFragment<HomePresenter> implements MainView.HomeView {
 
     private MainView mainView;
-    private homeAdapter homeAdapter;
+    private FeedAdapter feedAdapter;
 
     @BindView(R.id.home_recycler_view)
     RecyclerView recyclerView;
@@ -32,6 +32,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 
     public static HomeFragment newInstance(MainView mainView, HomePresenter homePresenter) {
         HomeFragment homeFragment = new HomeFragment();
+
         homeFragment.setPresenter(homePresenter);
         homeFragment.setMainView(mainView);
         homePresenter.setView(homeFragment);
@@ -51,21 +52,21 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
 
-        homeAdapter = new homeAdapter();
+        feedAdapter = new FeedAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(homeAdapter);
+        recyclerView.setAdapter(feedAdapter);
 
         return view;
     }
 
     @Override
-    public void showFeed(List<Feed> response) {
-        homeAdapter.setFeed(response);
-        homeAdapter.notifyDataSetChanged();
+    public void showFeed(List<Feed> feed) {
+        feedAdapter.setFeed(feed);
+        feedAdapter.notifyDataSetChanged();
     }
 
 
-    private class homeAdapter extends RecyclerView.Adapter<homeViewHolder> {
+    private class FeedAdapter extends RecyclerView.Adapter<homeViewHolder> {
 
 
         private List<Feed> feed = new ArrayList<>();

@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import common.component.LoadingButton;
-import common.model.DataBase;
+import common.model.Database;
 import common.model.UserAuth;
 import common.view.AbstractActivity;
 
@@ -42,7 +42,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setStatusBarDark();
 
-        UserAuth userAuth = DataBase.getINSTANCE().getUser();
+        UserAuth userAuth = Database.getINSTANCE().getUser();
         if (userAuth != null) {
             onUserLogged();
         }

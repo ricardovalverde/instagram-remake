@@ -24,10 +24,10 @@ public class ProfilePresenter implements Presenter<UserProfile> {
 
 
     public void findUser() {
-        if (view != null){
-            view.showProgressBar();
-            profileDataSource.findUser(this);
-        }
+
+        view.showProgressBar();
+        profileDataSource.findUser(this);
+
     }
 
 
@@ -54,6 +54,4 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     public void onComplete() {
         view.hideProgressBar();
     }
-
-
 }

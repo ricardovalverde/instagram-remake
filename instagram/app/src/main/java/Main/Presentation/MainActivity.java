@@ -35,9 +35,11 @@ import Main.Profile.DataSource.ProfileLocalDataSource;
 import Main.Profile.Presentation.ProfileFragment;
 import Main.Profile.Presentation.ProfilePresenter;
 import Main.SearchPresentation.SearchFragment;
+import butterknife.BindView;
 import common.view.AbstractActivity;
 
 public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainView {
+
 
     public static final String ACT_SOURCE = "act_source";
     public static final int LOGIN_ACTIVITY = 0;
@@ -110,8 +112,6 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        ProfileDataSource profileDataSource = new ProfileLocalDataSource();
-        profilePresenter = new ProfilePresenter(profileDataSource);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -120,6 +120,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         if (extras != null) {
             int source = extras.getInt(ACT_SOURCE);
             if (source == REGISTER_ACTIVITY) {
+
                 getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
                 scrollToolbarEnabled(true);
@@ -141,12 +142,11 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         if (enabled) {
             params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
             appBarLayoutParams.setBehavior(new AppBarLayout.Behavior());
-            appBarLayout.setLayoutParams(appBarLayoutParams);
         } else {
             params.setScrollFlags(0);
             appBarLayoutParams.setBehavior(null);
-            appBarLayout.setLayoutParams(appBarLayoutParams);
         }
+        appBarLayout.setLayoutParams(appBarLayoutParams);
     }
 
     @Override
@@ -155,9 +155,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         switch (item.getItemId()) {
             case R.id.menu_bottom_home:
                 fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
-                active = homeFragment;
-                homePresenter.findFeed();
                 scrollToolbarEnabled(false);
+                homePresenter.findFeed();
+                active = homeFragment;
                 return true;
             case R.id.menu_bottom_search:
                 fragmentManager.beginTransaction().hide(active).show(searchFragment).commit();
@@ -169,9 +169,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 return true;
             case R.id.menu_bottom_profile:
                 fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
-                active = profileFragment;
-                profilePresenter.findUser();
                 scrollToolbarEnabled(true);
+                profilePresenter.findUser();
+                active = profileFragment;
                 return true;
         }
         return false;
@@ -187,7 +187,8 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     public void hideProgressBar() {
-        findViewById(R.id.main_progress).setVisibility(View.GONE);
+        ProgressBar progressBar = findViewById(R.id.main_progress);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

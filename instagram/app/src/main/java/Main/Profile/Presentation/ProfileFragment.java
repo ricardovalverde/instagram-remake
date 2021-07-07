@@ -57,6 +57,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
     public static ProfileFragment newInstance(MainView mainView, ProfilePresenter profilePresenter) {
         ProfileFragment profileFragment = new ProfileFragment();
+
         profileFragment.setPresenter(profilePresenter);
         profileFragment.setMainView(mainView);
         profilePresenter.setView(profileFragment);
@@ -122,6 +123,34 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         postAdapter.notifyDataSetChanged();
     }
 
+
+    private class PostAdapter extends RecyclerView.Adapter<viewHolder> {
+
+        private List<Post> posts = new ArrayList<>();
+        public void setPosts(List<Post> posts) {
+            this.posts = posts;
+        }
+
+
+        @NonNull
+        @Override
+        public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new viewHolder(getLayoutInflater().inflate(R.layout.item_profile_grid, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+            holder.bind(posts.get(position));
+
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return posts.size();
+        }
+    }
+
     private static class viewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
 
@@ -135,31 +164,6 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         }
     }
 
-    private class PostAdapter extends RecyclerView.Adapter<viewHolder> {
-
-        private List<Post> posts = new ArrayList<>();
-
-        @NonNull
-        @Override
-        public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new viewHolder(getLayoutInflater().inflate(R.layout.item_profile_grid, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ProfileFragment.viewHolder holder, int position) {
-            holder.bind(posts.get(position));
-
-        }
-
-        public void setPosts(List<Post> posts) {
-            this.posts = posts;
-        }
-
-        @Override
-        public int getItemCount() {
-            return posts.size();
-        }
-    }
 
     @Override
     public void showProgressBar() {
