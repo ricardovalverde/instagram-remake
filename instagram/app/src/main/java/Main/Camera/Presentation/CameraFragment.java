@@ -1,4 +1,4 @@
-package Main.Camera;
+package Main.Camera.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

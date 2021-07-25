@@ -17,15 +17,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import Main.Camera.Presentation.AddActivity;
 import com.example.instagram.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import Main.Camera.CameraFragment;
 import Main.Home.DataSource.HomeDataSource;
 import Main.Home.DataSource.HomeLocalDataSource;
 import Main.Home.Presentation.HomeFragment;
@@ -35,7 +34,6 @@ import Main.Profile.DataSource.ProfileLocalDataSource;
 import Main.Profile.Presentation.ProfileFragment;
 import Main.Profile.Presentation.ProfilePresenter;
 import Main.SearchPresentation.SearchFragment;
-import butterknife.BindView;
 import common.view.AbstractActivity;
 
 public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainView {
@@ -50,7 +48,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     Fragment homeFragment;
     Fragment profileFragment;
-    Fragment cameraFragment;
+    //Fragment cameraFragment;
     Fragment searchFragment;
     Fragment active;
 
@@ -74,13 +72,13 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
         searchFragment = new SearchFragment();
-        cameraFragment = new CameraFragment();
+        //cameraFragment = new CameraFragment();
 
         active = homeFragment;
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.main_fragment, profileFragment).hide(profileFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
+        //fragmentManager.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, homeFragment).hide(homeFragment).commit();
 
@@ -100,9 +98,8 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null) {
-
-            Drawable icon_camera = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_insta_camera, null);
+        if(getSupportActionBar() != null){
+            Drawable icon_camera = findDrawable(R.drawable.ic_insta_camera);
             getSupportActionBar().setHomeAsUpIndicator(icon_camera);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -164,8 +161,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 active = searchFragment;
                 return true;
             case R.id.menu_bottom_add:
-                fragmentManager.beginTransaction().hide(active).show(cameraFragment).commit();
-                active = cameraFragment;
+                /*fragmentManager.beginTransaction().hide(active).show(cameraFragment).commit();
+                active = cameraFragment;*/
+                AddActivity.launch(this);
                 return true;
             case R.id.menu_bottom_profile:
                 fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();

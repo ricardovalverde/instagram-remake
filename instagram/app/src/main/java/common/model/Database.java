@@ -40,12 +40,7 @@ public class Database {
     public static Database getINSTANCE() {
 
         return new Database();
-        //if (INSTANCE == null) {
 
-        //          INSTANCE = new DataBase();
-        //        INSTANCE.init();
-        //       }
-        //  return INSTANCE;
     }
 
 
@@ -56,7 +51,6 @@ public class Database {
 
         UserAuth userAuth = new UserAuth();
         userAuth.setPassword(password);
-        Log.i("teste", "passous aqui");
         userAuth.setEmail(email);
 
         usersAuth.add(userAuth);
