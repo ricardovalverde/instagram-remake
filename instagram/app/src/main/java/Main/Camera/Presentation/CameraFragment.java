@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.example.instagram.R;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import common.component.CameraPreview;
 import common.component.MediaHelper;
 import common.view.AbstractFragment;
@@ -42,22 +43,33 @@ public class CameraFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        if (getContext() != null){
-           mediaHelper = MediaHelper.getINSTANCE(this);
-           if(mediaHelper.checkCameraHardware(getContext())){
-               camera = mediaHelper.getCameraInstance();
-               CameraPreview cameraPreview = new CameraPreview(getContext(), camera);
-               frameLayoutCamera.addView(cameraPreview);
-
-           }
-
+        if (getContext() != null) {
+            mediaHelper = MediaHelper.getINSTANCE(this);
+            if (mediaHelper.checkCameraHardware(getContext())) {
+                camera = mediaHelper.getCameraInstance();
+                CameraPreview cameraPreview = new CameraPreview(getContext(), camera);
+                frameLayoutCamera.addView(cameraPreview);
+            }
         }
-
-
-
-
-
         return view;
+    }
+    @OnClick(R.id.camera_button_image_view_picture)
+    public void onCameraButtonClick(){
+        progressBar.setVisibility(View.VISIBLE);
+        buttonPicture.setVisibility(View.GONE);
+        camera.takePicture(null, null, (bytes, camera) -> {
+            mediaHelper.saveCameraFile(bytes);
+            progressBar.setVisibility(View.GONE);
+            buttonPicture.setVisibility(View.VISIBLE);
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (camera != null) {
+            camera.release();
+        }
     }
 
     @Override
