@@ -1,5 +1,6 @@
 package Main.Camera.Presentation;
 
+import android.graphics.PorterDuff;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import common.component.MediaHelper;
 import common.view.AbstractFragment;
 
 public class CameraFragment extends AbstractFragment {
+
     @BindView(R.id.camera_progress)
     ProgressBar progressBar;
 
@@ -47,14 +49,19 @@ public class CameraFragment extends AbstractFragment {
             mediaHelper = MediaHelper.getINSTANCE(this);
             if (mediaHelper.checkCameraHardware(getContext())) {
                 camera = mediaHelper.getCameraInstance();
+
                 CameraPreview cameraPreview = new CameraPreview(getContext(), camera);
                 frameLayoutCamera.addView(cameraPreview);
+
             }
         }
         return view;
+
     }
+
     @OnClick(R.id.camera_button_image_view_picture)
-    public void onCameraButtonClick(){
+    public void onCameraButtonClick() {
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
         progressBar.setVisibility(View.VISIBLE);
         buttonPicture.setVisibility(View.GONE);
         camera.takePicture(null, null, (bytes, camera) -> {

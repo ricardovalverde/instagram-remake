@@ -127,6 +127,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     private class PostAdapter extends RecyclerView.Adapter<viewHolder> {
 
         private List<Post> posts = new ArrayList<>();
+
         public void setPosts(List<Post> posts) {
             this.posts = posts;
         }

@@ -63,4 +63,5 @@ public abstract class AbstractActivity extends AppCompatActivity implements View
     public int findColor(@ColorRes int colorId) {
         return Colors.getColor(this, colorId);
     }
+
 }

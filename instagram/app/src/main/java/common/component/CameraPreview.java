@@ -2,7 +2,6 @@ package common.component;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -13,8 +12,8 @@ import java.util.List;
 
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private final Camera camera;
-    private final SurfaceHolder holder;
+    private Camera camera;
+    private SurfaceHolder holder;
 
 
     public CameraPreview(Context context, Camera camera) {
@@ -66,6 +65,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+        camera.stopPreview();
+        camera.release();
+        camera = null;
 
     }
 }
