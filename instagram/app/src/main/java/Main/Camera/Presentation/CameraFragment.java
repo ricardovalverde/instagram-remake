@@ -2,6 +2,7 @@ package Main.Camera.Presentation;
 
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +37,19 @@ public class CameraFragment extends AbstractFragment {
     @BindView(R.id.camera_button_image_view_picture)
     Button buttonPicture;
 
+    private AddView addView;
     private MediaHelper mediaHelper;
     private Camera camera;
+
+    public static CameraFragment newInstance(AddView addView) {
+        CameraFragment cameraFragment = new CameraFragment();
+        cameraFragment.setAddView(addView);
+        return cameraFragment;
+    }
+
+    private void setAddView(AddView addView) {
+        this.addView = addView;
+    }
 
 
     @Nullable
@@ -65,9 +77,13 @@ public class CameraFragment extends AbstractFragment {
         progressBar.setVisibility(View.VISIBLE);
         buttonPicture.setVisibility(View.GONE);
         camera.takePicture(null, null, (bytes, camera) -> {
-            mediaHelper.saveCameraFile(bytes);
             progressBar.setVisibility(View.GONE);
             buttonPicture.setVisibility(View.VISIBLE);
+
+            Uri uri = mediaHelper.saveCameraFile(bytes);
+            if(uri != null){
+                addView.onImageLoaded(uri);
+            }
         });
     }
 

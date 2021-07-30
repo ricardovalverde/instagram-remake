@@ -77,6 +77,12 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         setHasOptionsMenu(true);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.findUser();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

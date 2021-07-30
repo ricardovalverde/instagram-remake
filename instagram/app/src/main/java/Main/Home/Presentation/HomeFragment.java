@@ -60,6 +60,12 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.findFeed();
+    }
+
+    @Override
     public void showFeed(List<Feed> feed) {
         feedAdapter.setFeed(feed);
         feedAdapter.notifyDataSetChanged();

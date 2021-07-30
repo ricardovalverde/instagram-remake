@@ -3,6 +3,7 @@ package Main.Camera.Presentation;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 import common.view.AbstractActivity;
 
-public class AddActivity extends AbstractActivity {
+public class AddActivity extends AbstractActivity implements AddView {
 
     @BindView(R.id.add_view_pager)
     ViewPager viewPager;
@@ -62,7 +63,7 @@ public class AddActivity extends AbstractActivity {
         viewPager.setAdapter(adapter);
 
         GalleryFragment galleryFragment = new GalleryFragment();
-        CameraFragment cameraFragment = new CameraFragment();
+        CameraFragment cameraFragment = CameraFragment.newInstance(this);
 
         adapter.addFragment(galleryFragment);
         adapter.addFragment(cameraFragment);
@@ -97,5 +98,11 @@ public class AddActivity extends AbstractActivity {
     @Override
     protected int getLayout() {
         return R.layout.activity_add;
+    }
+
+    @Override
+    public void onImageLoaded(Uri uri) {
+        AddCaptionActivity.launch(this, uri);
+        finish();
     }
 }

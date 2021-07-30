@@ -1,5 +1,7 @@
 package common.component;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -33,8 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static android.app.Activity.RESULT_OK;
-
 
 public class MediaHelper {
 
@@ -64,12 +64,22 @@ public class MediaHelper {
             MediaHelper mediaHelper = new MediaHelper();
             INSTANCE = new WeakReference<>(mediaHelper);
             INSTANCE.get().setActivity(activity);
+        } else if (INSTANCE.get() == null) {
+
+            MediaHelper mediaHelper = new MediaHelper();
+            INSTANCE = new WeakReference<>(mediaHelper);
+            INSTANCE.get().setActivity(activity);
         }
         return INSTANCE.get();
     }
 
     public static MediaHelper getINSTANCE(Fragment fragment) {
         if (INSTANCE == null) {
+
+            MediaHelper mediaHelper = new MediaHelper();
+            INSTANCE = new WeakReference<>(mediaHelper);
+            INSTANCE.get().setFragment(fragment);
+        }else if (INSTANCE.get() == null){
 
             MediaHelper mediaHelper = new MediaHelper();
             INSTANCE = new WeakReference<>(mediaHelper);
@@ -197,18 +207,19 @@ public class MediaHelper {
 
         } catch (Exception e) {
         }
-return camera;
+        return camera;
 
     }
 
 
-    public void saveCameraFile(byte[] bytes) {
+    public Uri saveCameraFile(byte[] bytes) {
         File pictureFile = createCameraFile(true);
 
         if (pictureFile == null) {
             Log.i("pictureFile", "Error creating media file, check permissions");
-            return;
+            return null;
         }
+        File outputMediaFile = null;
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(pictureFile);
@@ -231,11 +242,11 @@ return camera;
             fileOutputStream.close();
 
             Matrix matrix = new Matrix();
-            File outputMediaFile = createCameraFile(false);
+            outputMediaFile = createCameraFile(false);
 
             if (outputMediaFile == null) {
                 Log.i("Teste", "Failed create image");
-                return;
+                return null;
             }
 
             //Width nas duas posições para fazer o formato quadrado da foto
@@ -253,6 +264,7 @@ return camera;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return Uri.fromFile(outputMediaFile);
     }
 
     private static Bitmap rotate(Bitmap bitmap, int degree) {

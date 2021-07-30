@@ -2,7 +2,6 @@ package common.model;
 
 import android.net.Uri;
 import android.os.Handler;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ public class Database {
 
     private static HashMap<String, HashSet<Post>> posts;
     private static HashMap<String, HashSet<Feed>> feed;
+    private static HashMap<String, HashSet<String>> followers;
 
     static {
         usersAuth = new HashSet<>();
@@ -31,6 +31,7 @@ public class Database {
         storages = new HashSet<>();
         posts = new HashMap<>();
         feed = new HashMap<>();
+        followers = new HashMap<>();
 
         init();
 
@@ -160,6 +161,12 @@ public class Database {
             boolean added = users.add(user);
             if (added) {
                 Database.userAuth = userAuth;
+                HashMap<String, HashSet<String>> followersMap = Database.followers;
+                followersMap.put(userAuth.getUserId(), new HashSet<>());
+
+                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
+                feedMap.put(userAuth.getUserId(), new HashSet<>());
+
                 if (onSuccessListener != null)
                     onSuccessListener.onSuccess(userAuth);
             } else {
@@ -170,6 +177,67 @@ public class Database {
             if (onCompleteListener != null)
                 onCompleteListener.onComplete();
         });
+        return this;
+    }
+
+    public Database createPost(String uuid, Uri uri, String caption) {
+        timeOut(() -> {
+            HashMap<String, HashSet<Post>> postMap = Database.posts;
+            HashSet<Post> posts = postMap.get(uuid);
+
+            if (posts == null) {
+                posts = new HashSet<>();
+                postMap.put(uuid, posts);
+            }
+            Post post = new Post();
+
+            post.setUri(uri);
+            post.setCaption(caption);
+            post.setTimestamp(System.currentTimeMillis());
+            post.setUuid(String.valueOf(post.hashCode()));
+
+            posts.add(post);
+
+            HashMap<String, HashSet<String>> followerMap = Database.followers;
+            HashSet<String> followers = followerMap.get(uuid);
+
+            if (followers == null) {
+                followers = new HashSet<>();
+                followerMap.put(uuid, followers);
+            } else {
+                for (String follower : followers) {
+                    HashMap<String, HashSet<Feed>> feedMap = Database.feed;
+                    HashSet<Feed> feeds = feedMap.get(follower);
+
+                    if (feeds != null) {
+                        Feed feed = new Feed();
+                        feed.setUri(post.getUri());
+                        feed.setCaption(post.getCaption());
+                        feed.setTimestamp(post.getTimestamp());
+
+                        feeds.add(feed);
+                    }
+                    HashSet<Feed> feedMe = feedMap.get(uuid);
+
+                    if (feedMe != null) {
+                        Feed feed = new Feed();
+                        feed.setUri(post.getUri());
+                        feed.setCaption(post.getCaption());
+                        feed.setTimestamp(post.getTimestamp());
+
+                        feedMe.add(feed);
+
+                    }
+                }
+            if (onSuccessListener != null){
+                onSuccessListener.onSuccess(null);
+            }
+            if (onCompleteListener != null){
+                onCompleteListener.onComplete();
+            }
+            }
+        });
+
         return this;
     }
 

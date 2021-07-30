@@ -20,11 +20,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import Main.Camera.Presentation.AddActivity;
 import com.example.instagram.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import Main.Camera.Presentation.AddActivity;
 import Main.Home.DataSource.HomeDataSource;
 import Main.Home.DataSource.HomeLocalDataSource;
 import Main.Home.Presentation.HomeFragment;
@@ -98,12 +98,14 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             Drawable icon_camera = findDrawable(R.drawable.ic_insta_camera);
             getSupportActionBar().setHomeAsUpIndicator(icon_camera);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
+
+
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
