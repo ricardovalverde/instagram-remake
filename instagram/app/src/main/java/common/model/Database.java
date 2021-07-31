@@ -33,15 +33,11 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-        init();
-
+        //init();
     }
 
-
     public static Database getINSTANCE() {
-
         return new Database();
-
     }
 
 
@@ -86,14 +82,14 @@ public class Database {
 
     public Database findFeed(String uuid) {
         timeOut(() -> {
-            HashMap<String, HashSet<Feed>> feed = Database.feed;
-            HashSet<Feed> response = feed.get(uuid);
+            HashMap<String, HashSet<Feed>> feedMap = Database.feed;
+            HashSet<Feed> feeds = feedMap.get(uuid);
 
-            if (response == null) {
-                response = new HashSet<>();
+            if (feeds == null) {
+                feeds = new HashSet<>();
             }
             if (onSuccessListener != null) {
-                onSuccessListener.onSuccess(new ArrayList<>(response));
+                onSuccessListener.onSuccess(new ArrayList<>(feeds));
             }
             if (onCompleteListener != null) {
                 onCompleteListener.onComplete();
@@ -129,7 +125,6 @@ public class Database {
         });
         return this;
     }
-
 
     public Database addPhoto(String uuid, Uri uri) {
         timeOut(() -> {
@@ -217,29 +212,31 @@ public class Database {
 
                         feeds.add(feed);
                     }
-                    HashSet<Feed> feedMe = feedMap.get(uuid);
-
-                    if (feedMe != null) {
-                        Feed feed = new Feed();
-                        feed.setUri(post.getUri());
-                        feed.setCaption(post.getCaption());
-                        feed.setTimestamp(post.getTimestamp());
-
-                        feedMe.add(feed);
-
-                    }
                 }
-            if (onSuccessListener != null){
+                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
+                HashSet<Feed> feedMe = feedMap.get(uuid);
+
+                if (feedMe != null) {
+                    Feed feed = new Feed();
+                    feed.setUri(post.getUri());
+                    feed.setCaption(post.getCaption());
+                    feed.setTimestamp(post.getTimestamp());
+
+                    feedMe.add(feed);
+
+                }
+            }
+            if (onSuccessListener != null) {
                 onSuccessListener.onSuccess(null);
             }
-            if (onCompleteListener != null){
+            if (onCompleteListener != null) {
                 onCompleteListener.onComplete();
             }
-            }
-        });
+
+    });
 
         return this;
-    }
+}
 
     public Database login(String email, String password) {
         timeOut(() -> {
@@ -284,15 +281,15 @@ public class Database {
     }
 
 
-    public interface OnSuccessListener<T> {
-        void onSuccess(T response);
-    }
+public interface OnSuccessListener<T> {
+    void onSuccess(T response);
+}
 
-    public interface OnFailureListener<T> {
-        void onFailure(Exception e);
-    }
+public interface OnFailureListener<T> {
+    void onFailure(Exception e);
+}
 
-    public interface OnCompleteListener<T> {
-        void onComplete();
-    }
+public interface OnCompleteListener<T> {
+    void onComplete();
+}
 }

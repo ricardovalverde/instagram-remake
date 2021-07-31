@@ -16,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.instagram.R;
 import com.google.android.material.tabs.TabLayout;
 
+import Main.Camera.DataSource.GalleryDataSource;
+import Main.Camera.DataSource.GalleryLocalDataSource;
 import butterknife.BindView;
 import common.view.AbstractActivity;
 
@@ -62,7 +64,10 @@ public class AddActivity extends AbstractActivity implements AddView {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        GalleryFragment galleryFragment = new GalleryFragment();
+        GalleryDataSource dataSource = new GalleryLocalDataSource();
+        GalleryPresenter presenter = new GalleryPresenter(dataSource);
+
+        GalleryFragment galleryFragment = GalleryFragment.newInstance(this,presenter);
         CameraFragment cameraFragment = CameraFragment.newInstance(this);
 
         adapter.addFragment(galleryFragment);

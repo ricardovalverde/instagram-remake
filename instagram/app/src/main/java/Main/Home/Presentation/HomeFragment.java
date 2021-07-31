@@ -2,6 +2,8 @@ package Main.Home.Presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -71,6 +73,12 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         feedAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_profile, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
 
     private class FeedAdapter extends RecyclerView.Adapter<homeViewHolder> {
 
@@ -98,17 +106,17 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         }
     }
 
-    private class homeViewHolder extends RecyclerView.ViewHolder {
+    private static class homeViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView imageView;
+        private final ImageView images;
 
         public homeViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.profile_image_grid);
+            images = itemView.findViewById(R.id.post_image_grid);
         }
 
         public void bind(Feed feed) {
-            this.imageView.setImageURI(feed.getUri());
+            this.images.setImageURI(feed.getUri());
 
         }
     }
@@ -124,7 +132,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
     }
 
     @Override
-    protected int getLayout() {
+    public int getLayout() {
         return R.layout.fragment_main_home;
     }
 }
