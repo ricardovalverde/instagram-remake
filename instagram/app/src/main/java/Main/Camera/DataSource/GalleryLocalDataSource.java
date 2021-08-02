@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import common.presenter.Presenter;
@@ -23,7 +24,9 @@ public class GalleryLocalDataSource implements GalleryDataSource {
         };
         if (context != null && context.getContentResolver() != null) {
             Cursor cursor = context.getContentResolver().query(uri, projection, null, null, MediaStore.Images.Media.DATE_ADDED);
+
             if (cursor != null) {
+                images = new ArrayList<>();
 
                 int columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                 int columnIndexFolder = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);

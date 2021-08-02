@@ -33,7 +33,7 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-        //init();
+        init();
     }
 
     public static Database getINSTANCE() {
@@ -200,9 +200,10 @@ public class Database {
                 followers = new HashSet<>();
                 followerMap.put(uuid, followers);
             } else {
+                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
                 for (String follower : followers) {
-                    HashMap<String, HashSet<Feed>> feedMap = Database.feed;
                     HashSet<Feed> feeds = feedMap.get(follower);
+
 
                     if (feeds != null) {
                         Feed feed = new Feed();
@@ -213,7 +214,6 @@ public class Database {
                         feeds.add(feed);
                     }
                 }
-                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
                 HashSet<Feed> feedMe = feedMap.get(uuid);
 
                 if (feedMe != null) {
@@ -223,7 +223,6 @@ public class Database {
                     feed.setTimestamp(post.getTimestamp());
 
                     feedMe.add(feed);
-
                 }
             }
             if (onSuccessListener != null) {
@@ -233,10 +232,10 @@ public class Database {
                 onCompleteListener.onComplete();
             }
 
-    });
+        });
 
         return this;
-}
+    }
 
     public Database login(String email, String password) {
         timeOut(() -> {
@@ -281,15 +280,15 @@ public class Database {
     }
 
 
-public interface OnSuccessListener<T> {
-    void onSuccess(T response);
-}
+    public interface OnSuccessListener<T> {
+        void onSuccess(T response);
+    }
 
-public interface OnFailureListener<T> {
-    void onFailure(Exception e);
-}
+    public interface OnFailureListener<T> {
+        void onFailure(Exception e);
+    }
 
-public interface OnCompleteListener<T> {
-    void onComplete();
-}
+    public interface OnCompleteListener<T> {
+        void onComplete();
+    }
 }

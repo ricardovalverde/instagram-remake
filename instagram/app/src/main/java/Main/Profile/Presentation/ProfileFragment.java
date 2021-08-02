@@ -16,9 +16,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagram.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +56,9 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     @BindView(R.id.profile_text_view_post_count)
     TextView postCount;
 
+    @BindView(R.id.profile_navigation_tabs)
+    BottomNavigationView bottomNavigationView;
+
 
     public static ProfileFragment newInstance(MainView mainView, ProfilePresenter profilePresenter) {
         ProfileFragment profileFragment = new ProfileFragment();
@@ -72,9 +77,22 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_profile_grid:
+                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                    return true;
+                case R.id.menu_profile_list:
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    return true;
+            }
+            return false;
+        });
+
     }
 
     @Override

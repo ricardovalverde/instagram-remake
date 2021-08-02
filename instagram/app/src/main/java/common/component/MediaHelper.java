@@ -79,7 +79,7 @@ public class MediaHelper {
             MediaHelper mediaHelper = new MediaHelper();
             INSTANCE = new WeakReference<>(mediaHelper);
             INSTANCE.get().setFragment(fragment);
-        }else if (INSTANCE.get() == null){
+        } else if (INSTANCE.get() == null) {
 
             MediaHelper mediaHelper = new MediaHelper();
             INSTANCE = new WeakReference<>(mediaHelper);
@@ -193,8 +193,8 @@ public class MediaHelper {
 
     public Camera getCameraInstance() {
         Camera camera = null;
-        try {
 
+        try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext() != null && (getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
                 if (activity != null) {
                     activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
@@ -204,11 +204,10 @@ public class MediaHelper {
             }
             camera = Camera.open();
 
-
         } catch (Exception e) {
+            Log.i("CameraInstance", "Error get Camera Instance");
         }
         return camera;
-
     }
 
 

@@ -1,9 +1,13 @@
 package Main.Camera.Presentation;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,18 +61,18 @@ public class CameraFragment extends AbstractFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+
         if (getContext() != null) {
             mediaHelper = MediaHelper.getINSTANCE(this);
+
             if (mediaHelper.checkCameraHardware(getContext())) {
                 camera = mediaHelper.getCameraInstance();
-
                 CameraPreview cameraPreview = new CameraPreview(getContext(), camera);
                 frameLayoutCamera.addView(cameraPreview);
 
             }
         }
         return view;
-
     }
 
     @OnClick(R.id.camera_button_image_view_picture)
@@ -76,6 +80,7 @@ public class CameraFragment extends AbstractFragment {
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
         progressBar.setVisibility(View.VISIBLE);
         buttonPicture.setVisibility(View.GONE);
+
         camera.takePicture(null, null, (bytes, camera) -> {
             progressBar.setVisibility(View.GONE);
             buttonPicture.setVisibility(View.VISIBLE);

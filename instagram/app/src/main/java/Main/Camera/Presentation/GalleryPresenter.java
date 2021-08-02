@@ -29,7 +29,7 @@ public class GalleryPresenter implements Presenter<List<String>> {
 
     @Override
     public void onSuccess(List<String> response) {
-        List<Uri> uriList = new ArrayList<>();
+        ArrayList<Uri> uriList = new ArrayList<>();
         for (String res : response) {
             Uri uri = Uri.parse(res);
             uriList.add(uri);

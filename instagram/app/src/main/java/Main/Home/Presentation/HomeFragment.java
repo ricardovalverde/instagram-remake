@@ -80,7 +80,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 
     }
 
-    private class FeedAdapter extends RecyclerView.Adapter<homeViewHolder> {
+    public class FeedAdapter extends RecyclerView.Adapter<homeViewHolder> {
 
 
         private List<Feed> feed = new ArrayList<>();
@@ -89,10 +89,12 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
             this.feed = feed;
         }
 
+
         @NonNull
         @Override
         public homeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new homeViewHolder(getLayoutInflater().inflate(R.layout.item_post_list, parent, false));
+            View view = getLayoutInflater().inflate(R.layout.item_post_list, parent, false);
+            return new homeViewHolder(view);
         }
 
         @Override
@@ -106,7 +108,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         }
     }
 
-    private static class homeViewHolder extends RecyclerView.ViewHolder {
+    public static class homeViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView images;
 

@@ -155,7 +155,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_home:
                 fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
                 scrollToolbarEnabled(false);
-                homePresenter.findFeed();
+  //              homePresenter.findFeed();
                 active = homeFragment;
                 return true;
             case R.id.menu_bottom_search:
@@ -170,7 +170,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_profile:
                 fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
                 scrollToolbarEnabled(true);
-                profilePresenter.findUser();
+      //          profilePresenter.findUser();
                 active = profileFragment;
                 return true;
         }
