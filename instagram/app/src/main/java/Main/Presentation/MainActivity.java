@@ -42,16 +42,13 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     public static final String ACT_SOURCE = "act_source";
     public static final int LOGIN_ACTIVITY = 0;
     public static final int REGISTER_ACTIVITY = 1;
-
-    private ProfilePresenter profilePresenter;
-    private HomePresenter homePresenter;
-
     Fragment homeFragment;
     Fragment profileFragment;
     //Fragment cameraFragment;
     Fragment searchFragment;
     Fragment active;
-
+    private ProfilePresenter profilePresenter;
+    private HomePresenter homePresenter;
 
     public static void launch(Context context, int source) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -106,7 +103,6 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     }
 
 
-
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -155,7 +151,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_home:
                 fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
                 scrollToolbarEnabled(false);
-  //              homePresenter.findFeed();
+                //              homePresenter.findFeed();
                 active = homeFragment;
                 return true;
             case R.id.menu_bottom_search:
@@ -170,7 +166,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_profile:
                 fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
                 scrollToolbarEnabled(true);
-      //          profilePresenter.findUser();
+                //          profilePresenter.findUser();
                 active = profileFragment;
                 return true;
         }

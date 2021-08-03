@@ -15,7 +15,9 @@
         <entry key="app/src/main/res/layout/item_post_list.xml" value="0.20989583333333334" />
         <entry key="app/src/main/res/layout/item_profile_grid.xml" value="0.20989583333333334" />
         <entry key="app/src/main/res/menu/menu_gallery.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/menu/menu_search.xml" value="0.20989583333333334" />
         <entry key="app/src/main/res/menu/menu_share.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/xml/serachable.xml" value="0.20989583333333334" />
       </map>
     </option>
   </component>

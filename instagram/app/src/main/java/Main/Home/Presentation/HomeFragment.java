@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,16 +22,15 @@ import java.util.List;
 import Main.Presentation.MainView;
 import butterknife.BindView;
 import common.model.Feed;
+import common.model.User;
 import common.view.AbstractFragment;
 
 public class HomeFragment extends AbstractFragment<HomePresenter> implements MainView.HomeView {
 
-    private MainView mainView;
-    private FeedAdapter feedAdapter;
-
     @BindView(R.id.home_recycler_view)
     RecyclerView recyclerView;
-
+    private MainView mainView;
+    private FeedAdapter feedAdapter;
 
     public static HomeFragment newInstance(MainView mainView, HomePresenter homePresenter) {
         HomeFragment homeFragment = new HomeFragment();
@@ -80,6 +80,48 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 
     }
 
+    @Override
+    public void showProgressBar() {
+        mainView.showProgressBar();
+    }
+
+    @Override
+    public void hideProgressBar() {
+        mainView.hideProgressBar();
+    }
+
+    @Override
+    public int getLayout() {
+        return R.layout.fragment_main_home;
+    }
+
+    public static class homeViewHolder extends RecyclerView.ViewHolder {
+
+        private final ImageView imagesPost;
+        private final ImageView userIcon;
+        private final TextView username;
+        private final TextView caption;
+
+
+        public homeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imagesPost = itemView.findViewById(R.id.post_image_grid);
+            userIcon = itemView.findViewById(R.id.home_image_user);
+            username = itemView.findViewById(R.id.home_username);
+            caption = itemView.findViewById(R.id.home_image_caption);
+        }
+
+        public void bind(Feed feed) {
+            this.imagesPost.setImageURI(feed.getUri());
+            this.caption.setText(feed.getCaption());
+            User user = feed.getPublisher();
+            if (user != null) {
+                this.userIcon.setImageURI(user.getUri());
+                this.username.setText(user.getName());
+            }
+        }
+    }
+
     public class FeedAdapter extends RecyclerView.Adapter<homeViewHolder> {
 
 
@@ -106,35 +148,5 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         public int getItemCount() {
             return feed.size();
         }
-    }
-
-    public static class homeViewHolder extends RecyclerView.ViewHolder {
-
-        private final ImageView images;
-
-        public homeViewHolder(@NonNull View itemView) {
-            super(itemView);
-            images = itemView.findViewById(R.id.post_image_grid);
-        }
-
-        public void bind(Feed feed) {
-            this.images.setImageURI(feed.getUri());
-
-        }
-    }
-
-    @Override
-    public void showProgressBar() {
-        mainView.showProgressBar();
-    }
-
-    @Override
-    public void hideProgressBar() {
-        mainView.hideProgressBar();
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.fragment_main_home;
     }
 }

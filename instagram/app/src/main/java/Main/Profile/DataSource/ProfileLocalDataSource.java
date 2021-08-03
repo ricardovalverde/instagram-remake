@@ -2,7 +2,6 @@ package Main.Profile.DataSource;
 
 import java.util.List;
 
-import Main.Profile.Presentation.ProfilePresenter;
 import common.model.Database;
 import common.model.Post;
 import common.model.User;

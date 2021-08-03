@@ -1,10 +1,5 @@
 package Main.Camera.Presentation;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -15,6 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.example.instagram.R;
 
@@ -46,7 +45,7 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
         Toolbar toolbar = findViewById(R.id.add_caption_toolbar);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             Drawable drawable = findDrawable(R.drawable.ic_arrow_back);
             getSupportActionBar().setHomeAsUpIndicator(drawable);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -61,7 +60,7 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
         previewImageView.setImageURI(uri);
 
         AddLocalDataSource dataSource = new AddLocalDataSource();
-        presenter = new AddPresenter(this,dataSource);
+        presenter = new AddPresenter(this, dataSource);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;

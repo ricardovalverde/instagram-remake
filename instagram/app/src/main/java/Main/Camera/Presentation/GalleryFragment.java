@@ -21,7 +21,6 @@ import com.example.instagram.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import Main.Profile.Presentation.ProfileFragment;
 import butterknife.BindView;
 import common.view.AbstractFragment;
 
@@ -88,7 +87,7 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
         galleryAdapter.setUri(uriList, uri1 -> {
             this.uri = uri1;
             imageView.setImageURI(uri1);
-            nestedScrollView.smoothScrollTo(0,0);
+            nestedScrollView.smoothScrollTo(0, 0);
         });
     }
 
@@ -100,7 +99,7 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.action_go){
+        if (item.getItemId() == R.id.action_go) {
             addView.onImageLoaded(uri);
             return true;
         }
@@ -110,6 +109,24 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
     @Override
     protected int getLayout() {
         return R.layout.fragment_main_gallery;
+    }
+
+    interface GalleryItemClickListener {
+        void onClick(Uri uri);
+    }
+
+    public static class galleryHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageView;
+
+
+        public galleryHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.profile_image_grid);
+        }
+
+        void bind(Uri uri) {
+            this.imageView.setImageURI(uri);
+        }
     }
 
     public class GalleryAdapter extends RecyclerView.Adapter<galleryHolder> {
@@ -143,24 +160,6 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
             return uriList.size();
         }
 
-    }
-
-    public static class galleryHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
-
-
-        public galleryHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.profile_image_grid);
-        }
-
-         void bind(Uri uri) {
-            this.imageView.setImageURI(uri);
-        }
-    }
-
-    interface GalleryItemClickListener {
-        void onClick(Uri uri);
     }
 
 }

@@ -10,10 +10,10 @@ import Main.Camera.DataSource.GalleryDataSource;
 import common.presenter.Presenter;
 
 public class GalleryPresenter implements Presenter<List<String>> {
-    private GalleryView view;
     private final GalleryDataSource dataSource;
+    private GalleryView view;
 
-    public GalleryPresenter( GalleryDataSource dataSource) {
+    public GalleryPresenter(GalleryDataSource dataSource) {
 
         this.dataSource = dataSource;
     }
@@ -24,7 +24,7 @@ public class GalleryPresenter implements Presenter<List<String>> {
 
     public void findPictures(Context context) {
         view.showProgressBar();
-        dataSource.findPictures(context,this);
+        dataSource.findPictures(context, this);
     }
 
     @Override

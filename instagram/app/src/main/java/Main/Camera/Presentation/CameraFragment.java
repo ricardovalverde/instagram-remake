@@ -1,13 +1,9 @@
 package Main.Camera.Presentation;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +82,7 @@ public class CameraFragment extends AbstractFragment {
             buttonPicture.setVisibility(View.VISIBLE);
 
             Uri uri = mediaHelper.saveCameraFile(bytes);
-            if(uri != null){
+            if (uri != null) {
                 addView.onImageLoaded(uri);
             }
         });

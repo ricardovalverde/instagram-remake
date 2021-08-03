@@ -4,6 +4,6 @@ import android.content.Context;
 
 import common.presenter.Presenter;
 
-public interface GalleryDataSource  {
+public interface GalleryDataSource {
     void findPictures(Context context, Presenter presenter);
 }

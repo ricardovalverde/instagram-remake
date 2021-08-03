@@ -38,25 +38,15 @@ import java.util.Locale;
 
 public class MediaHelper {
 
-    private static WeakReference<MediaHelper> INSTANCE;
-    private OnImageCropped listener;
-
     private static final int CAMERA_CODE = 1;
     private static final int GALLERY_CODE = 2;
-
+    private static WeakReference<MediaHelper> INSTANCE;
+    private OnImageCropped listener;
     private Activity activity;
     private Fragment fragment;
 
     private Uri mCropImageUri;
     private Uri mSavedImageUri;
-
-
-    private Context getContext() {
-        if (fragment != null && fragment.getActivity() != null) {
-            return fragment.getActivity();
-        }
-        return activity;
-    }
 
     public static MediaHelper getINSTANCE(Activity activity) {
         if (INSTANCE == null) {
@@ -86,6 +76,23 @@ public class MediaHelper {
             INSTANCE.get().setFragment(fragment);
         }
         return INSTANCE.get();
+    }
+
+    private static Bitmap rotate(Bitmap bitmap, int degree) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.setRotate(degree);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
+
+    private Context getContext() {
+        if (fragment != null && fragment.getActivity() != null) {
+            return fragment.getActivity();
+        }
+        return activity;
     }
 
     public MediaHelper setCropImageView(CropImageView cropImageView) {
@@ -210,7 +217,6 @@ public class MediaHelper {
         return camera;
     }
 
-
     public Uri saveCameraFile(byte[] bytes) {
         File pictureFile = createCameraFile(true);
 
@@ -264,16 +270,6 @@ public class MediaHelper {
             e.printStackTrace();
         }
         return Uri.fromFile(outputMediaFile);
-    }
-
-    private static Bitmap rotate(Bitmap bitmap, int degree) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-
-        Matrix matrix = new Matrix();
-        matrix.setRotate(degree);
-
-        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 
     private File createCameraFile(boolean temp) {

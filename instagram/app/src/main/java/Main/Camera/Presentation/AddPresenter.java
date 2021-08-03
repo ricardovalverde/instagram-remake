@@ -8,15 +8,15 @@ import common.presenter.Presenter;
 public class AddPresenter implements Presenter<Void> {
 
 
-        private final AddCaptionView view;
-        private final AddDataSource dataSource;
+    private final AddCaptionView view;
+    private final AddDataSource dataSource;
 
     public AddPresenter(AddCaptionView view, AddDataSource dataSource) {
         this.view = view;
         this.dataSource = dataSource;
     }
 
-    public void createPost(Uri uri, String caption){
+    public void createPost(Uri uri, String caption) {
         view.showProgressBar();
         dataSource.savePost(uri, caption, this);
     }

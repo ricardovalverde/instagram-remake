@@ -22,12 +22,12 @@ public class RegisterPresenter implements Presenter<UserAuth> {
     private String name;
     private Uri uri;
 
-    public String getName() {
-        return name;
-    }
-
     public RegisterPresenter(RegisterDataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setRegisterView(RegisterView registerView) {

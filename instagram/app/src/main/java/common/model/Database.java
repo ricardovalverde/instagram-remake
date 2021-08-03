@@ -12,15 +12,9 @@ public class Database {
 
     private static Database INSTANCE;
     private static UserAuth userAuth;
-
-    private OnSuccessListener onSuccessListener;
-    private OnFailureListener onFailureListener;
-    private OnCompleteListener onCompleteListener;
-
     private static Set<UserAuth> usersAuth;
     private static Set<User> users;
     private static Set<Uri> storages;
-
     private static HashMap<String, HashSet<Post>> posts;
     private static HashMap<String, HashSet<Feed>> feed;
     private static HashMap<String, HashSet<String>> followers;
@@ -33,8 +27,12 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-        init();
+        //init();
     }
+
+    private OnSuccessListener onSuccessListener;
+    private OnFailureListener onFailureListener;
+    private OnCompleteListener onCompleteListener;
 
     public static Database getINSTANCE() {
         return new Database();

@@ -49,8 +49,8 @@
         android:textStyle="bold"
         android:visibility="invisible"
 
-        tools:textColor="@color/black"
         tools:backgroundTint="@color/white"
+        tools:textColor="@color/black"
         tools:visibility="visible" />
 
 

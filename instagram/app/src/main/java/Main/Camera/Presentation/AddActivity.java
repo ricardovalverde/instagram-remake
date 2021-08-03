@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -67,7 +66,7 @@ public class AddActivity extends AbstractActivity implements AddView {
         GalleryDataSource dataSource = new GalleryLocalDataSource();
         GalleryPresenter presenter = new GalleryPresenter(dataSource);
 
-        GalleryFragment galleryFragment = GalleryFragment.newInstance(this,presenter);
+        GalleryFragment galleryFragment = GalleryFragment.newInstance(this, presenter);
         CameraFragment cameraFragment = CameraFragment.newInstance(this);
 
         adapter.addFragment(galleryFragment);

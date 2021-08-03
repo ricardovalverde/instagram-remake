@@ -28,22 +28,21 @@ import common.view.AbstractActivity;
 
 public class RegisterActivity extends AbstractActivity implements RegisterView, MediaHelper.OnImageCropped {
 
+    @BindView(R.id.register_root_container)
+    FrameLayout rootContainer;
+    @BindView(R.id.register_crop_image_view)
+    CropImageView cropImageView;
+    @BindView(R.id.register_button_crop)
+    Button buttonCrop;
+    @BindView(R.id.register_scrollView)
+    ScrollView scrollView;
     private RegisterPresenter registerPresenter;
     private MediaHelper mediaHelper;
 
-    @BindView(R.id.register_root_container)
-    FrameLayout rootContainer;
-
-    @BindView(R.id.register_crop_image_view)
-    CropImageView cropImageView;
-
-    @BindView(R.id.register_button_crop)
-    Button buttonCrop;
-
-
-    @BindView(R.id.register_scrollView)
-    ScrollView scrollView;
-
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, RegisterActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +52,6 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
         mediaHelper = MediaHelper.getINSTANCE(this)
                 .setCropImageView(cropImageView)
                 .setListener(this);
-    }
-
-    public static void launch(Context context) {
-        Intent intent = new Intent(context, RegisterActivity.class);
-        context.startActivity(intent);
     }
 
     @Override

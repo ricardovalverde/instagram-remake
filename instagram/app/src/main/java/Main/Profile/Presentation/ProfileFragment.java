@@ -35,30 +35,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends AbstractFragment<ProfilePresenter> implements MainView.ProfileView {
 
-    private MainView mainView;
-    private PostAdapter postAdapter;
-
     @BindView(R.id.profile_recycler_view)
     RecyclerView recyclerView;
-
     @BindView(R.id.profile_image_icon)
     CircleImageView profileImage;
-
     @BindView(R.id.profile_text_view_username)
     TextView txtUsername;
-
     @BindView(R.id.profile_text_view_following_count)
     TextView followingCount;
-
     @BindView(R.id.profile_text_view_followers_count)
     TextView followersCount;
-
     @BindView(R.id.profile_text_view_post_count)
     TextView postCount;
-
     @BindView(R.id.profile_navigation_tabs)
     BottomNavigationView bottomNavigationView;
-
+    private MainView mainView;
+    private PostAdapter postAdapter;
 
     public static ProfileFragment newInstance(MainView mainView, ProfilePresenter profilePresenter) {
         ProfileFragment profileFragment = new ProfileFragment();
@@ -147,6 +139,33 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         postAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void showProgressBar() {
+        mainView.showProgressBar();
+    }
+
+    @Override
+    public void hideProgressBar() {
+        mainView.hideProgressBar();
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_main_profile;
+    }
+
+    private static class viewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageView;
+
+        public viewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.profile_image_grid);
+        }
+
+        public void bind(Post post) {
+            this.imageView.setImageURI(post.getUri());
+        }
+    }
 
     private class PostAdapter extends RecyclerView.Adapter<viewHolder> {
 
@@ -174,35 +193,6 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         public int getItemCount() {
             return posts.size();
         }
-    }
-
-    private static class viewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
-
-        public viewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.profile_image_grid);
-        }
-
-        public void bind(Post post) {
-            this.imageView.setImageURI(post.getUri());
-        }
-    }
-
-
-    @Override
-    public void showProgressBar() {
-        mainView.showProgressBar();
-    }
-
-    @Override
-    public void hideProgressBar() {
-        mainView.hideProgressBar();
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_main_profile;
     }
 
 }
