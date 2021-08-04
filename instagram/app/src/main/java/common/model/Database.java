@@ -27,7 +27,18 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-        //init();
+        String email = "user1@gmail.com";
+        String password = "123";
+        String name = "user";
+        init(email, password, name);
+
+        for (int i = 0; i < 31; i++) {
+            email = "user" + i + "@gmail.com";
+            password = "1232";
+            name = "user" + i;
+            init(email, password, name);
+        }
+
     }
 
     private OnSuccessListener onSuccessListener;
@@ -39,10 +50,8 @@ public class Database {
     }
 
 
-    public static void init() {
-        String email = "user1@gmail.com";
-        String password = "123";
-        String name = "Patricia";
+    public static void init(String email, String password, String name) {
+
 
         UserAuth userAuth = new UserAuth();
         userAuth.setPassword(password);
@@ -120,6 +129,21 @@ public class Database {
             if (onCompleteListener != null) {
                 onCompleteListener.onComplete();
             }
+        });
+        return this;
+    }
+
+    public Database findUsers(String uuid, String query) {
+        timeOut(() -> {
+            ArrayList<User> users = new ArrayList<>();
+
+            for (User user : Database.users) {
+                if (!user.getUuid().equals(uuid) && user.getName().contains(query)) {
+                    users.add(user);
+                }
+            }
+            onSuccessListener.onSuccess(users);
+            onCompleteListener.onComplete();
         });
         return this;
     }

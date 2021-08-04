@@ -33,7 +33,11 @@ import Main.Profile.DataSource.ProfileDataSource;
 import Main.Profile.DataSource.ProfileLocalDataSource;
 import Main.Profile.Presentation.ProfileFragment;
 import Main.Profile.Presentation.ProfilePresenter;
-import Main.SearchPresentation.SearchFragment;
+import Main.Search.DataSource.SearchDataSource;
+import Main.Search.DataSource.SearchLocalDataSource;
+import Main.Search.Presentation.SearchFragment;
+import Main.Search.Presentation.SearchPresenter;
+import common.model.Database;
 import common.view.AbstractActivity;
 
 public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainView {
@@ -49,6 +53,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     Fragment active;
     private ProfilePresenter profilePresenter;
     private HomePresenter homePresenter;
+    private SearchPresenter searchPresenter;
 
     public static void launch(Context context, int source) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -68,8 +73,12 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         homeFragment = HomeFragment.newInstance(this, homePresenter);
         profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
-        searchFragment = new SearchFragment();
+        SearchDataSource searchDataSource = new SearchLocalDataSource();
+        searchPresenter = new SearchPresenter(searchDataSource);
+        searchFragment = SearchFragment.newInstance(this, searchPresenter);
+
         //cameraFragment = new CameraFragment();
+
 
         active = homeFragment;
 
@@ -78,8 +87,6 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         //fragmentManager.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, homeFragment).hide(homeFragment).commit();
-
-
     }
 
     @Override
@@ -102,11 +109,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         }
     }
 
-
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -119,12 +124,10 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
                 scrollToolbarEnabled(true);
-                profilePresenter.findUser();
+                profilePresenter.findUser(Database.getINSTANCE().getUser().getUserId());
             }
         }
-
     }
-
 
     @Override
     public void scrollToolbarEnabled(boolean enabled) {
@@ -145,6 +148,14 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     }
 
     @Override
+    public void showProfile(String user) {
+        getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
+        active = profileFragment;
+        scrollToolbarEnabled(true);
+        profilePresenter.findUser(user);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (item.getItemId()) {
@@ -157,6 +168,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_search:
                 fragmentManager.beginTransaction().hide(active).show(searchFragment).commit();
                 active = searchFragment;
+                scrollToolbarEnabled(false);
                 return true;
             case R.id.menu_bottom_add:
                 /*fragmentManager.beginTransaction().hide(active).show(cameraFragment).commit();
@@ -178,7 +190,6 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         ProgressBar progressBar = findViewById(R.id.main_progress);
         progressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         progressBar.setVisibility(View.VISIBLE);
-
     }
 
     @Override

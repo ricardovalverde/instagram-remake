@@ -4,5 +4,5 @@ import common.model.UserProfile;
 import common.presenter.Presenter;
 
 public interface ProfileDataSource {
-    void findUser(Presenter<UserProfile> profilePresenter);
+    void findUser(String user, Presenter<UserProfile> profilePresenter);
 }

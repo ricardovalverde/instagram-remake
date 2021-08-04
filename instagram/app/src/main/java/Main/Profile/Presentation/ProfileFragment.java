@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import java.util.List;
 
 import Main.Presentation.MainView;
 import butterknife.BindView;
+import common.model.Database;
 import common.model.Post;
 import common.view.AbstractFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,6 +51,9 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     TextView postCount;
     @BindView(R.id.profile_navigation_tabs)
     BottomNavigationView bottomNavigationView;
+    @BindView(R.id.profile_button_edit_profile)
+    Button buttonEditProfile;
+
     private MainView mainView;
     private PostAdapter postAdapter;
 
@@ -90,7 +95,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     @Override
     public void onResume() {
         super.onResume();
-        presenter.findUser();
+        presenter.findUser(Database.getINSTANCE().getUser().getUserId());
     }
 
     @Nullable
@@ -126,11 +131,17 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     }
 
     @Override
-    public void showData(String name, String following, String followers, String nPosts) {
+    public void showData(String name, String following, String followers, String nPosts, boolean editProfile) {
         txtUsername.setText(name);
         followingCount.setText(following);
         followersCount.setText(followers);
         postCount.setText(nPosts);
+
+        if (editProfile) {
+            buttonEditProfile.setText(R.string.edit_profile);
+        } else {
+            buttonEditProfile.setText(R.string.follow);
+        }
     }
 
     @Override

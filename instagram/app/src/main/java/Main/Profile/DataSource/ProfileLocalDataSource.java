@@ -10,13 +10,13 @@ import common.presenter.Presenter;
 
 public class ProfileLocalDataSource implements ProfileDataSource {
     @Override
-    public void findUser(Presenter<UserProfile> profilePresenter) {
+    public void findUser(String user, Presenter<UserProfile> profilePresenter) {
         Database dataBase = Database.getINSTANCE();
-        dataBase.findUser(dataBase.getUser().getUserId())
-                .addOnSuccessListener((Database.OnSuccessListener<User>) user -> {
-                    dataBase.findPosts(user.getUuid())
+        dataBase.findUser(user)
+                .addOnSuccessListener((Database.OnSuccessListener<User>) user1 -> {
+                    dataBase.findPosts(user1.getUuid())
                             .addOnSuccessListener((Database.OnSuccessListener<List<Post>>) posts -> {
-                                profilePresenter.onSuccess(new UserProfile(user, posts));
+                                profilePresenter.onSuccess(new UserProfile(user1, posts));
                                 profilePresenter.onComplete();
                             });
                 });
