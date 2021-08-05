@@ -19,6 +19,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.instagram.R;
 import com.google.android.material.appbar.AppBarLayout;
@@ -37,7 +38,6 @@ import Main.Search.DataSource.SearchDataSource;
 import Main.Search.DataSource.SearchLocalDataSource;
 import Main.Search.Presentation.SearchFragment;
 import Main.Search.Presentation.SearchPresenter;
-import common.model.Database;
 import common.view.AbstractActivity;
 
 public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainView {
@@ -51,9 +51,12 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     //Fragment cameraFragment;
     Fragment searchFragment;
     Fragment active;
+    ProfileFragment profileDetailFragment;
+
     private ProfilePresenter profilePresenter;
     private HomePresenter homePresenter;
     private SearchPresenter searchPresenter;
+
 
     public static void launch(Context context, int source) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -124,7 +127,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
                 scrollToolbarEnabled(true);
-                profilePresenter.findUser(Database.getINSTANCE().getUser().getUserId());
+                profilePresenter.findUser();
             }
         }
     }
@@ -149,10 +152,36 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     public void showProfile(String user) {
-        getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
-        active = profileFragment;
+        ProfileDataSource dataSource = new ProfileLocalDataSource();
+        ProfilePresenter profilePresenter = new ProfilePresenter(dataSource, user);
+        profileDetailFragment = ProfileFragment.newInstance(this, profilePresenter);
+
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.main_fragment, profileDetailFragment, "detail");
+        transaction.hide(active);
+        transaction.commit();
+
         scrollToolbarEnabled(true);
-        profilePresenter.findUser(user);
+
+        if (getSupportActionBar() != null) {
+            Drawable drawable = findDrawable(R.drawable.ic_arrow_back);
+            getSupportActionBar().setHomeAsUpIndicator(drawable);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public void disposeProfileDetail() {
+        if (getSupportActionBar() != null) {
+            Drawable drawable = findDrawable(R.drawable.ic_insta_camera);
+            getSupportActionBar().setHomeAsUpIndicator(drawable);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.remove(profileDetailFragment);
+        transaction.show(active);
+        transaction.commit();
     }
 
     @Override
@@ -160,26 +189,30 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (item.getItemId()) {
             case R.id.menu_bottom_home:
+                if (profileDetailFragment != null)
+                    disposeProfileDetail();
                 fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
                 scrollToolbarEnabled(false);
-                //              homePresenter.findFeed();
+                //homePresenter.findFeed();
                 active = homeFragment;
                 return true;
             case R.id.menu_bottom_search:
-                fragmentManager.beginTransaction().hide(active).show(searchFragment).commit();
-                active = searchFragment;
-                scrollToolbarEnabled(false);
+                if (profileDetailFragment == null) {
+                    fragmentManager.beginTransaction().hide(active).show(searchFragment).commit();
+                    active = searchFragment;
+                    scrollToolbarEnabled(false);
+                }
                 return true;
             case R.id.menu_bottom_add:
-                /*fragmentManager.beginTransaction().hide(active).show(cameraFragment).commit();
-                active = cameraFragment;*/
                 AddActivity.launch(this);
                 return true;
             case R.id.menu_bottom_profile:
+                if (profileDetailFragment != null)
+                    disposeProfileDetail();
                 fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
-                scrollToolbarEnabled(true);
-                //          profilePresenter.findUser();
                 active = profileFragment;
+                scrollToolbarEnabled(true);
+                profilePresenter.findUser();
                 return true;
         }
         return false;

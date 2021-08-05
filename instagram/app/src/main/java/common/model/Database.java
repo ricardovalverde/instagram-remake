@@ -148,6 +148,35 @@ public class Database {
         return this;
     }
 
+    public Database following(String uuidMe, String uuid) {
+        timeOut(() -> {
+            HashMap<String, HashSet<String>> followers = Database.followers;
+            HashSet<String> followerOfUser = followers.get(uuid);
+
+            if (followerOfUser == null) {
+                followerOfUser = new HashSet<>();
+            }
+            boolean following = false;
+
+            for (String userUUID : followerOfUser) {
+                if (userUUID.equals(uuidMe)) {
+                    following = true;
+                    break;
+                }
+            }
+            if (onSuccessListener != null) {
+                onSuccessListener.onSuccess(following);
+            } else if (onFailureListener != null) {
+                onFailureListener.onFailure(new IllegalAccessException("Usuário não encontrado"));
+            }
+            if (onCompleteListener != null) {
+                onCompleteListener.onComplete();
+            }
+        });
+        return this;
+    }
+
+
     public Database addPhoto(String uuid, Uri uri) {
         timeOut(() -> {
             Set<User> users = Database.users;

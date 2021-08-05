@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -95,7 +96,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     @Override
     public void onResume() {
         super.onResume();
-        presenter.findUser(Database.getINSTANCE().getUser().getUserId());
+        presenter.findUser();
     }
 
     @Nullable
@@ -118,6 +119,18 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!presenter.getUser().equals(Database.getINSTANCE().getUser().getUserId())) {
+                    mainView.disposeProfileDetail();
+                    break;
+                }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void showPhoto(Uri photo) {
         if (getContext() != null && getContext().getContentResolver() != null) {
             try {
@@ -131,7 +144,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     }
 
     @Override
-    public void showData(String name, String following, String followers, String nPosts, boolean editProfile) {
+    public void showData(String name, String following, String followers, String nPosts, boolean editProfile, boolean follow) {
         txtUsername.setText(name);
         followingCount.setText(following);
         followersCount.setText(followers);
@@ -139,9 +152,9 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
         if (editProfile) {
             buttonEditProfile.setText(R.string.edit_profile);
-        } else {
-            buttonEditProfile.setText(R.string.follow);
-        }
+        } else if (follow) {
+            buttonEditProfile.setText(R.string.unfollow);
+        } else buttonEditProfile.setText(R.string.follow);
     }
 
     @Override

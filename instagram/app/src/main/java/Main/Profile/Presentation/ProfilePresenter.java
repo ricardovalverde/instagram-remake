@@ -13,10 +13,16 @@ import common.presenter.Presenter;
 public class ProfilePresenter implements Presenter<UserProfile> {
 
     private final ProfileDataSource profileDataSource;
+    private final String user;
     private MainView.ProfileView view;
 
-    public ProfilePresenter(ProfileDataSource profileDataSource) {
+    public ProfilePresenter(ProfileDataSource profileDataSource, String user) {
         this.profileDataSource = profileDataSource;
+        this.user = user;
+    }
+
+    public ProfilePresenter(ProfileDataSource profileDataSource) {
+        this(profileDataSource, Database.getINSTANCE().getUser().getUserId());
     }
 
     public void setView(MainView.ProfileView view) {
@@ -24,25 +30,29 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     }
 
 
-    public void findUser(String user) {
+    public void findUser() {
 
         view.showProgressBar();
         profileDataSource.findUser(user, this);
 
     }
 
+    public String getUser() {
+        return user;
+    }
 
     @Override
-    public void onSuccess(UserProfile response) {
-        User user = response.getUser();
-        List<Post> posts = response.getPosts();
+    public void onSuccess(UserProfile userProfile) {
+        User user = userProfile.getUser();
+        List<Post> posts = userProfile.getPosts();
         boolean editProfile = user.getUuid().equals(Database.getINSTANCE().getUser().getUserId());
 
         view.showData(user.getName(),
                 String.valueOf(user.getFollowing()),
                 String.valueOf(user.getFollowers()),
                 String.valueOf(user.getPost()),
-                editProfile);
+                editProfile,
+                userProfile.isFollowing());
 
         view.showPosts(posts);
 
