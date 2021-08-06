@@ -30,6 +30,7 @@ import java.util.List;
 
 import Main.Presentation.MainView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import common.model.Database;
 import common.model.Post;
 import common.view.AbstractFragment;
@@ -53,7 +54,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     @BindView(R.id.profile_navigation_tabs)
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.profile_button_edit_profile)
-    Button buttonEditProfile;
+    Button buttonProfile;
 
     private MainView mainView;
     private PostAdapter postAdapter;
@@ -151,10 +152,24 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         postCount.setText(nPosts);
 
         if (editProfile) {
-            buttonEditProfile.setText(R.string.edit_profile);
+            buttonProfile.setText(R.string.edit_profile);
         } else if (follow) {
-            buttonEditProfile.setText(R.string.unfollow);
-        } else buttonEditProfile.setText(R.string.follow);
+            buttonProfile.setText(R.string.unfollow);
+            buttonProfile.setTag(false);
+
+        } else {
+            buttonProfile.setText(R.string.follow);
+            buttonProfile.setTag(true);
+        }
+
+    }
+
+    @OnClick(R.id.profile_button_edit_profile)
+    public void onButtonProfileClick() {
+        Boolean follow = (Boolean) buttonProfile.getTag();
+        buttonProfile.setText(follow ? R.string.unfollow : R.string.follow);
+        presenter.follow(follow);
+        buttonProfile.setTag(!follow);
     }
 
     @Override

@@ -29,6 +29,13 @@ public class ProfilePresenter implements Presenter<UserProfile> {
         this.view = view;
     }
 
+    public void follow(boolean follow) {
+        if (follow) {
+            profileDataSource.follow(user);
+        } else {
+            profileDataSource.unfollow(user);
+        }
+    }
 
     public void findUser() {
 

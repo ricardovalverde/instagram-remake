@@ -24,4 +24,15 @@ public class ProfileLocalDataSource implements ProfileDataSource {
                             });
                 });
     }
+
+    @Override
+    public void follow(String user) {
+        Database.getINSTANCE().follow(Database.getINSTANCE().getUser().getUserId(), user);
+
+    }
+
+    @Override
+    public void unfollow(String user) {
+        Database.getINSTANCE().unfollow(Database.getINSTANCE().getUser().getUserId(), user);
+    }
 }
