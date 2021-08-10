@@ -5,17 +5,16 @@ import android.widget.EditText;
 
 import com.example.instagram.R;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import Login.DataSource.LoginDataSource;
-import Login.DataSource.LoginLocalDataSource;
+import Login.DataSource.LoginFireBaseDataSource;
 import Main.Presentation.MainActivity;
 import Register.presentation.RegisterActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import common.component.LoadingButton;
-import common.model.Database;
-import common.model.UserAuth;
 import common.view.AbstractActivity;
 
 public class LoginActivity extends AbstractActivity implements LoginView {
@@ -42,7 +41,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setStatusBarDark();
 
-        UserAuth userAuth = Database.getINSTANCE().getUser();
+        String userAuth = FirebaseAuth.getInstance().getUid();
         if (userAuth != null) {
             onUserLogged();
         }
@@ -50,7 +49,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 
     @Override
     protected void onInject() {
-        LoginDataSource dataSource = new LoginLocalDataSource();
+        LoginDataSource dataSource = new LoginFireBaseDataSource();
         presenter = new LoginPresenter(this, dataSource);
     }
 

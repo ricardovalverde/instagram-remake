@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram.R;
 
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
     public static class homeViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView imagesPost;
-        private final ImageView userIcon;
+        private final ImageView userImage;
         private final TextView username;
         private final TextView caption;
 
@@ -106,17 +107,18 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         public homeViewHolder(@NonNull View itemView) {
             super(itemView);
             imagesPost = itemView.findViewById(R.id.post_image_grid);
-            userIcon = itemView.findViewById(R.id.home_image_user);
+            userImage = itemView.findViewById(R.id.home_image_user);
             username = itemView.findViewById(R.id.home_username);
             caption = itemView.findViewById(R.id.home_image_caption);
         }
 
         public void bind(Feed feed) {
-            this.imagesPost.setImageURI(feed.getUri());
+            Glide.with(itemView.getContext()).load(feed.getPhotoUrl()).into(this.imagesPost);
             this.caption.setText(feed.getCaption());
+
             User user = feed.getPublisher();
             if (user != null) {
-                this.userIcon.setImageURI(user.getUri());
+                Glide.with(itemView.getContext()).load(user.getUrlPhoto()).into(this.userImage);
                 this.username.setText(user.getName());
             }
         }

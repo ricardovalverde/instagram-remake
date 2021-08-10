@@ -8,6 +8,7 @@ public class User {
     private String name;
     private String email;
     private String uuid;
+    private String urlPhoto;
     private Uri uri;
     private int following, followers, post;
 
@@ -25,6 +26,14 @@ public class User {
 
     public void setUri(Uri uri) {
         this.uri = uri;
+    }
+
+    public String getUrlPhoto() {
+        return urlPhoto;
+    }
+
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
     }
 
     @Override

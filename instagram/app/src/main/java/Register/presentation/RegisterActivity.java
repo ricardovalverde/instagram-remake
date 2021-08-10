@@ -20,7 +20,7 @@ import com.example.instagram.R;
 
 import Main.Presentation.MainActivity;
 import Register.datasource.RegisterDataSource;
-import Register.datasource.RegisterLocalDataSource;
+import Register.datasource.RegisterFirebaseDataSource;
 import butterknife.BindView;
 import butterknife.OnClick;
 import common.component.MediaHelper;
@@ -56,7 +56,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
     @Override
     protected void onInject() {
-        RegisterDataSource dataSource = new RegisterLocalDataSource();
+        RegisterDataSource dataSource = new RegisterFirebaseDataSource();
         registerPresenter = new RegisterPresenter(dataSource);
         registerPresenter.setRegisterView(this);
 

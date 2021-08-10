@@ -1,13 +1,13 @@
 package Login.Presentation;
 
 import com.example.instagram.R;
+import com.google.firebase.auth.FirebaseUser;
 
 import Login.DataSource.LoginDataSource;
-import common.model.UserAuth;
 import common.presenter.Presenter;
 import common.util.Strings;
 
-class LoginPresenter implements Presenter<UserAuth> {
+class LoginPresenter implements Presenter<FirebaseUser> {
 
     private final LoginView view;
     private final LoginDataSource dataSource;
@@ -27,7 +27,7 @@ class LoginPresenter implements Presenter<UserAuth> {
     }
 
     @Override
-    public void onSuccess(UserAuth userAuth) {
+    public void onSuccess(FirebaseUser userAuth) {
         view.onUserLogged();
     }
 

@@ -27,7 +27,7 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-        String email = "user1@gmail.com";
+        /*String email = "user1@gmail.com";
         String password = "123";
         String name = "user";
         init(email, password, name);
@@ -37,7 +37,7 @@ public class Database {
             password = "1232";
             name = "user" + i;
             init(email, password, name);
-        }
+        }*/
 
     }
 

@@ -27,7 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import Main.Camera.Presentation.AddActivity;
 import Main.Home.DataSource.HomeDataSource;
-import Main.Home.DataSource.HomeLocalDataSource;
+import Main.Home.DataSource.HomeFireBaseDataSource;
 import Main.Home.Presentation.HomeFragment;
 import Main.Home.Presentation.HomePresenter;
 import Main.Profile.DataSource.ProfileDataSource;
@@ -70,7 +70,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         ProfileDataSource profileDataSource = new ProfileLocalDataSource();
         profilePresenter = new ProfilePresenter(profileDataSource);
 
-        HomeDataSource homeDataSource = new HomeLocalDataSource();
+        HomeDataSource homeDataSource = new HomeFireBaseDataSource();
         homePresenter = new HomePresenter(homeDataSource);
 
         homeFragment = HomeFragment.newInstance(this, homePresenter);

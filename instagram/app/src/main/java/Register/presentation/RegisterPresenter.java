@@ -3,13 +3,13 @@ package Register.presentation;
 import android.net.Uri;
 
 import com.example.instagram.R;
+import com.google.firebase.auth.FirebaseUser;
 
 import Register.datasource.RegisterDataSource;
-import common.model.UserAuth;
 import common.presenter.Presenter;
 import common.util.Strings;
 
-public class RegisterPresenter implements Presenter<UserAuth> {
+public class RegisterPresenter implements Presenter<FirebaseUser> {
 
     private final RegisterDataSource dataSource;
     private RegisterView registerView;
@@ -81,7 +81,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
         this.name = name;
 
         namePasswordView.showProgressBar();
-        dataSource.createUser(name, email, password, this);
+        dataSource.createUser(name.toLowerCase(), email, password, this);
 
     }
 
@@ -98,7 +98,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
     }
 
     @Override
-    public void onSuccess(UserAuth response) {
+    public void onSuccess(FirebaseUser response) {
         registerView.showNextView(RegisterSteps.WELCOME);
     }
 
