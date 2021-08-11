@@ -31,7 +31,7 @@ import Main.Home.DataSource.HomeFireBaseDataSource;
 import Main.Home.Presentation.HomeFragment;
 import Main.Home.Presentation.HomePresenter;
 import Main.Profile.DataSource.ProfileDataSource;
-import Main.Profile.DataSource.ProfileLocalDataSource;
+import Main.Profile.DataSource.ProfileFirebaseDataSource;
 import Main.Profile.Presentation.ProfileFragment;
 import Main.Profile.Presentation.ProfilePresenter;
 import Main.Search.DataSource.SearchDataSource;
@@ -67,7 +67,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
-        ProfileDataSource profileDataSource = new ProfileLocalDataSource();
+        ProfileDataSource profileDataSource = new ProfileFirebaseDataSource();
         profilePresenter = new ProfilePresenter(profileDataSource);
 
         HomeDataSource homeDataSource = new HomeFireBaseDataSource();
@@ -152,7 +152,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     public void showProfile(String user) {
-        ProfileDataSource dataSource = new ProfileLocalDataSource();
+        ProfileDataSource dataSource = new ProfileFirebaseDataSource();
         ProfilePresenter profilePresenter = new ProfilePresenter(dataSource, user);
         profileDetailFragment = ProfileFragment.newInstance(this, profilePresenter);
 

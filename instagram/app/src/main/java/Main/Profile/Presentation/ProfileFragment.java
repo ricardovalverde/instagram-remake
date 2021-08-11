@@ -1,10 +1,6 @@
 package Main.Profile.Presentation;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,17 +17,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import Main.Presentation.MainView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import common.model.Database;
 import common.model.Post;
 import common.view.AbstractFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,7 +38,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     @BindView(R.id.profile_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.profile_image_icon)
-    CircleImageView profileImage;
+    CircleImageView imageViewProfile;
     @BindView(R.id.profile_text_view_username)
     TextView txtUsername;
     @BindView(R.id.profile_text_view_following_count)
@@ -123,7 +119,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (!presenter.getUser().equals(Database.getINSTANCE().getUser().getUserId())) {
+                if (!presenter.getUser().equals(FirebaseAuth.getInstance().getUid())) {
                     mainView.disposeProfileDetail();
                     break;
                 }
@@ -132,16 +128,8 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     }
 
     @Override
-    public void showPhoto(Uri photo) {
-        if (getContext() != null && getContext().getContentResolver() != null) {
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photo);
-
-                profileImage.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                Log.e("ShowPhoto", e.getMessage(), e);
-            }
-        }
+    public void showPhoto(String photo) {
+        Glide.with(getContext()).load(photo).into(imageViewProfile);
     }
 
     @Override
@@ -153,6 +141,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
         if (editProfile) {
             buttonProfile.setText(R.string.edit_profile);
+            buttonProfile.setTag(null);
         } else if (follow) {
             buttonProfile.setText(R.string.unfollow);
             buttonProfile.setTag(false);
@@ -167,9 +156,11 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     @OnClick(R.id.profile_button_edit_profile)
     public void onButtonProfileClick() {
         Boolean follow = (Boolean) buttonProfile.getTag();
-        buttonProfile.setText(follow ? R.string.unfollow : R.string.follow);
-        presenter.follow(follow);
-        buttonProfile.setTag(!follow);
+        if (follow != null) {
+            buttonProfile.setText(follow ? R.string.unfollow : R.string.follow);
+            presenter.follow(follow);
+            buttonProfile.setTag(!follow);
+        }
     }
 
     @Override
@@ -202,7 +193,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         }
 
         public void bind(Post post) {
-            this.imageView.setImageURI(post.getUri());
+            Glide.with(itemView.getContext()).load(post).into(imageView);
         }
     }
 

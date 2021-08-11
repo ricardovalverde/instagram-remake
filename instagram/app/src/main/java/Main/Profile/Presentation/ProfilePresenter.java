@@ -1,10 +1,11 @@
 package Main.Profile.Presentation;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 import Main.Presentation.MainView;
 import Main.Profile.DataSource.ProfileDataSource;
-import common.model.Database;
 import common.model.Post;
 import common.model.User;
 import common.model.UserProfile;
@@ -22,7 +23,7 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     }
 
     public ProfilePresenter(ProfileDataSource profileDataSource) {
-        this(profileDataSource, Database.getINSTANCE().getUser().getUserId());
+        this(profileDataSource, FirebaseAuth.getInstance().getUid());
     }
 
     public void setView(MainView.ProfileView view) {
@@ -52,7 +53,7 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     public void onSuccess(UserProfile userProfile) {
         User user = userProfile.getUser();
         List<Post> posts = userProfile.getPosts();
-        boolean editProfile = user.getUuid().equals(Database.getINSTANCE().getUser().getUserId());
+        boolean editProfile = user.getUuid().equals(FirebaseAuth.getInstance().getUid());
 
         view.showData(user.getName(),
                 String.valueOf(user.getFollowing()),
@@ -63,8 +64,8 @@ public class ProfilePresenter implements Presenter<UserProfile> {
 
         view.showPosts(posts);
 
-        if (user.getUri() != null) {
-            view.showPhoto(user.getUri());
+        if (user.getUrlPhoto() != null) {
+            view.showPhoto(user.getUrlPhoto());
         }
 
     }

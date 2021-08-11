@@ -1,7 +1,5 @@
 package Main.Presentation;
 
-import android.net.Uri;
-
 import java.util.List;
 
 import common.model.Feed;
@@ -17,7 +15,7 @@ public interface MainView extends View {
     void disposeProfileDetail();
 
     public interface ProfileView extends View {
-        void showPhoto(Uri uri);
+        void showPhoto(String url);
 
         void showData(String name, String following, String followers, String nPosts, boolean editProfile, boolean follow);
 
