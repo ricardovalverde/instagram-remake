@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram.R;
 
 import java.util.ArrayList;
@@ -119,19 +120,19 @@ public class SearchFragment extends AbstractFragment<SearchPresenter> implements
     }
 
     private static class searchHolder extends RecyclerView.ViewHolder {
-        private final ImageView userImage;
+        private final ImageView imageUser;
         private final TextView username;
         private final TextView name;
 
         public searchHolder(@NonNull View itemView) {
             super(itemView);
-            userImage = itemView.findViewById(R.id.main_search_imageview_user);
+            imageUser = itemView.findViewById(R.id.main_search_imageview_user);
             username = itemView.findViewById(R.id.main_search_text_view_username);
             name = itemView.findViewById(R.id.main_search_text_view_name);
         }
 
         public void bind(User user) {
-            this.userImage.setImageURI(user.getUri());
+            Glide.with(itemView.getContext()).load(user.getUrlPhoto()).into(imageUser);
             this.username.setText(user.getName());
             this.name.setText(user.getName());
         }

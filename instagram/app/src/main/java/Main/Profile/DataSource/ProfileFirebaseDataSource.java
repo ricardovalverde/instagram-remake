@@ -1,6 +1,7 @@
 package Main.Profile.DataSource;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -46,8 +47,8 @@ public class ProfileFirebaseDataSource implements ProfileDataSource {
                                         .document(FirebaseAuth.getInstance().getUid())
                                         .get()
                                         .addOnSuccessListener(documentSnapshot1 -> {
-                                            boolean exists = documentSnapshot1.exists();
-                                            profilePresenter.onSuccess(new UserProfile(user, postList, exists));
+                                            boolean following = documentSnapshot1.exists();
+                                            profilePresenter.onSuccess(new UserProfile(user, postList, following));
                                             profilePresenter.onComplete();
                                         })
                                         .addOnFailureListener(e -> profilePresenter.onError(e.getMessage()));
@@ -115,7 +116,38 @@ public class ProfileFirebaseDataSource implements ProfileDataSource {
     }
 
     @Override
-    public void unfollow(String user) {
+    public void unfollow(String uuid) {
+        FirebaseFirestore.getInstance()
+                .collection("user")
+                .document(uuid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    User user = task.getResult().toObject(User.class);
 
+                    FirebaseFirestore.getInstance()
+                            .collection("followers")
+                            .document(uuid)
+                            .collection("followers")
+                            .document(FirebaseAuth.getInstance().getUid())
+                            .delete();
+
+                    FirebaseFirestore.getInstance()
+                            .collection("feed")
+                            .document(FirebaseAuth.getInstance().getUid())
+                            .collection("posts")
+                            .whereEqualTo("publisher.uuid", uuid)
+                            .get()
+                            .addOnCompleteListener(taskResult -> {
+
+                                if (taskResult.isSuccessful()) {
+                                    List<DocumentSnapshot> documents = taskResult.getResult().getDocuments();
+
+                                    for (DocumentSnapshot doc : documents) {
+                                        DocumentReference reference = doc.getReference();
+                                        reference.delete();
+                                    }
+                                }
+                            });
+                });
     }
 }

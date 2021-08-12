@@ -17,14 +17,15 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     private final String user;
     private MainView.ProfileView view;
 
+    public ProfilePresenter(ProfileDataSource profileDataSource) {
+        this(profileDataSource, FirebaseAuth.getInstance().getUid());
+    }
+
     public ProfilePresenter(ProfileDataSource profileDataSource, String user) {
         this.profileDataSource = profileDataSource;
         this.user = user;
     }
 
-    public ProfilePresenter(ProfileDataSource profileDataSource) {
-        this(profileDataSource, FirebaseAuth.getInstance().getUid());
-    }
 
     public void setView(MainView.ProfileView view) {
         this.view = view;

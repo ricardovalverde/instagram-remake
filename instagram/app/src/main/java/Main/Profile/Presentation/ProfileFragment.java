@@ -185,15 +185,15 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     }
 
     private static class viewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
+        private final ImageView imagePost;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.profile_image_grid);
+            imagePost = itemView.findViewById(R.id.profile_image_grid);
         }
 
         public void bind(Post post) {
-            Glide.with(itemView.getContext()).load(post).into(imageView);
+            Glide.with(itemView.getContext()).load(post).into(imagePost);
         }
     }
 

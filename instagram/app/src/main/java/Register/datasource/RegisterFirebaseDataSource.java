@@ -48,7 +48,9 @@ public class RegisterFirebaseDataSource implements RegisterDataSource {
                 .addOnSuccessListener(taskSnapshot -> {
                     imageReference.getDownloadUrl()
                             .addOnSuccessListener(uriResponse -> {
-                                DocumentReference documentReference = FirebaseFirestore.getInstance().collection("user").document(uuid);
+                                DocumentReference documentReference = FirebaseFirestore.getInstance()
+                                        .collection("user")
+                                        .document(uuid);
                                 documentReference.get()
                                         .addOnSuccessListener(documentTask -> {
                                             User user = documentTask.toObject(User.class);

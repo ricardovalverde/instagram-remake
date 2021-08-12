@@ -35,7 +35,7 @@ import Main.Profile.DataSource.ProfileFirebaseDataSource;
 import Main.Profile.Presentation.ProfileFragment;
 import Main.Profile.Presentation.ProfilePresenter;
 import Main.Search.DataSource.SearchDataSource;
-import Main.Search.DataSource.SearchLocalDataSource;
+import Main.Search.DataSource.SearchFirebaseDataSource;
 import Main.Search.Presentation.SearchFragment;
 import Main.Search.Presentation.SearchPresenter;
 import common.view.AbstractActivity;
@@ -76,7 +76,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         homeFragment = HomeFragment.newInstance(this, homePresenter);
         profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
-        SearchDataSource searchDataSource = new SearchLocalDataSource();
+        SearchDataSource searchDataSource = new SearchFirebaseDataSource();
         searchPresenter = new SearchPresenter(searchDataSource);
         searchFragment = SearchFragment.newInstance(this, searchPresenter);
 
