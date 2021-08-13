@@ -45,17 +45,6 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
         return fragment;
     }
 
-    @Override
-    public void onFailureForm(String nameError, String passwordError) {
-        if (nameError != null) {
-            nameTextInputLayout.setError(nameError);
-            nameTextInputLayout.setBackground(findDrawable(R.drawable.edit_text_background_error));
-        }
-        passwordTextInputLayout.setError(passwordError);
-        password.setBackground(findDrawable(R.drawable.edit_text_background_error));
-    }
-
-
     @OnClick(R.id.register_button_continue)
     public void onButtonNextClick() {
         hideInput(getContext(), confirmPassword);
@@ -91,6 +80,16 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
     public void onFailureCreateUser(String messageError) {
         hideInput(getContext(), confirmPassword);
         Toast.makeText(getContext(), messageError, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFailureForm(String nameError, String passwordError) {
+        if (nameError != null) {
+            nameTextInputLayout.setError(nameError);
+            nameTextInputLayout.setBackground(findDrawable(R.drawable.edit_text_background_error));
+        }
+        passwordTextInputLayout.setError(passwordError);
+        password.setBackground(findDrawable(R.drawable.edit_text_background_error));
     }
 
     @Override

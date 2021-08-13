@@ -5,6 +5,16 @@
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.17962962962962964" />
+        <entry key="app/src/main/res/drawable/button_background_circle.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/button_background_circle_disable.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/button_background_circle_enable.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/button_background_disabled.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/button_background_enabled.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/button_background_white.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/edit_text_background.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/edit_text_background_error.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.2194871794871795" />
+        <entry key="app/src/main/res/drawable/ic_close.xml" value="0.2194871794871795" />
         <entry key="app/src/main/res/drawable/ic_insta_bullet.xml" value="0.17962962962962964" />
         <entry key="app/src/main/res/layout/activity_add.xml" value="0.1361111111111111" />
         <entry key="app/src/main/res/layout/activity_add_caption.xml" value="0.20989583333333334" />

@@ -21,7 +21,6 @@ public class AddPresenter implements Presenter<Void> {
         dataSource.savePost(uri, caption, this);
     }
 
-
     @Override
     public void onSuccess(Void response) {
         view.postSaved();

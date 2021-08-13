@@ -43,15 +43,15 @@ import common.view.AbstractActivity;
 
 public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainView {
 
-
     public static final String ACT_SOURCE = "act_source";
     public static final int LOGIN_ACTIVITY = 0;
     public static final int REGISTER_ACTIVITY = 1;
+
     Fragment homeFragment;
     Fragment profileFragment;
-    //Fragment cameraFragment;
     Fragment searchFragment;
     Fragment active;
+
     ProfileFragment profileDetailFragment;
 
     private ProfilePresenter profilePresenter;
@@ -81,14 +81,10 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         searchPresenter = new SearchPresenter(searchDataSource);
         searchFragment = SearchFragment.newInstance(this, searchPresenter);
 
-        //cameraFragment = new CameraFragment();
-
-
         active = homeFragment;
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.main_fragment, profileFragment).hide(profileFragment).commit();
-        //fragmentManager.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, homeFragment).commit();
     }
@@ -156,7 +152,6 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         ProfileDataSource dataSource = new ProfileFirebaseDataSource();
         ProfilePresenter profilePresenter = new ProfilePresenter(dataSource, user);
         profileDetailFragment = ProfileFragment.newInstance(this, profilePresenter);
-
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.main_fragment, profileDetailFragment, "detail");

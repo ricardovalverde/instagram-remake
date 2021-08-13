@@ -49,7 +49,6 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
         galleryFragment.setPresenter(presenter);
         galleryFragment.addView(view);
 
-
         return galleryFragment;
     }
 
@@ -121,18 +120,8 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_main_gallery;
-    }
-
-    interface GalleryItemClickListener {
-        void onClick(Uri uri);
-    }
-
     public static class galleryHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
-
 
         public galleryHolder(@NonNull View itemView) {
             super(itemView);
@@ -175,6 +164,15 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
             return uriList.size();
         }
 
+    }
+
+    interface GalleryItemClickListener {
+        void onClick(Uri uri);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_main_gallery;
     }
 
 }

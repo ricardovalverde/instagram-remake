@@ -51,7 +51,6 @@ public class CameraFragment extends AbstractFragment {
         this.addView = addView;
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

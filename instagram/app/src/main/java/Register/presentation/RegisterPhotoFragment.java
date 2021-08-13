@@ -41,13 +41,19 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         buttonNext.setEnabled(true);
-
-
     }
 
     @Override
-    public void showProgressBar() {
-        buttonNext.showProgressBar(true);
+    public void onImageCropped(Uri uri) {
+        try {
+            if (getContext() != null && getContext().getContentResolver() != null) {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                imageViewCropped.setImageBitmap(bitmap);
+            }
+        } catch (IOException e) {
+            Log.e("Teste", e.getMessage());
+        }
+
     }
 
     @OnClick(R.id.register_button_next)
@@ -69,28 +75,18 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
 
     }
 
-    @Override
-    public void onImageCropped(Uri uri) {
-        try {
-            if (getContext() != null && getContext().getContentResolver() != null) {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                imageViewCropped.setImageBitmap(bitmap);
-            }
-        } catch (IOException e) {
-            Log.e("Teste", e.getMessage());
-        }
-
-    }
-
     @OnClick(R.id.register_button_jump)
     public void onButtonJumpClick() {
         presenter.jumpRegistration();
     }
 
     @Override
+    public void showProgressBar() {
+        buttonNext.showProgressBar(true);
+    }
+
+    @Override
     protected int getLayout() {
         return R.layout.fragment_register_photo;
     }
-
-
 }

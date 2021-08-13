@@ -7,5 +7,4 @@ import common.presenter.Presenter;
 
 public interface HomeDataSource {
     void findFeed(Presenter<List<Feed>> presenter);
-
 }

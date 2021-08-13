@@ -9,8 +9,8 @@ public class Post {
     private String uuid;
     private String caption;
     private String photoUrl;
-    private long timestamp;
     private Uri uri;
+    private long timestamp;
 
     public String getUuid() {
         return uuid;

@@ -48,6 +48,21 @@ public class MediaHelper {
     private Uri mCropImageUri;
     private Uri mSavedImageUri;
 
+    private Context getContext() {
+        if (fragment != null && fragment.getActivity() != null) {
+            return fragment.getActivity();
+        }
+        return activity;
+    }
+
+    private void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    private void setFragment(Fragment fragment) {
+        this.fragment = fragment;
+    }
+
     public static MediaHelper getINSTANCE(Activity activity) {
         if (INSTANCE == null) {
 
@@ -78,21 +93,13 @@ public class MediaHelper {
         return INSTANCE.get();
     }
 
-    private static Bitmap rotate(Bitmap bitmap, int degree) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
+    public void cropImage(CropImageView cropImageView) {
 
-        Matrix matrix = new Matrix();
-        matrix.setRotate(degree);
-
-        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-    }
-
-    private Context getContext() {
-        if (fragment != null && fragment.getActivity() != null) {
-            return fragment.getActivity();
+        File getImage = getContext().getExternalCacheDir();
+        if (getImage != null) {
+            mSavedImageUri = Uri.fromFile(new File(getImage.getPath(), System.currentTimeMillis() + ".jpeg"));
         }
-        return activity;
+        cropImageView.saveCroppedImageAsync(mSavedImageUri, Bitmap.CompressFormat.JPEG, 90, 0, 0, CropImageView.RequestSizeOptions.NONE);
     }
 
     public MediaHelper setCropImageView(CropImageView cropImageView) {
@@ -111,6 +118,16 @@ public class MediaHelper {
     public MediaHelper setListener(OnImageCropped listener) {
         this.listener = listener;
         return this;
+    }
+
+    private static Bitmap rotate(Bitmap bitmap, int degree) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.setRotate(degree);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -140,13 +157,25 @@ public class MediaHelper {
         }
     }
 
-    public void cropImage(CropImageView cropImageView) {
+    public boolean checkCameraHardware(Context context) {
 
-        File getImage = getContext().getExternalCacheDir();
-        if (getImage != null) {
-            mSavedImageUri = Uri.fromFile(new File(getImage.getPath(), System.currentTimeMillis() + ".jpeg"));
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    public Camera getCameraInstance(Fragment fragment, Context context) {
+        Camera camera = null;
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && fragment != null && (context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+                fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
+                return null;
+            }
+            camera = Camera.open();
+
+        } catch (Exception e) {
+            Log.i("CameraInstance", "Error get Camera Instance");
         }
-        cropImageView.saveCroppedImageAsync(mSavedImageUri, Bitmap.CompressFormat.JPEG, 90, 0, 0, CropImageView.RequestSizeOptions.NONE);
+        return camera;
     }
 
     public void chooserGallery() {
@@ -184,14 +213,6 @@ public class MediaHelper {
 
     }
 
-    private void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
-    private void setFragment(Fragment fragment) {
-        this.fragment = fragment;
-    }
-
     private File createImageFile() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timestamp + "_";
@@ -199,25 +220,18 @@ public class MediaHelper {
         return File.createTempFile(imageFileName, ".jpeg", storageDir);
     }
 
-    public boolean checkCameraHardware(Context context) {
+    private File createCameraFile(Context context, boolean temp) {
+        if (getContext() == null) return null;
 
-        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
-    }
-
-    public Camera getCameraInstance(Fragment fragment, Context context) {
-        Camera camera = null;
-
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && fragment != null && (context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
-                fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
+        File mediaStorageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (mediaStorageDir != null && !mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.i("mediaStorageDir", "failed to create directory");
                 return null;
             }
-            camera = Camera.open();
-
-        } catch (Exception e) {
-            Log.i("CameraInstance", "Error get Camera Instance");
         }
-        return camera;
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHss", Locale.getDefault()).format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator + (temp ? "TEMP_" : "IMG") + timestamp + ".jpg");
     }
 
     public Uri saveCameraFile(Context context, byte[] bytes) {
@@ -273,20 +287,6 @@ public class MediaHelper {
             e.printStackTrace();
         }
         return Uri.fromFile(outputMediaFile);
-    }
-
-    private File createCameraFile(Context context, boolean temp) {
-        if (getContext() == null) return null;
-
-        File mediaStorageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (mediaStorageDir != null && !mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.i("mediaStorageDir", "failed to create directory");
-                return null;
-            }
-        }
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHss", Locale.getDefault()).format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator + (temp ? "TEMP_" : "IMG") + timestamp + ".jpg");
     }
 
     public interface OnImageCropped {

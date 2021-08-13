@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name="Main.Presentation.MainActivity"
             android:launchMode="singleTop"
@@ -24,6 +25,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -32,6 +34,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/serachable" />
         </activity>
+
         <activity
             android:name="Main.Camera.Presentation.AddCaptionActivity"
             android:exported="true"
@@ -39,12 +42,15 @@
             android:label="@string/photo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name="Main.Camera.Presentation.AddActivity"
             android:label="@string/photo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
         <activity android:name="Register.presentation.RegisterActivity" />
+
         <activity android:name="Login.Presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,6 +68,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
     </application>
 
 </manifest>

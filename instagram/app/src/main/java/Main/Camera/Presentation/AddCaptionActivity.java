@@ -36,11 +36,19 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
     private Uri uri;
     private AddPresenter presenter;
 
-
     public static void launch(Context context, Uri uri) {
         Intent intent = new Intent(context, AddCaptionActivity.class);
         intent.putExtra("uri", uri);
         context.startActivity(intent);
+    }
+
+    @Override
+    protected void onInject() {
+        uri = getIntent().getExtras().getParcelable("uri");
+        previewImageView.setImageURI(uri);
+
+        AddDataSource dataSource = new AddFirebaseDataSource();
+        presenter = new AddPresenter(this, dataSource);
     }
 
     @Override
@@ -57,25 +65,6 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
         }
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-    }
-
-    @Override
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onInject() {
-        uri = getIntent().getExtras().getParcelable("uri");
-        previewImageView.setImageURI(uri);
-
-        AddDataSource dataSource = new AddFirebaseDataSource();
-        presenter = new AddPresenter(this, dataSource);
     }
 
     @Override
@@ -100,6 +89,16 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

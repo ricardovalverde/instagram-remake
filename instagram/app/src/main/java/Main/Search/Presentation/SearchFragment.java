@@ -52,6 +52,12 @@ public class SearchFragment extends AbstractFragment<SearchPresenter> implements
         this.mainView = mainView;
     }
 
+    @Override
+    public void showUsers(List<User> users) {
+        adapter.setUsers(users, user -> mainView.showProfile(user.getUuid()));
+        adapter.notifyDataSetChanged();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,7 +66,6 @@ public class SearchFragment extends AbstractFragment<SearchPresenter> implements
         adapter = new searchAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-
 
         return view;
     }
@@ -104,20 +109,6 @@ public class SearchFragment extends AbstractFragment<SearchPresenter> implements
         }
     }
 
-    @Override
-    public void showUsers(List<User> users) {
-        adapter.setUsers(users, user -> mainView.showProfile(user.getUuid()));
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_main_search;
-    }
-
-    public interface ItemClickListener {
-        void onClick(User user);
-    }
 
     private static class searchHolder extends RecyclerView.ViewHolder {
         private final ImageView imageUser;
@@ -169,5 +160,12 @@ public class SearchFragment extends AbstractFragment<SearchPresenter> implements
         }
     }
 
+    public interface ItemClickListener {
+        void onClick(User user);
+    }
 
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_main_search;
+    }
 }

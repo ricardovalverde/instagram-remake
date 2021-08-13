@@ -12,9 +12,11 @@ public class Database {
 
     private static Database INSTANCE;
     private static UserAuth userAuth;
+
     private static Set<UserAuth> usersAuth;
     private static Set<User> users;
     private static Set<Uri> storages;
+
     private static HashMap<String, HashSet<Post>> posts;
     private static HashMap<String, HashSet<Feed>> feed;
     private static HashMap<String, HashSet<String>> followers;
@@ -26,19 +28,6 @@ public class Database {
         posts = new HashMap<>();
         feed = new HashMap<>();
         followers = new HashMap<>();
-
-        /*String email = "user1@gmail.com";
-        String password = "123";
-        String name = "user";
-        init(email, password, name);
-
-        for (int i = 0; i < 31; i++) {
-            email = "user" + i + "@gmail.com";
-            password = "1232";
-            name = "user" + i;
-            init(email, password, name);
-        }*/
-
     }
 
     private OnSuccessListener onSuccessListener;
@@ -51,7 +40,6 @@ public class Database {
 
 
     public static void init(String email, String password, String name) {
-
 
         UserAuth userAuth = new UserAuth();
         userAuth.setPassword(password);
@@ -66,6 +54,119 @@ public class Database {
 
         users.add(user);
         Database.userAuth = userAuth;
+    }
+
+    public Database createUser(String name, String email, String password) {
+        timeOut(() -> {
+            UserAuth userAuth = new UserAuth();
+            userAuth.setEmail(email);
+            userAuth.setPassword(password);
+
+            usersAuth.add(userAuth);
+
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setUuid(userAuth.getUserId());
+
+            boolean added = users.add(user);
+            if (added) {
+                Database.userAuth = userAuth;
+                HashMap<String, HashSet<String>> followersMap = Database.followers;
+                followersMap.put(userAuth.getUserId(), new HashSet<>());
+
+                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
+                feedMap.put(userAuth.getUserId(), new HashSet<>());
+
+                if (onSuccessListener != null)
+                    onSuccessListener.onSuccess(userAuth);
+            } else {
+                Database.userAuth = null;
+                if (onFailureListener != null)
+                    onFailureListener.onFailure(new IllegalAccessException("Usuário já existe"));
+            }
+            if (onCompleteListener != null)
+                onCompleteListener.onComplete();
+        });
+        return this;
+    }
+
+    public Database createPost(String uuid, Uri uri, String caption) {
+        timeOut(() -> {
+            HashMap<String, HashSet<Post>> postMap = Database.posts;
+            HashSet<Post> posts = postMap.get(uuid);
+
+            if (posts == null) {
+                posts = new HashSet<>();
+                postMap.put(uuid, posts);
+            }
+            Post post = new Post();
+
+            post.setUri(uri);
+            post.setCaption(caption);
+            post.setTimestamp(System.currentTimeMillis());
+            post.setUuid(String.valueOf(post.hashCode()));
+
+            posts.add(post);
+
+            HashMap<String, HashSet<String>> followerMap = Database.followers;
+            HashSet<String> followers = followerMap.get(uuid);
+
+            if (followers == null) {
+                followers = new HashSet<>();
+                followerMap.put(uuid, followers);
+            } else {
+                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
+                for (String follower : followers) {
+                    HashSet<Feed> feeds = feedMap.get(follower);
+
+                    if (feeds != null) {
+                        Feed feed = new Feed();
+                        feed.setUri(post.getUri());
+                        feed.setCaption(post.getCaption());
+                        feed.setTimestamp(post.getTimestamp());
+
+                        feeds.add(feed);
+                    }
+                }
+                HashSet<Feed> feedMe = feedMap.get(uuid);
+
+                if (feedMe != null) {
+                    Feed feed = new Feed();
+                    feed.setUri(post.getUri());
+                    feed.setCaption(post.getCaption());
+                    feed.setTimestamp(post.getTimestamp());
+
+                    feedMe.add(feed);
+                }
+            }
+            if (onSuccessListener != null) {
+                onSuccessListener.onSuccess(null);
+            }
+            if (onCompleteListener != null) {
+                onCompleteListener.onComplete();
+            }
+
+        });
+        return this;
+    }
+
+    public Database login(String email, String password) {
+        timeOut(() -> {
+            UserAuth user = new UserAuth();
+            user.setEmail(email);
+            user.setPassword(password);
+
+            if (usersAuth.contains(user)) {
+                Database.userAuth = user;
+                onSuccessListener.onSuccess(user);
+            } else {
+                Database.userAuth = null;
+                onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
+            }
+            onCompleteListener.onComplete();
+        });
+        return this;
     }
 
     public Database findPosts(String uuid) {
@@ -83,7 +184,6 @@ public class Database {
                 onCompleteListener.onComplete();
             }
         });
-
         return this;
     }
 
@@ -101,9 +201,7 @@ public class Database {
             if (onCompleteListener != null) {
                 onCompleteListener.onComplete();
             }
-
         });
-
         return this;
     }
 
@@ -208,7 +306,6 @@ public class Database {
         return this;
     }
 
-
     public Database addPhoto(String uuid, Uri uri) {
         timeOut(() -> {
             Set<User> users = Database.users;
@@ -223,121 +320,6 @@ public class Database {
         return this;
     }
 
-    public Database createUser(String name, String email, String password) {
-        timeOut(() -> {
-            UserAuth userAuth = new UserAuth();
-            userAuth.setEmail(email);
-            userAuth.setPassword(password);
-
-            usersAuth.add(userAuth);
-
-            User user = new User();
-            user.setName(name);
-            user.setEmail(email);
-            user.setUuid(userAuth.getUserId());
-
-            boolean added = users.add(user);
-            if (added) {
-                Database.userAuth = userAuth;
-                HashMap<String, HashSet<String>> followersMap = Database.followers;
-                followersMap.put(userAuth.getUserId(), new HashSet<>());
-
-                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
-                feedMap.put(userAuth.getUserId(), new HashSet<>());
-
-                if (onSuccessListener != null)
-                    onSuccessListener.onSuccess(userAuth);
-            } else {
-                Database.userAuth = null;
-                if (onFailureListener != null)
-                    onFailureListener.onFailure(new IllegalAccessException("Usuário já existe"));
-            }
-            if (onCompleteListener != null)
-                onCompleteListener.onComplete();
-        });
-        return this;
-    }
-
-    public Database createPost(String uuid, Uri uri, String caption) {
-        timeOut(() -> {
-            HashMap<String, HashSet<Post>> postMap = Database.posts;
-            HashSet<Post> posts = postMap.get(uuid);
-
-            if (posts == null) {
-                posts = new HashSet<>();
-                postMap.put(uuid, posts);
-            }
-            Post post = new Post();
-
-            post.setUri(uri);
-            post.setCaption(caption);
-            post.setTimestamp(System.currentTimeMillis());
-            post.setUuid(String.valueOf(post.hashCode()));
-
-            posts.add(post);
-
-            HashMap<String, HashSet<String>> followerMap = Database.followers;
-            HashSet<String> followers = followerMap.get(uuid);
-
-            if (followers == null) {
-                followers = new HashSet<>();
-                followerMap.put(uuid, followers);
-            } else {
-                HashMap<String, HashSet<Feed>> feedMap = Database.feed;
-                for (String follower : followers) {
-                    HashSet<Feed> feeds = feedMap.get(follower);
-
-
-                    if (feeds != null) {
-                        Feed feed = new Feed();
-                        feed.setUri(post.getUri());
-                        feed.setCaption(post.getCaption());
-                        feed.setTimestamp(post.getTimestamp());
-
-                        feeds.add(feed);
-                    }
-                }
-                HashSet<Feed> feedMe = feedMap.get(uuid);
-
-                if (feedMe != null) {
-                    Feed feed = new Feed();
-                    feed.setUri(post.getUri());
-                    feed.setCaption(post.getCaption());
-                    feed.setTimestamp(post.getTimestamp());
-
-                    feedMe.add(feed);
-                }
-            }
-            if (onSuccessListener != null) {
-                onSuccessListener.onSuccess(null);
-            }
-            if (onCompleteListener != null) {
-                onCompleteListener.onComplete();
-            }
-
-        });
-
-        return this;
-    }
-
-    public Database login(String email, String password) {
-        timeOut(() -> {
-            UserAuth user = new UserAuth();
-            user.setEmail(email);
-            user.setPassword(password);
-
-            if (usersAuth.contains(user)) {
-                Database.userAuth = user;
-                onSuccessListener.onSuccess(user);
-            } else {
-                Database.userAuth = null;
-                onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
-            }
-            onCompleteListener.onComplete();
-        });
-        return this;
-    }
-
     public UserAuth getUser() {
         return userAuth;
     }
@@ -345,7 +327,6 @@ public class Database {
     private void timeOut(Runnable r) {
         new Handler().postDelayed(r, 1000);
     }
-
 
     public <T> Database addOnSuccessListener(OnSuccessListener<T> successListener) {
         this.onSuccessListener = successListener;
@@ -361,7 +342,6 @@ public class Database {
         this.onCompleteListener = completeListener;
         return this;
     }
-
 
     public interface OnSuccessListener<T> {
         void onSuccess(T response);

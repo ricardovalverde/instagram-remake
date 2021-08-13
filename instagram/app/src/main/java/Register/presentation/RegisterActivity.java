@@ -32,18 +32,31 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
     @BindView(R.id.register_root_container)
     FrameLayout rootContainer;
+
     @BindView(R.id.register_crop_image_view)
     CropImageView cropImageView;
+
     @BindView(R.id.register_button_crop)
     Button buttonCrop;
+
     @BindView(R.id.register_scrollView)
     ScrollView scrollView;
+
     private RegisterPresenter registerPresenter;
     private MediaHelper mediaHelper;
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
         context.startActivity(intent);
+    }
+
+    @Override
+    protected void onInject() {
+        RegisterDataSource dataSource = new RegisterFirebaseDataSource();
+        registerPresenter = new RegisterPresenter(dataSource);
+        registerPresenter.setRegisterView(this);
+
+        showNextView(RegisterSteps.EMAIL);
     }
 
     @Override
@@ -57,12 +70,34 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
     }
 
     @Override
-    protected void onInject() {
-        RegisterDataSource dataSource = new RegisterFirebaseDataSource();
-        registerPresenter = new RegisterPresenter(dataSource);
-        registerPresenter.setRegisterView(this);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        cropViewEnabled(true);
+        MediaHelper mediaHelper = MediaHelper.getINSTANCE(this);
+        mediaHelper.onActivityResult(requestCode, resultCode, data);
+    }
 
-        showNextView(RegisterSteps.EMAIL);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            showCamera();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onUserCreated() {
+        MainActivity.launch(this, MainActivity.REGISTER_ACTIVITY);
+    }
+
+    @Override
+    public void showCamera() {
+        mediaHelper.chooserCamera();
+    }
+
+    @Override
+    public void showGallery() {
+        mediaHelper.chooserGallery();
     }
 
     @Override
@@ -98,42 +133,11 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
         transaction.commit();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        cropViewEnabled(true);
-        MediaHelper mediaHelper = MediaHelper.getINSTANCE(this);
-        mediaHelper.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            showCamera();
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onUserCreated() {
-        MainActivity.launch(this, MainActivity.REGISTER_ACTIVITY);
-    }
-
     private void cropViewEnabled(boolean enabled) {
         cropImageView.setVisibility(enabled ? View.VISIBLE : View.GONE);
         scrollView.setVisibility(enabled ? View.GONE : View.VISIBLE);
         buttonCrop.setVisibility(enabled ? View.VISIBLE : View.GONE);
         rootContainer.setBackgroundColor(enabled ? findColor(android.R.color.black) : findColor(android.R.color.white));
-    }
-
-    @Override
-    public void showCamera() {
-        mediaHelper.chooserCamera();
-    }
-
-    @Override
-    public void showGallery() {
-        mediaHelper.chooserGallery();
     }
 
     @Override
@@ -146,15 +150,15 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
         cropImageView.setImageUriAsync(uri);
     }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_register;
-    }
-
     @OnClick(R.id.register_button_crop)
     public void onButtonCropClick() {
         cropViewEnabled(false);
         MediaHelper.getINSTANCE(this)
                 .cropImage(cropImageView);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_register;
     }
 }

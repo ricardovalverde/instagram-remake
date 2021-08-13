@@ -23,6 +23,11 @@ public abstract class AbstractActivity extends AppCompatActivity implements View
     protected abstract void onInject();
 
     @Override
+    public Context getContext() {
+        return getBaseContext();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
@@ -48,14 +53,6 @@ public abstract class AbstractActivity extends AppCompatActivity implements View
 
     }
 
-    @Override
-    public Context getContext() {
-        return getBaseContext();
-    }
-
-    protected abstract @LayoutRes
-    int getLayout();
-
     public Drawable findDrawable(@DrawableRes int drawableId) {
         return Drawables.getDrawable(this, drawableId);
     }
@@ -63,5 +60,8 @@ public abstract class AbstractActivity extends AppCompatActivity implements View
     public int findColor(@ColorRes int colorId) {
         return Colors.getColor(this, colorId);
     }
+
+    protected abstract @LayoutRes
+    int getLayout();
 
 }

@@ -37,18 +37,25 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
     @BindView(R.id.profile_recycler_view)
     RecyclerView recyclerView;
+
     @BindView(R.id.profile_image_icon)
     CircleImageView imageViewProfile;
+
     @BindView(R.id.profile_text_view_username)
     TextView txtUsername;
+
     @BindView(R.id.profile_text_view_following_count)
     TextView followingCount;
+
     @BindView(R.id.profile_text_view_followers_count)
     TextView followersCount;
+
     @BindView(R.id.profile_text_view_post_count)
     TextView postCount;
+
     @BindView(R.id.profile_navigation_tabs)
     BottomNavigationView bottomNavigationView;
+
     @BindView(R.id.profile_button_edit_profile)
     Button buttonProfile;
 
@@ -65,11 +72,9 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         return profileFragment;
     }
 
-
     private void setMainView(MainView mainView) {
         this.mainView = mainView;
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -87,13 +92,6 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
             }
             return false;
         });
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        presenter.findUser();
     }
 
     @Nullable
@@ -108,23 +106,10 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         return view;
     }
 
-
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_profile, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (!presenter.getUser().equals(FirebaseAuth.getInstance().getUid())) {
-                    mainView.disposeProfileDetail();
-                    break;
-                }
-        }
-        return super.onOptionsItemSelected(item);
+    public void showPosts(List<Post> posts) {
+        postAdapter.setPosts(posts);
+        postAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -150,7 +135,30 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
             buttonProfile.setText(R.string.follow);
             buttonProfile.setTag(true);
         }
+    }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_profile, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!presenter.getUser().equals(FirebaseAuth.getInstance().getUid())) {
+                    mainView.disposeProfileDetail();
+                    break;
+                }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.findUser();
     }
 
     @OnClick(R.id.profile_button_edit_profile)
@@ -164,12 +172,6 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     }
 
     @Override
-    public void showPosts(List<Post> posts) {
-        postAdapter.setPosts(posts);
-        postAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void showProgressBar() {
         mainView.showProgressBar();
     }
@@ -179,10 +181,6 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         mainView.hideProgressBar();
     }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_main_profile;
-    }
 
     private static class viewHolder extends RecyclerView.ViewHolder {
         private final ImageView imagePost;
@@ -215,14 +213,17 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         @Override
         public void onBindViewHolder(@NonNull viewHolder holder, int position) {
             holder.bind(posts.get(position));
-
         }
-
 
         @Override
         public int getItemCount() {
             return posts.size();
         }
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_main_profile;
     }
 
 }

@@ -71,7 +71,6 @@ public class CustomDialog extends Dialog {
             });
             textViews[i] = textView;
         }
-
     }
 
     public static class Builder {

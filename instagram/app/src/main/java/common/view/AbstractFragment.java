@@ -48,7 +48,6 @@ public abstract class AbstractFragment<P> extends Fragment implements View {
         Keyboards.hideInput(context, editText);
     }
 
-
     public int findColor(@ColorRes int colorId) {
         return Colors.getColor(getContext(), colorId);
     }

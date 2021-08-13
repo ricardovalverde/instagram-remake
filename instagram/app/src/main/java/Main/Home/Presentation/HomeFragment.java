@@ -33,6 +33,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 
     @BindView(R.id.home_recycler_view)
     RecyclerView recyclerView;
+
     private MainView mainView;
     private FeedAdapter feedAdapter;
 
@@ -50,13 +51,11 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         this.mainView = mainview;
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
-
 
         feedAdapter = new FeedAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -69,6 +68,12 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void showFeed(List<Feed> feed) {
+        feedAdapter.setFeed(feed);
+        feedAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -95,22 +100,16 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.findFeed();
-    }
-
-    @Override
-    public void showFeed(List<Feed> feed) {
-        feedAdapter.setFeed(feed);
-        feedAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_profile, menu);
         super.onCreateOptionsMenu(menu, inflater);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.findFeed();
     }
 
     @Override
@@ -121,11 +120,6 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
     @Override
     public void hideProgressBar() {
         mainView.hideProgressBar();
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.fragment_main_home;
     }
 
     public static class homeViewHolder extends RecyclerView.ViewHolder {
@@ -182,5 +176,10 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         public int getItemCount() {
             return feed.size();
         }
+    }
+
+    @Override
+    public int getLayout() {
+        return R.layout.fragment_main_home;
     }
 }

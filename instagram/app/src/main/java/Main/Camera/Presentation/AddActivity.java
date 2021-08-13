@@ -53,7 +53,6 @@ public class AddActivity extends AbstractActivity implements AddView {
             public void onTabSelected(@NonNull TabLayout.Tab tab) {
                 super.onTabSelected(tab);
                 viewPager.setCurrentItem(tab.getPosition());
-                //Log.i("Teste", " "+tab.getPosition());
             }
         });
     }
@@ -100,11 +99,6 @@ public class AddActivity extends AbstractActivity implements AddView {
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.activity_add;
-    }
-
-    @Override
     public void onImageLoaded(Uri uri) {
         AddCaptionActivity.launch(this, uri);
         finish();
@@ -113,5 +107,10 @@ public class AddActivity extends AbstractActivity implements AddView {
     @Override
     public void dispose() {
         finish();
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_add;
     }
 }

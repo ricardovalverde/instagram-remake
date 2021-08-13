@@ -31,12 +31,6 @@ public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> i
         return fragment;
     }
 
-    @Override
-    public void onFailureForm(String emailError) {
-        textInputLayoutEmail.setError(emailError);
-        editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background_error));
-    }
-
     @OnClick(R.id.register_email_button_next)
     public void onButtonNextClick() {
         presenter.setEmail(editTextEmail.getText().toString());
@@ -55,6 +49,12 @@ public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> i
         editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background));
         textInputLayoutEmail.setError(null);
         textInputLayoutEmail.setErrorEnabled(false);
+    }
+
+    @Override
+    public void onFailureForm(String emailError) {
+        textInputLayoutEmail.setError(emailError);
+        editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background_error));
     }
 
     @Override

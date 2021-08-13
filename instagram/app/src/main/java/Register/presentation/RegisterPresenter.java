@@ -12,6 +12,7 @@ import common.util.Strings;
 public class RegisterPresenter implements Presenter<FirebaseUser> {
 
     private final RegisterDataSource dataSource;
+
     private RegisterView registerView;
     private RegisterView.EmailView emailView;
     private RegisterView.NamePasswordView namePasswordView;
@@ -82,7 +83,6 @@ public class RegisterPresenter implements Presenter<FirebaseUser> {
 
         namePasswordView.showProgressBar();
         dataSource.createUser(name.toLowerCase(), email, password, this);
-
     }
 
     public void jumpRegistration() {

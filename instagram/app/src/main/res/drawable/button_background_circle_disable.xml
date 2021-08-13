@@ -6,5 +6,4 @@
     <stroke
         android:width="16dp"
         android:color="@color/grayBorder" />
-
 </shape>
