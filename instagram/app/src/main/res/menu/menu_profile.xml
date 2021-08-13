@@ -7,6 +7,4 @@
         android:icon="@drawable/ic_insta_bullet"
         android:title="@string/app_name"
         app:showAsAction="always" />
-
-
 </menu>

@@ -1,5 +1,7 @@
 package Login.Presentation;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -35,6 +37,12 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 
     @BindView(R.id.login_button_enter)
     LoadingButton button_enter;
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

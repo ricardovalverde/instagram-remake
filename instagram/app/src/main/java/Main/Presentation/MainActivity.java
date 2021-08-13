@@ -25,6 +25,7 @@ import com.example.instagram.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import Login.Presentation.LoginActivity;
 import Main.Camera.Presentation.AddActivity;
 import Main.Home.DataSource.HomeDataSource;
 import Main.Home.DataSource.HomeFireBaseDataSource;
@@ -89,7 +90,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         fragmentManager.beginTransaction().add(R.id.main_fragment, profileFragment).hide(profileFragment).commit();
         //fragmentManager.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
         fragmentManager.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main_fragment, homeFragment).hide(homeFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.main_fragment, homeFragment).commit();
     }
 
     @Override
@@ -182,6 +183,13 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         transaction.remove(profileDetailFragment);
         transaction.show(active);
         transaction.commit();
+
+        profileDetailFragment = null;
+    }
+
+    @Override
+    public void logout() {
+        LoginActivity.launch(this);
     }
 
     @Override
@@ -193,7 +201,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                     disposeProfileDetail();
                 fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
                 scrollToolbarEnabled(false);
-                //homePresenter.findFeed();
+                homePresenter.findFeed();
                 active = homeFragment;
                 return true;
             case R.id.menu_bottom_search:

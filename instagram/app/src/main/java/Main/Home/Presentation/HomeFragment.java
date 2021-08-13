@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Main.Presentation.MainView;
 import butterknife.BindView;
+import common.component.CustomDialog;
 import common.model.Feed;
 import common.model.User;
 import common.view.AbstractFragment;
@@ -60,6 +63,35 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         recyclerView.setAdapter(feedAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                CustomDialog customDialog = new CustomDialog.Builder(getContext())
+                        .setTitle(R.string.logout)
+                        .addButton((view) -> {
+                            switch (view.getId()) {
+                                case R.string.logout_action:
+                                    FirebaseAuth.getInstance().signOut();
+                                    mainView.logout();
+                                    break;
+                                case R.string.cancel:
+                                    break;
+                            }
+                        }, R.string.logout_action, R.string.cancel)
+                        .build();
+                customDialog.show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

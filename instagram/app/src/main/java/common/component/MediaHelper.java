@@ -155,6 +155,12 @@ public class MediaHelper {
     }
 
     public void chooserCamera() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext() != null
+                && getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
+            return;
+        }
+
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (i.resolveActivity(getContext().getPackageManager()) != null) {
             File photoFile = null;
@@ -198,16 +204,13 @@ public class MediaHelper {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
-    public Camera getCameraInstance() {
+    public Camera getCameraInstance(Fragment fragment, Context context) {
         Camera camera = null;
 
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext() != null && (getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
-                if (activity != null) {
-                    activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
-                } else {
-                    fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && fragment != null && (context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+                fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
+                return null;
             }
             camera = Camera.open();
 
@@ -217,8 +220,8 @@ public class MediaHelper {
         return camera;
     }
 
-    public Uri saveCameraFile(byte[] bytes) {
-        File pictureFile = createCameraFile(true);
+    public Uri saveCameraFile(Context context, byte[] bytes) {
+        File pictureFile = createCameraFile(context, true);
 
         if (pictureFile == null) {
             Log.i("pictureFile", "Error creating media file, check permissions");
@@ -247,7 +250,7 @@ public class MediaHelper {
             fileOutputStream.close();
 
             Matrix matrix = new Matrix();
-            outputMediaFile = createCameraFile(false);
+            outputMediaFile = createCameraFile(context, false);
 
             if (outputMediaFile == null) {
                 Log.i("Teste", "Failed create image");
@@ -272,9 +275,10 @@ public class MediaHelper {
         return Uri.fromFile(outputMediaFile);
     }
 
-    private File createCameraFile(boolean temp) {
+    private File createCameraFile(Context context, boolean temp) {
         if (getContext() == null) return null;
-        File mediaStorageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File mediaStorageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (mediaStorageDir != null && !mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 Log.i("mediaStorageDir", "failed to create directory");

@@ -48,35 +48,59 @@ public class AddFirebaseDataSource implements AddDataSource {
                                         .document(uid)
                                         .collection("posts")
                                         .document();
+
                                 postReference.set(post)
                                         .addOnSuccessListener(aVoid -> {
-                                            FirebaseFirestore.getInstance()
-                                                    .collection("followers")
-                                                    .document(uid)
-                                                    .collection("followers")
-                                                    .get()
-                                                    .addOnCompleteListener(task -> {
-                                                        if (!task.isSuccessful()) return;
+                                            DocumentReference me = FirebaseFirestore.getInstance()
+                                                    .collection("user")
+                                                    .document(uid);
 
-                                                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
-                                                        for (DocumentSnapshot doc : documents) {
-                                                            User user = doc.toObject(User.class);
-                                                            Feed feed = new Feed();
+                                            FirebaseFirestore.getInstance().runTransaction(transaction -> {
+                                                DocumentSnapshot documentSnapshot = transaction.get(me);
 
-                                                            feed.setPhotoUrl(post.getPhotoUrl());
-                                                            feed.setCaption(post.getCaption());
-                                                            feed.setTimestamp(post.getTimestamp());
-                                                            feed.setUuid(postReference.getId());
-                                                            feed.setPublisher(user);
+                                                User user = documentSnapshot.toObject(User.class);
+                                                int posts = user.getPost() + 1;
+                                                transaction.update(me, "posts", posts);
 
-                                                            FirebaseFirestore.getInstance()
-                                                                    .collection("feed")
-                                                                    .document(user.getUuid())
-                                                                    .collection("posts")
-                                                                    .document(postReference.getPath())
-                                                                    .set(feed);
-                                                        }
-                                                    });
+                                                return null;
+                                            });
+
+                                            me.get().addOnCompleteListener(taskMe -> {
+
+                                                if (taskMe.isSuccessful()) {
+                                                    User userMe = taskMe.getResult().toObject(User.class);
+
+                                                    FirebaseFirestore.getInstance()
+                                                            .collection("followers")
+                                                            .document(uid)
+                                                            .collection("followers")
+                                                            .get()
+                                                            .addOnCompleteListener(task -> {
+                                                                if (!task.isSuccessful()) return;
+
+                                                                List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                                                                for (DocumentSnapshot doc : documents) {
+                                                                    User user = doc.toObject(User.class);
+                                                                    Feed feed = new Feed();
+
+                                                                    feed.setPhotoUrl(post.getPhotoUrl());
+                                                                    feed.setCaption(post.getCaption());
+                                                                    feed.setTimestamp(post.getTimestamp());
+                                                                    feed.setUuid(postReference.getId());
+                                                                    feed.setPublisher(userMe);
+
+                                                                    FirebaseFirestore.getInstance()
+                                                                            .collection("feed")
+                                                                            .document(user.getUuid())
+                                                                            .collection("posts")
+                                                                            .document(postReference.getId())
+                                                                            .set(feed);
+                                                                }
+                                                            });
+                                                }
+                                            }).addOnFailureListener(e -> presenter.onError(e.getMessage()));
+
+
                                             String id = postReference.getId();
                                             Feed feed = new Feed();
 

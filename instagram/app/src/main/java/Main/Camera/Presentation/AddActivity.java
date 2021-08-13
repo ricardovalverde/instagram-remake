@@ -109,4 +109,9 @@ public class AddActivity extends AbstractActivity implements AddView {
         AddCaptionActivity.launch(this, uri);
         finish();
     }
+
+    @Override
+    public void dispose() {
+        finish();
+    }
 }

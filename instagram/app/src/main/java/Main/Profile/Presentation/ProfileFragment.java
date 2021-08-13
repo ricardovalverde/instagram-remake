@@ -193,7 +193,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         }
 
         public void bind(Post post) {
-            Glide.with(itemView.getContext()).load(post).into(imagePost);
+            Glide.with(itemView.getContext()).load(post.getPhotoUrl()).into(imagePost);
         }
     }
 

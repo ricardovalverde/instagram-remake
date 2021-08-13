@@ -59,7 +59,7 @@ public class ProfilePresenter implements Presenter<UserProfile> {
         view.showData(user.getName(),
                 String.valueOf(user.getFollowing()),
                 String.valueOf(user.getFollowers()),
-                String.valueOf(user.getPost()),
+                String.valueOf(posts.size()),
                 editProfile,
                 userProfile.isFollowing());
 
